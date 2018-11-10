@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Web Scraping with R</title>
+  <meta name="description" content="This is in support of my talk for the Data Scidence group">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Web Scraping with R" />
+  
+  <meta name="twitter:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+<meta name="author" content="Steve Pittard">
+
+
+<meta name="date" content="2018-11-10">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="xml.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Web Scraping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding the language of the Web</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.4</b> Example: Parsing A Table From Wikipedia</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
+<li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
+<li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
+<li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
+<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.4</b> PubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
+<li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
+<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.3</b> EasyPubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
+<li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Web Scraping with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Web Scraping with R</h1>
+<h4 class="author"><em>Steve Pittard</em></h4>
+<h4 class="date"><em>2018-11-10</em></h4>
+</div>
+<div id="motivations" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Motivations</h1>
+<div id="lots-of-data-for-the-taking" class="section level2">
+<h2><span class="header-section-number">1.1</span> Lots of Data For The Taking ?</h2>
+<p>The web hosts lots of interesting data that you can ”scrape”. Some of it is stashed in data bases, behind APIs, or in free form text. Lots of people want to grab information of of Twitter or from user forums to see what people are thinking. There is a lot of valuable information out there for the taking although some web sites have “caught on” and either block programmatic access or they setup “pay walls” that require you to subscribe to an API for access. The New York Times does this. But there are lots of opportunities to get data.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td>tables</td>
+<td>Fetch tables like from Wikipedia</td>
+</tr>
+<tr class="even">
+<td>forms</td>
+<td>You can submit forms and fetch the results</td>
+</tr>
+<tr class="odd">
+<td>css</td>
+<td>You can access parts of a web site using style or css selectors</td>
+</tr>
+<tr class="even">
+<td>Tweets</td>
+<td>Process tweets including emojis</td>
+</tr>
+<tr class="odd">
+<td>Web Sites</td>
+<td>User forums have lots of content</td>
+</tr>
+<tr class="even">
+<td>Instagram</td>
+<td>Yes you can “scrape” photos also</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="web-scraping-can-be-ugly" class="section level2">
+<h2><span class="header-section-number">1.2</span> Web Scraping Can Be Ugly</h2>
+<p>Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a “key” to gain access. For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames.</p>
+<p>Here is a summary:</p>
+<ul>
+<li><p>First. Always try to find an R package that will access a site (e.g. New York Times, Wunderground, PubMed). These packages (e.g. omdbapi, easyPubMed, RBitCoin, rtimes) provide a programmatic search interface and return data frames with little to no effort on your part.</p></li>
+<li><p>If no package exists then hopefully there is an API that allows you to query the website and get results back in JSON or XML. I prefer JSON because it’s “easier” and the packages for parsing JSON return lists which are native data structures to R. So you can easily turn results into data frames. You will ususally use the <em>rvest</em> package in conjunction with XML, and the RSJONIO packages.</p></li>
+<li><p>If the Web site doesn’t have an API then you will need to scrape text. This isn’t hard but it is tedious. You will need to use <em>rvest</em> to parse HMTL elements. If you want to parse mutliple pages then you will need to use <em>rvest</em> to move to the other pages and possibly fill out forms. If there is a lot of Javascript then you might need to use RSelenium to programmatically manage the web page.</p></li>
+</ul>
+</div>
+<div id="understanding-the-language-of-the-web" class="section level2">
+<h2><span class="header-section-number">1.3</span> Understanding the language of the Web</h2>
+<p>The Web has its own languages: HTML, CSS, Javascript</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&lt;</span>h1<span class="op">&gt;</span>, <span class="op">&lt;</span>h2<span class="op">&gt;</span>, ..., <span class="op">&lt;</span>h6<span class="op">&gt;</span><span class="st"> </span>Heading <span class="dv">1</span> and so on
+<span class="op">&lt;</span>p<span class="op">&gt;</span><span class="st"> </span>Paragraph elements
+<span class="op">&lt;</span>ul<span class="op">&gt;</span><span class="st"> </span>Unordered List
+<span class="op">&lt;</span>ol<span class="op">&gt;</span><span class="st"> </span>Ordered List
+<span class="op">&lt;</span>li<span class="op">&gt;</span><span class="st"> </span>List Element
+<span class="op">&lt;</span>div<span class="op">&gt;</span><span class="st"> </span>Division <span class="op">/</span><span class="st"> </span>Section
+<span class="op">&lt;</span>table<span class="op">&gt;</span><span class="st"> </span>Tables
+<span class="op">&lt;</span>form<span class="op">&gt;</span><span class="st"> </span>Web forms</code></pre></div>
+<p>So to be productive at scraping requires you to have some familiairty with HMTL XML, and CSS. Here we look at a very basic HTML file</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&lt;!</span>DOCTYPE html<span class="op">&gt;</span>
+<span class="er">&lt;</span>html<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;</span>body<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>h1<span class="op">&gt;</span>My First Heading<span class="op">&lt;</span><span class="er">/</span>h1<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>p<span class="op">&gt;</span>My first paragraph.<span class="op">&lt;</span><span class="er">/</span>p<span class="op">&gt;</span>
+<span class="st">   </span><span class="er">&lt;/</span>body<span class="op">&gt;</span>
+<span class="er">&lt;/</span>html<span class="op">&gt;</span></code></pre></div>
+<div class="figure">
+<img src="PICS/first_heading.png" width="450" />
+
+</div>
+<p> </p>
+<p>And you could apply some styling to this courtest of the CSS language which allows you to inject styles into plain HTML:</p>
+<div class="figure">
+<img src="PICS/css.png" width="450" />
+
+</div>
+<p> </p>
+<div class="figure">
+<img src="PICS/css_page.png" width="450" />
+
+</div>
+<p>There are a number of tools that allow us to inspect web pages and see “what is under the hood”</p>
+<p> </p>
+<table style="width:56%;">
+<colgroup>
+<col width="9%" />
+<col width="45%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Selector Gadget</td>
+<td><a href="http://selectorgadget.com/" class="uri">http://selectorgadget.com/</a></td>
+</tr>
+<tr class="even">
+<td>Firebug</td>
+<td><a href="https://getfirebug.com/" class="uri">https://getfirebug.com/</a> (now integrated into a version of Firefox)</td>
+</tr>
+<tr class="odd">
+<td>Google Chrome</td>
+<td>Right click to inspect a page element</td>
+</tr>
+<tr class="even">
+<td>Google Chrome</td>
+<td>View Developer - Developer Tools</td>
+</tr>
+<tr class="odd">
+<td>Oxygen Editor</td>
+<td>Can obtain via the Emory Software Express Site</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="example-parsing-a-table-from-wikipedia" class="section level2">
+<h2><span class="header-section-number">1.4</span> Example: Parsing A Table From Wikipedia</h2>
+<p>Look at the <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia Page</a> for world population:</p>
+<p><a href="https://en.wikipedia.org/wiki/World_population" class="uri">https://en.wikipedia.org/wiki/World_population</a></p>
+<ul>
+<li>We can get any table we want using rvest</li>
+<li>We might have to experiment to figure out which one</li>
+<li>Get the one that lists the ten most populous countries</li>
+<li>I think this might be the 4th or 5th table on the page</li>
+<li>How do we get this ?</li>
+</ul>
+<div class="figure">
+<img src="PICS/worldpop.png" width="450" />
+
+</div>
+<p>First we will load packages that will help us throughout this session.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
+<span class="kw">library</span>(tidytext)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(rtweet)
+<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(wordcloud)
+<span class="kw">library</span>(tidyquant)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
+
+<span class="co"># Use read_html to fetch the webpage</span>
+url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
+ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) 
+  
+ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()
+
+<span class="co"># Let&#39;s get just the first three columns</span>
+ten_most_populous &lt;-<span class="st"> </span>ten_most_populous[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]
+
+<span class="co"># Get some content - Change the column names</span>
+<span class="kw">names</span>(ten_most_populous) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Country_Territory&quot;</span>,<span class="st">&quot;Population&quot;</span>,<span class="st">&quot;Date&quot;</span>)
+
+<span class="co"># Do reformatting on the columns to be actual numerics where appropriate</span>
+ten_most_populous <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Population=</span><span class="kw">gsub</span>(<span class="st">&quot;,&quot;</span>,<span class="st">&quot;&quot;</span>,Population)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Population=</span><span class="kw">round</span>(<span class="kw">as.numeric</span>(Population)<span class="op">/</span><span class="fl">1e+06</span>))  <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Country_Territory,<span class="dt">y=</span>Population)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Population / 1,000,000&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Top 10 Most Populous Countries&quot;</span>)</code></pre></div>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn’t always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn’t correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it’s okay to try to use simple elements and then try to refine the search some more.</p>
+</div>
+<div id="summary" class="section level2">
+<h2><span class="header-section-number">1.5</span> Summary</h2>
+<ul>
+<li>Need some basic HTML and CSS knowledge to find correct elements</li>
+<li>How to extract text from common elements</li>
+<li>How to extract text from specific elements</li>
+<li>Always have to do some text cleanup of data</li>
+<li>It usually takes multiple times to get it right</li>
+</ul>
+<p>See <a href="http://bradleyboehmke.github.io/2015/12/scraping-html-text.html" class="uri">http://bradleyboehmke.github.io/2015/12/scraping-html-text.html</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="xml.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

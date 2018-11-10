@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Web Scraping with R</title>
+  <meta name="description" content="This is in support of my talk for the Data Scidence group">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Web Scraping with R" />
+  
+  <meta name="twitter:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+<meta name="author" content="Steve Pittard">
+
+
+<meta name="date" content="2018-11-10">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="bagofwords.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Web Scraping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding the language of the Web</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.4</b> Example: Parsing A Table From Wikipedia</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
+<li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
+<li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
+<li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
+<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.4</b> PubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
+<li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
+<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.3</b> EasyPubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
+<li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a></li>
+<li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Web Scraping with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="final-words" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Final Words</h1>
+<p>We have finished a nice book.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bagofwords.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

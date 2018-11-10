@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Web Scraping with R</title>
+  <meta name="description" content="This is in support of my talk for the Data Scidence group">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Web Scraping with R" />
+  
+  <meta name="twitter:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+<meta name="author" content="Steve Pittard">
+
+
+<meta name="date" content="2018-11-10">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="Moreexamples.html">
+<link rel="next" href="bagofwords.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Web Scraping</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding the language of the Web</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.4</b> Example: Parsing A Table From Wikipedia</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
+<li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
+<li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
+<li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
+<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.4</b> PubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
+<li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
+<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.3</b> EasyPubMed</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
+<li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Web Scraping with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="APIs" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> APIs</h1>
+<div id="omdb" class="section level2">
+<h2><span class="header-section-number">4.1</span> OMDB</h2>
+<p>Let’s look at the IMDB page whic catalogues lots of information about movies. Just got to the web site and search although here is an example link. <a href="https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2" class="uri">https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2</a> In this case we would like to get the summary information for the movie. So we would use Selector Gadget or some other method to find the XPATH or CSS associated with this element.</p>
+<div class="figure">
+<img src="PICS/suspiria_77.png" width="450" />
+
+</div>
+<p>This pretty easy and doesn’t present much of a problem although for large scale mining of movie data we would run into trouble because IMDB doesn’t really like you to scrape their pages. They have an API that they would like for you to use.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &#39;https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2&#39;</span>
+summary &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;.summary_text&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">html_text</span>()</code></pre></div>
+<p>But here we go again. We have to parse the desired elements on this page and then what if we wanted to follow other links or set up a general function to search IMDB for other movies of various genres, titles, directors, etc.</p>
+<div class="figure">
+<img src="PICS/omdb.png" width="550" />
+
+</div>
+<div class="figure">
+<img src="PICS/omdb_api.png" width="450" />
+
+</div>
+<div class="figure">
+<img src="PICS/omdb_instruc.png" width="450" />
+
+</div>
+<hr />
+<p>So as an example on how this works. Paste the URL into any web browser. You must supply your key for this to work. What you get back is a JSON formatted entry corresponding to ”The GodFather”movie.</p>
+<hr />
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span></code></pre></div>
+<div class="figure">
+<img src="PICS/omdb_result.png" width="650" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJSONIO)
+
+url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span>
+
+<span class="co"># Fetch the URL via fromJSON</span>
+movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span>)
+
+<span class="co"># We get back a list which is much easier to process than raw JSON or XML</span>
+<span class="kw">str</span>(movie)</code></pre></div>
+<pre><code>## List of 25
+##  $ Title     : chr &quot;The Godfather&quot;
+##  $ Year      : chr &quot;1972&quot;
+##  $ Rated     : chr &quot;R&quot;
+##  $ Released  : chr &quot;24 Mar 1972&quot;
+##  $ Runtime   : chr &quot;175 min&quot;
+##  $ Genre     : chr &quot;Crime, Drama&quot;
+##  $ Director  : chr &quot;Francis Ford Coppola&quot;
+##  $ Writer    : chr &quot;Mario Puzo (screenplay by), Francis Ford Coppola (screenplay by), Mario Puzo (based on the novel by)&quot;
+##  $ Actors    : chr &quot;Marlon Brando, Al Pacino, James Caan, Richard S. Castellano&quot;
+##  $ Plot      : chr &quot;The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.&quot;
+##  $ Language  : chr &quot;English, Italian, Latin&quot;
+##  $ Country   : chr &quot;USA&quot;
+##  $ Awards    : chr &quot;Won 3 Oscars. Another 24 wins &amp; 28 nominations.&quot;
+##  $ Poster    : chr &quot;https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ&quot;| __truncated__
+##  $ Ratings   :List of 3
+##   ..$ : Named chr [1:2] &quot;Internet Movie Database&quot; &quot;9.2/10&quot;
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
+##   ..$ : Named chr [1:2] &quot;Rotten Tomatoes&quot; &quot;98%&quot;
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
+##   ..$ : Named chr [1:2] &quot;Metacritic&quot; &quot;100/100&quot;
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
+##  $ Metascore : chr &quot;100&quot;
+##  $ imdbRating: chr &quot;9.2&quot;
+##  $ imdbVotes : chr &quot;1,378,375&quot;
+##  $ imdbID    : chr &quot;tt0068646&quot;
+##  $ Type      : chr &quot;movie&quot;
+##  $ DVD       : chr &quot;09 Oct 2001&quot;
+##  $ BoxOffice : chr &quot;N/A&quot;
+##  $ Production: chr &quot;Paramount Pictures&quot;
+##  $ Website   : chr &quot;http://www.thegodfather.com&quot;
+##  $ Response  : chr &quot;True&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movie<span class="op">$</span>Plot</code></pre></div>
+<pre><code>## [1] &quot;The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(movie<span class="op">$</span>Ratings,unlist)</code></pre></div>
+<pre><code>##        [,1]                      [,2]              [,3]        
+## Source &quot;Internet Movie Database&quot; &quot;Rotten Tomatoes&quot; &quot;Metacritic&quot;
+## Value  &quot;9.2/10&quot;                  &quot;98%&quot;             &quot;100/100&quot;</code></pre>
+<p>Let’s Get all the Episodes for Season 1 of Game of Thrones</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=Game%20of%20Thrones&amp;Season=1&quot;</span>
+movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
+<span class="kw">str</span>(movie,<span class="dv">1</span>)</code></pre></div>
+<pre><code>## List of 5
+##  $ Title       : chr &quot;Game of Thrones&quot;
+##  $ Season      : chr &quot;1&quot;
+##  $ totalSeasons: chr &quot;8&quot;
+##  $ Episodes    :List of 10
+##  $ Response    : chr &quot;True&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">episodes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind,movie<span class="op">$</span>Episodes),<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+episodes</code></pre></div>
+<pre><code>##                                    Title   Released Episode imdbRating
+## 1                       Winter Is Coming 2011-04-17       1        9.0
+## 2                          The Kingsroad 2011-04-24       2        8.8
+## 3                              Lord Snow 2011-05-01       3        8.7
+## 4  Cripples, Bastards, and Broken Things 2011-05-08       4        8.8
+## 5                  The Wolf and the Lion 2011-05-15       5        9.1
+## 6                         A Golden Crown 2011-05-22       6        9.2
+## 7                     You Win or You Die 2011-05-29       7        9.3
+## 8                         The Pointy End 2011-06-05       8        9.1
+## 9                                 Baelor 2011-06-12       9        9.6
+## 10                        Fire and Blood 2011-06-19      10        9.5
+##       imdbID
+## 1  tt1480055
+## 2  tt1668746
+## 3  tt1829962
+## 4  tt1829963
+## 5  tt1829964
+## 6  tt1837862
+## 7  tt1837863
+## 8  tt1837864
+## 9  tt1851398
+## 10 tt1851397</code></pre>
+</div>
+<div id="the-omdbapi-package" class="section level2">
+<h2><span class="header-section-number">4.2</span> The omdbapi package</h2>
+<p>Wait a minute. Looks like someone created an R package that wraps all this for us. It is called omdbapi</p>
+<div class="figure">
+<img src="PICS/omdbapi.png" width="650" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use devtools to install</span>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;hrbrmstr/omdbapi&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(omdbapi)
+<span class="co"># The first time you use this you will be prompted to enter your</span>
+ <span class="co"># API key</span>
+movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## Couldn&#39;t find env var OMDB_API_KEY See ?omdb_api_key for more details.</code></pre>
+<pre><code>## Please enter your API key and press enter:</code></pre>
+<pre><code>## Updating OMDB_API_KEY env var to PAT</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
+<pre><code>##                                     Title      Year    imdbID   Type
+## 1               Star Wars: The Clone Wars      2008 tt1185834  movie
+## 2               Star Wars: The Clone Wars 2008–2019 tt0458290 series
+## 3                        Star Wars Rebels 2014–2018 tt2930604 series
+## 4                   Star Wars: Clone Wars 2003–2005 tt0361243 series
+## 5           The Star Wars Holiday Special      1978 tt0193524  movie
+## 6                Robot Chicken: Star Wars      2007 tt1020990  movie
+## 7  Star Wars: Knights of the Old Republic      2003 tt0356070   game
+## 8          Star Wars: The Force Unleashed      2008 tt1024923   game
+## 9               Star Wars: Battlefront II      2005 tt0483168   game
+## 10    Robot Chicken: Star Wars Episode II      2008 tt1334272  movie</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get lots of info on The GodFather</span>
+
+(gf &lt;-<span class="st"> </span><span class="kw">find_by_title</span>(<span class="st">&quot;The GodFather&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 3 x 25
+##   Title Year  Rated Released   Runtime Genre Director Writer Actors Plot 
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;
+## 1 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
+## 2 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
+## 3 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
+## # ... with 15 more variables: Language &lt;chr&gt;, Country &lt;chr&gt;, Awards &lt;chr&gt;,
+## #   Poster &lt;chr&gt;, Ratings &lt;list&gt;, Metascore &lt;chr&gt;, imdbRating &lt;dbl&gt;,
+## #   imdbVotes &lt;dbl&gt;, imdbID &lt;chr&gt;, Type &lt;chr&gt;, DVD &lt;date&gt;,
+## #   BoxOffice &lt;chr&gt;, Production &lt;chr&gt;, Website &lt;chr&gt;, Response &lt;chr&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the actors from the GodFather</span>
+<span class="kw">get_actors</span>((gf))</code></pre></div>
+<pre><code>## [1] &quot;Marlon Brando&quot;         &quot;Al Pacino&quot;             &quot;James Caan&quot;           
+## [4] &quot;Richard S. Castellano&quot;</code></pre>
+<div class="figure">
+<img src="PICS/api_summary.png" width="550" />
+
+</div>
+</div>
+<div id="easypubmed" class="section level2">
+<h2><span class="header-section-number">4.3</span> EasyPubMed</h2>
+<p>So there is an R package called <em>EasyPubMed</em> that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format. The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(easyPubMed)</code></pre></div>
+<p>Let’s do some searching</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
+my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)
+my_abstracts_txt &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id, <span class="dt">format =</span> <span class="st">&quot;abstract&quot;</span>)
+my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<pre><code>##  [1] &quot;&quot;                                                                                  
+##  [2] &quot;1. Medicine (Baltimore). 2018 Sep;97(37):e12018. doi: 10.1097/MD.0000000000012018.&quot;
+##  [3] &quot;&quot;                                                                                  
+##  [4] &quot;Gene co-expression network analysis identifies the hub genes associated with&quot;      
+##  [5] &quot;immune functions for nocturnal hemodialysis in patients with end-stage renal&quot;      
+##  [6] &quot;disease.&quot;                                                                          
+##  [7] &quot;&quot;                                                                                  
+##  [8] &quot;Dai H, Zhou J, Zhu B.&quot;                                                             
+##  [9] &quot;&quot;                                                                                  
+## [10] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts_xml &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)</code></pre></div>
+<p>Well the results aren’t bad but we still have to parse out some junk but nothing like before. It’s a minor problem.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">xpathApply</span>(my_abstracts_xml, <span class="st">&quot;//AbstractText&quot;</span>, saveXML))
+
+<span class="co"># Still have to clear out some junk in each abstract</span>
+
+my_abstracts &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&#39;&lt;(.*)&quot;&gt;&#39;</span>,<span class="st">&quot;&quot;</span>,my_abstracts)
+my_abstracts &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&#39;&lt;AbstractText&gt;|&lt;/AbstractText&gt;&#39;</span>,<span class="st">&quot;&quot;</span>,my_abstracts)
+
+<span class="kw">length</span>(my_abstracts)</code></pre></div>
+<pre><code>## [1] 935</code></pre>
+<p>But we have around 935 abstracts that we can now mess with. The benefit of this approach is that we dont’ have to do all the text conversions and manipulations that we would have with the manual approach. Plus, we are able to get a lot more results more conveniently.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
+<pre><code>## [1] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in which the kidney is not sufficient to meet the needs of daily life. It is necessary to understand the role of genes expression involved in ESRD patient responses to nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of this study was to investigate novel immune-associated genes that may play important roles in patients with ESRD.The microarray expression profiles of peripheral blood in patients with ESRD before and after NHD were analyzed by network-based approaches, and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes pathway analysis to explore the biological process and molecular functions of differentially expressed genes. Subsequently, a transcriptional regulatory network of the core genes and the connected transcriptional regulators was constructed. We found that NHD had a significant effect on neutrophil activation and immune response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL genes maybe potential targets regulated by core transcriptional factors, including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, and EGR3.&quot;                                               
+## [2] &quot;Only a minority of patients with chronic kidney disease treated by hemodialysis are currently treated at home. Until relatively recently, the only type of hemodialysis machine available for these patients was a slightly smaller version of the standard machines used for in-center dialysis treatments. Areas covered: There are now an alternative generation of dialysis machines specifically designed for home hemodialysis. The home dialysis patient wants a smaller machine, which is intuitive to use, easy to trouble shoot, robust and reliable, quick to setup and put away, requiring minimal waste disposal. The machines designed for home dialysis have some similarities in terms of touch-screen patient interfaces, and using pre-prepared cartridges to speed up setting up the machine. On the other hand, they differ in terms of whether they use slower or standard dialysate flows, prepare batches of dialysis fluid, require separate water purification equipment, or whether this is integrated, or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis machine complexity is one of the hurdles reducing the number of patients opting for home hemodialysis and the introduction of the newer generation of dialysis machines designed for ease of use will hopefully increase the number of patients opting for home hemodialysis.&quot;
+## [3] &quot;Home haemodialysis (HHD) has the potential to impact positively on patient outcomes and health resource management. There has been rejuvenated international interest in HHD in recent years.&quot;</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Moreexamples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bagofwords.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

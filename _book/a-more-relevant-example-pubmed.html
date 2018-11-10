@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Web Scraping with R</title>
+  <meta name="description" content="This is in support of my talk for the Data Scidence group">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Web Scraping with R" />
+  
+  <meta name="twitter:description" content="This is in support of my talk for the Data Scidence group" />
+  
+
+<meta name="author" content="Steve Pittard">
+
+
+<meta name="date" content="2018-11-02">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="Moreexamples.html">
+<link rel="next" href="methods.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.1</b> Web Scraping Can Be Ugly</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.2</b> Understanding the language of the Web</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.3</b> Example: Parsing A Table From Wikipedia</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.4</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
+<li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
+<li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
+<li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="a-more-relevant-example-pubmed.html"><a href="a-more-relevant-example-pubmed.html"><i class="fa fa-check"></i><b>4</b> A More Relevant Example: PubMed</a></li>
+<li class="chapter" data-level="5" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>5</b> Methods</a></li>
+<li class="chapter" data-level="6" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>6</b> Applications</a><ul>
+<li class="chapter" data-level="6.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>6.1</b> Example one</a></li>
+<li class="chapter" data-level="6.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>6.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>7</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Web Scraping with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-more-relevant-example-pubmed" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> A More Relevant Example: PubMed</h1>
+<p>Pubmed provides a rich source of information on published scientific literature. There are tutorials on how to leverage its capabilities but one thing to consider is that MESH terms are a good starting place since the search is index-based. MeSH (Medical Subject Headings) is the NLM controlled vocabulary thesaurus used for indexing articles for PubMed. It’s faster and more accurate so you can first use the MESH browser to generate the appropriate search terms and add that into the Search interface. The MESH browser can be found at <a href="https://www.ncbi.nlm.nih.gov/mesh/" class="uri">https://www.ncbi.nlm.nih.gov/mesh/</a></p>
+<div class="figure">
+<img src="PICS/pubmed1.png" width="550" />
+
+</div>
+<div class="figure">
+<img src="/Users/esteban/Dropbox/REPOS.DIR/data_science_talk/PICS/mesh.png" width="550" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span>
+
+<span class="co"># </span>
+path &lt;-<span class="st"> &#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;content&quot;, &quot; &quot; ))] | //a&#39;</span>
+results &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">grep</span>(<span class="st">&quot;/pubmed/[0-9]{1,6}&quot;</span>,.,<span class="dt">value=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>(.)
+
+results</code></pre></div>
+<pre><code>##  [1] &quot;/pubmed/30212930&quot; &quot;/pubmed/29656667&quot; &quot;/pubmed/29272506&quot;
+##  [4] &quot;/pubmed/29148012&quot; &quot;/pubmed/29122999&quot; &quot;/pubmed/29122220&quot;
+##  [7] &quot;/pubmed/28978613&quot; &quot;/pubmed/28963833&quot; &quot;/pubmed/28835369&quot;
+## [10] &quot;/pubmed/28710094&quot; &quot;/pubmed/28679363&quot; &quot;/pubmed/28651528&quot;
+## [13] &quot;/pubmed/28614637&quot; &quot;/pubmed/28597060&quot; &quot;/pubmed/28546368&quot;
+## [16] &quot;/pubmed/28535526&quot; &quot;/pubmed/28495360&quot; &quot;/pubmed/28490435&quot;
+## [19] &quot;/pubmed/28485119&quot; &quot;/pubmed/28448966&quot;</code></pre>
+<div class="figure">
+<img src="/Users/esteban/Dropbox/REPOS.DIR/data_science_talk/PICS/pubmed_results.png" width="550" />
+
+</div>
+<p>So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 10 results per page. As before we would have to dive in to the underlying structure of the page to get the correct XML pathnames or we could look for Paragraph elements and pick out the links that way.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text.vec &lt;-<span class="st"> </span><span class="kw">vector</span>()
+
+<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(results)) {
+  string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.ncbi.nlm.nih.gov&quot;</span>,results[ii])
+  text.vec[ii] &lt;-<span class="st"> </span><span class="kw">read_html</span>(string) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
+}
+
+<span class="co"># Eliminate lines with newlines characters</span>
+
+final.vec &lt;-<span class="st"> </span>text.vec[<span class="kw">grep</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,text.vec,<span class="dt">invert=</span><span class="ot">TRUE</span>)]
+
+final.vec</code></pre></div>
+<pre><code>##  [1] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in which the kidney is not sufficient to meet the needs of daily life. It is necessary to understand the role of genes expression involved in ESRD patient responses to nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of this study was to investigate novel immune-associated genes that may play important roles in patients with ESRD.The microarray expression profiles of peripheral blood in patients with ESRD before and after NHD were analyzed by network-based approaches, and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes pathway analysis to explore the biological process and molecular functions of differentially expressed genes. Subsequently, a transcriptional regulatory network of the core genes and the connected transcriptional regulators was constructed. We found that NHD had a significant effect on neutrophil activation and immune response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL genes maybe potential targets regulated by core transcriptional factors, including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, and EGR3.&quot;                                                                                                                                                                                                                                                                                                                  
+##  [2] &quot;Only a minority of patients with chronic kidney disease treated by hemodialysis are currently treated at home. Until relatively recently, the only type of hemodialysis machine available for these patients was a slightly smaller version of the standard machines used for in-center dialysis treatments. Areas covered: There are now an alternative generation of dialysis machines specifically designed for home hemodialysis. The home dialysis patient wants a smaller machine, which is intuitive to use, easy to trouble shoot, robust and reliable, quick to setup and put away, requiring minimal waste disposal. The machines designed for home dialysis have some similarities in terms of touch-screen patient interfaces, and using pre-prepared cartridges to speed up setting up the machine. On the other hand, they differ in terms of whether they use slower or standard dialysate flows, prepare batches of dialysis fluid, require separate water purification equipment, or whether this is integrated, or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis machine complexity is one of the hurdles reducing the number of patients opting for home hemodialysis and the introduction of the newer generation of dialysis machines designed for ease of use will hopefully increase the number of patients opting for home hemodialysis.&quot;                                                                                                                                                                                                                                                                   
+##  [3] &quot;Home haemodialysis (HHD) has the potential to impact positively on patient outcomes and health resource management. There has been rejuvenated international interest in HHD in recent years.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+##  [4] &quot;Assess the feasibility of using a bovine carotid artery graft for buttonhole technique hemodialysis in patients who are not candidates for a native fistula.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+##  [5] &quot;renal system; urology; vascular surgery&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+##  [6] &quot;NxStage System One is a new dialytic technology based on easy setup, simplicity of use and reduced dimensions, which is increasingly in use worldwide for home hemodialysis treatments. The system utilizes a low amount of dialysate, usually 15-30 liters according to anthropometric patients&#39; values. The dialysate is supplied at very low flux, generally about 1/3 of blood flow, in order to obtain an elevated saturation of dialysate for solutes. In these conditions the clearance of urea will be almost equal to dialysate flow rate. In order to achieve an obptimal weekly clearance evaluated by Std Kt/V the dialysis sessions are repeated six times a week. In this way a good control of blood voleme can be reached. In this paper we report our experience of treatment with NxStage System One in 12 patients from May 2011 to Dicember 2016.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+##  [7] &quot;Data on racial disparities in home dialysis utilization and outcomes are lacking in Canada, where health care is universally available.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+##  [8] &quot;Telehealth and remote monitoring of a patient&#39;s health status has become more commonplace in the last decade and has been applied to conditions such as heart failure, diabetes mellitus, hypertension, and chronic obstructive pulmonary disease. Conversely, uptake of these technologies to help engender and support home RRTs has lagged. Although studies have looked at the role of telehealth in RRT, they are small and single-centered, and both outcome and cost-effectiveness data are needed to inform future decision making. Furthermore, alignment of payer and government (federal and state) regulations with telehealth procedures is needed along with a better understanding of the viewpoints of the various stakeholders in this process (patients, caregivers, clinicians, payers, dialysis organizations, and government regulators). Despite these barriers, telehealth has great potential to increase the acceptance of home dialysis, and improve outcomes and patient satisfaction while potentially decreasing costs. The Kidney Health Initiative convened a multidisciplinary workgroup to examine the current state of telehealth use in home RRTs as well as outline potential benefits and drawbacks, impediments to implementation, and key unanswered questions.&quot;                                                                                                                                                                                                                                                                                                                                                            
+##  [9] &quot;Patients starting dialysis often have substantial residual kidney function. Incremental hemodialysis provides a hemodialysis prescription that supplements patients&#39; residual kidney function while maintaining total (residual + dialysis) urea clearance (standard Kt/Vurea) targets. We describe our experience with incremental hemodialysis in patients using NxStage System One for home hemodialysis.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+## [10] &quot;Internationally, the use of patient-reported outcomes (PROs) is increasing. Electronic PROs (ePROs) offer immediate access of such reports to healthcare providers. The objectives of this study were to assess nurses&#39; perspectives on the usefulness and impact of ePRO administration in home dialysis clinics and assess patient perceptions of satisfaction with nursing care following use of ePROs.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+## [11] &quot;The Lancashire Teaching Hospitals NHS Trust in the UK has been providing renal care through video-as-a-service (VAAS) to patients since 2013, with support from the North West NHS Shared Infrastructure Service, a collaborative team that supports information and communication technology use in the UK National Health Service.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+## [12] &quot;Neonatal autosomal recessive polycystic kidney disease (ARPKD) is associated with giant kidneys, lung hypoplasia, pulmonal hypertension, and end-stage renal failure. Depending on the study, mortality is reported to range between 20 and 80%.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+## [13] &quot;Improvement in the rates of home dialysis has been a desirable but difficult-to-achieve target for United States nephrology. Provision of comprehensive predialysis education (CPE) in institutes with established home dialysis programs has been shown to facilitate a higher home dialysis choice amongst chronic kidney disease (CKD) patients. Unfortunately, limited data have shown the efficacy of such programs in the United States or in institutes with small home dialysis (HoD) programs.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+## [14] &quot;Home hemodialysis (HD) is undergoing a resurgence. A major driver of this is economics, however, providers are also encouraged by a combination of excellent patient outcomes and patient experiences as well as the development of newer technologies that offer ease of use. Home HD offers significant advantages in flexible scheduling and the practical implementation of extended hours dialysis. This paper explores the reasons why home HD is making a comeback and strives to offer approaches to improve the uptake of this dialysis modality.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+## [15] &quot;Bone deformities and fractures are common consequences of renal osteodystrophy in the dialysis population. Persistent hypophosphatemia may be observed with more frequent home hemodialysis regimens, but the specific effects on the skeleton are unknown. We present a patient with end-stage renal disease treated with frequent home hemodialysis who developed severe bone pain and multiple fractures, including a hip fracture and a tibia-fibula fracture complicated by nonunion, rendering her nonambulatory and wheelchair bound for more than a year. A bone biopsy revealed severe osteomalacia, likely secondary to chronic hypophosphatemia and hypocalcemia. Treatment changes included the addition of phosphate to the dialysate, a higher dialysate calcium concentration, and increased calcitriol dose. Several months later, the patient no longer required a wheelchair and was able to ambulate without pain. Repeat bone biopsy revealed marked improvements in bone mineralization and turnover parameters. Also, with increased dialysate phosphate and calcium concentrations, as well as increased calcitriol, circulating fibroblast growth factor 23 levels increased.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+## [16] &quot;The ESRD Prospective Payment System introduced two incentives to increase home dialysis use: bundling injectable medications into a single payment for treatment and paying for home dialysis training. We evaluated the effects of the ESRD Prospective Payment System on home dialysis use by patients starting dialysis in the United States from January 1, 2006 to August 31, 2013. We analyzed data on dialysis modality, insurance type, and comorbidities from the United States Renal Data System. We estimated the effect of the policy on home dialysis use with multivariable logistic regression and compared the effect on Medicare Parts A/B beneficiaries with the effect on patients with other types of insurance. The ESRD Prospective Payment System associated with a 5.0% (95% confidence interval [95% CI], 4.0% to 6.0%) increase in home dialysis use by the end of the study period. Home dialysis use increased by 5.8% (95% CI, 4.3% to 6.9%) among Medicare beneficiaries and 4.1% (95% CI, 2.3% to 5.4%) among patients covered by other forms of health insurance. The difference between these groups was not statistically significant (1.8%; 95% CI, -0.2% to 3.8%). Conversely, in both populations, the training add-on did not associate with increases in home dialysis use beyond the effect of the policy. The ESRD Prospective Payment System bundling, but not the training add-on, associated with substantial increases in home dialysis, which were identical for both Medicare and non-Medicare patients. These spill-over effects suggest that major payment changes in Medicare can affect all patients with ESRD.&quot;
+## [17] &quot;We present a case of a patient on home hemodialysis who developed Mycobacterium mucogenicum bacteremia. While infections with this particular organism are rare, disseminated infections have been reported and have been associated with significant morbidity and mortality. Diagnosis required appropriate cultures, understanding of natural habitat of organism and complete environmental analysis including blood, dialysis sample port, reverse osmosis and incoming water supply cultures. The patient was treated successfully with systemic antibiotics, removal of central venous catheter, patient education and complete exchange of the hemodialysis circuit.&quot;</code></pre>
+<p>Well that was a lot of work and it’s very tedious. And we procssed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Moreexamples.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": ["demo.pdf", "demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
