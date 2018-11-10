@@ -1,2 +1,4 @@
-# NHSON
-This is in support of a report for the Nell Hodgson School of Nursing
+# Webscraping  
+## Steve Pittard, wsp@emory.edu
+
+This is in support of a lecture 
