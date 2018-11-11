@@ -133,7 +133,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
-<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.3</b> EasyPubMed</a></li>
+<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
+<li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
@@ -328,8 +329,87 @@ movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<
 
 </div>
 </div>
+<div id="rselenium" class="section level2">
+<h2><span class="header-section-number">4.3</span> RSelenium</h2>
+<p>Sometimes we interact with websites that use Javascript to load more text or comments in a user forum. Here is an example of that. Look at <a href="https://www.dailystrength.org/group/dialysis" class="uri">https://www.dailystrength.org/group/dialysis</a> which is a website associated with people wanting to share information about dialysis.</p>
+<div class="figure">
+<img src="PICS/diasupport.png" />
+
+</div>
+<p>If you check the bottom of the pag you will see a button.</p>
+<div class="figure">
+<img src="PICS/showmore.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># https://www.dailystrength.org/group/dialysis</span>
+
+<span class="kw">library</span>(RSelenium)
+<span class="kw">library</span>(rvest)
+<span class="kw">library</span>(tm)
+<span class="kw">library</span>(SentimentAnalysis)
+<span class="kw">library</span>(wordcloud)
+
+url &lt;-<span class="st"> &quot;https://www.dailystrength.org/group/dialysis&quot;</span>
+
+<span class="co"># The website has a &quot;show more&quot; button that hides most of the patient posts</span>
+<span class="co"># If we don&#39;t find a way to programmatically &quot;click&quot; this button then we can</span>
+<span class="co"># only get a few of the posts and their responses. To do this we need to</span>
+<span class="co"># use the RSelenium package which does a lot of behind the scenes work</span>
+
+<span class="co"># See https://cran.r-project.org/web/packages/RSelenium/RSelenium.pdf</span>
+<span class="co"># http://brazenly.blogspot.com/2016/05/r-advanced-web-scraping-dynamic.html</span>
+
+<span class="co"># Open up a connection </span>
+
+rD &lt;-<span class="st"> </span><span class="kw">rsDriver</span>()
+remDr &lt;-<span class="st"> </span>rD[[<span class="st">&quot;client&quot;</span>]]
+remDr<span class="op">$</span><span class="kw">navigate</span>(url)
+
+loadmorebutton &lt;-<span class="st"> </span>remDr<span class="op">$</span><span class="kw">findElement</span>(<span class="dt">using =</span> <span class="st">&#39;css selector&#39;</span>, <span class="st">&quot;#load-more-discussions&quot;</span>)
+
+<span class="co"># Do this a number of times to get more links</span>
+
+loadmorebutton<span class="op">$</span><span class="kw">clickElement</span>()
+
+<span class="co"># Now get the page with more comments and questions</span>
+
+page_source &lt;-<span class="st"> </span>remDr<span class="op">$</span><span class="kw">getPageSource</span>()
+
+<span class="co"># So let&#39;s parse the contents</span>
+
+comments &lt;-<span class="st"> </span><span class="kw">read_html</span>(page_source[[<span class="dv">1</span>]])
+
+cumulative_comments &lt;-<span class="st"> </span><span class="kw">vector</span>()
+
+links &lt;-<span class="st"> </span>comments <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="dt">css=</span><span class="st">&quot;.newsfeed__description&quot;</span>)  <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_node</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>)
+
+full_links &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.dailystrength.org&quot;</span>,links)
+
+<span class="cf">if</span> (<span class="kw">length</span>(<span class="kw">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
+  full_links &lt;-<span class="st"> </span>full_links[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)]
+}
+
+ugly_xpath &lt;-<span class="st"> &#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;comments__comment-text&quot;, &quot; &quot; ))] | //p&#39;</span>
+
+<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(full_links)) {
+  text &lt;-<span class="st"> </span><span class="kw">read_html</span>(full_links[ii]) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span>ugly_xpath) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">html_text</span>() 
+  <span class="kw">length</span>(text) &lt;-<span class="st"> </span><span class="kw">length</span>(text) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
+  text &lt;-<span class="st"> </span>text[<span class="op">-</span><span class="dv">1</span>]
+  
+  text
+  
+  cumulative_comments &lt;-<span class="st"> </span><span class="kw">c</span>(cumulative_comments,text)
+}
+
+remDr<span class="op">$</span><span class="kw">close</span>()
+<span class="co"># stop the selenium server</span>
+rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span class="kw">stop</span>()</code></pre></div>
+</div>
 <div id="easypubmed" class="section level2">
-<h2><span class="header-section-number">4.3</span> EasyPubMed</h2>
+<h2><span class="header-section-number">4.4</span> EasyPubMed</h2>
 <p>So there is an R package called <em>EasyPubMed</em> that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format. The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(easyPubMed)</code></pre></div>
 <p>Let’s do some searching</p>

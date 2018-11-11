@@ -133,7 +133,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
-<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.3</b> EasyPubMed</a></li>
+<li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
+<li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
@@ -189,12 +190,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol       Market Cap     Price
-## 1    BTC $111,613,176,712  $6425.86
-## 2    ETH  $22,017,821,739   $213.51
-## 3    XRP  $20,541,071,285 $0.510902
-## 4    BCH   $9,733,654,984   $557.77
-## 5    EOS   $4,924,484,582     $5.43
-## 6    XLM   $4,917,275,399 $0.259630</code></pre>
+## 1    BTC $111,300,530,765  $6407.66
+## 2    ETH  $21,883,320,065   $212.20
+## 3    XRP  $20,359,623,675 $0.506389
+## 4    BCH   $9,535,107,769   $546.38
+## 5    XLM   $4,954,751,941 $0.261640
+## 6    EOS   $4,894,070,059     $5.40</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -216,7 +217,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
 main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
@@ -224,7 +225,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 </div>
 <div id="faculty-salaries" class="section level2">
 <h2><span class="header-section-number">3.2</span> Faculty Salaries</h2>

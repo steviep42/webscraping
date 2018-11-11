@@ -102,6 +102,87 @@ get_actors((gf))
 
 ![](./PICS/api_summary.png){width=550px}
 
+## RSelenium
+
+Sometimes we interact with websites that use Javascript to load more text or comments in a user forum. Here is an example of that. Look at https://www.dailystrength.org/group/dialysis which is a website associated with people wanting to share information about dialysis. 
+
+![](./PICS/diasupport.png)
+
+If you check the bottom of the pag you will see a button. 
+
+![](./PICS/showmore.png)
+
+
+```{r eval=FALSE}
+# https://www.dailystrength.org/group/dialysis
+
+library(RSelenium)
+library(rvest)
+library(tm)
+library(SentimentAnalysis)
+library(wordcloud)
+
+url <- "https://www.dailystrength.org/group/dialysis"
+
+# The website has a "show more" button that hides most of the patient posts
+# If we don't find a way to programmatically "click" this button then we can
+# only get a few of the posts and their responses. To do this we need to
+# use the RSelenium package which does a lot of behind the scenes work
+
+# See https://cran.r-project.org/web/packages/RSelenium/RSelenium.pdf
+# http://brazenly.blogspot.com/2016/05/r-advanced-web-scraping-dynamic.html
+
+# Open up a connection 
+
+rD <- rsDriver()
+remDr <- rD[["client"]]
+remDr$navigate(url)
+
+loadmorebutton <- remDr$findElement(using = 'css selector', "#load-more-discussions")
+
+# Do this a number of times to get more links
+
+loadmorebutton$clickElement()
+
+# Now get the page with more comments and questions
+
+page_source <- remDr$getPageSource()
+
+# So let's parse the contents
+
+comments <- read_html(page_source[[1]])
+
+cumulative_comments <- vector()
+
+links <- comments %>% html_nodes(css=".newsfeed__description")  %>% 
+  html_node("a") %>% html_attr("href")
+
+full_links <- paste0("https://www.dailystrength.org",links)
+
+if (length(grep("NA",full_links)) > 0) {
+  full_links <- full_links[-grep("NA",full_links)]
+}
+
+ugly_xpath <- '//*[contains(concat( " ", @class, " " ), concat( " ", "comments__comment-text", " " ))] | //p'
+
+for (ii in 1:length(full_links)) {
+  text <- read_html(full_links[ii]) %>% 
+    html_nodes(xpath=ugly_xpath) %>% 
+    html_text() 
+  length(text) <- length(text) - 1
+  text <- text[-1]
+  
+  text
+  
+  cumulative_comments <- c(cumulative_comments,text)
+}
+
+remDr$close()
+# stop the selenium server
+rD[["server"]]$stop()
+
+```
+
 
 ## EasyPubMed
 
