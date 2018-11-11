@@ -192,12 +192,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol       Market Cap     Price
-## 1    BTC $110,442,775,024  $6357.85
-## 2    ETH  $21,550,110,740   $208.94
-## 3    XRP  $20,132,287,087 $0.500735
-## 4    BCH   $9,120,354,462   $522.58
-## 5    XLM   $5,117,524,562 $0.270236
-## 6    EOS   $4,795,385,400     $5.29</code></pre>
+## 1    BTC $110,992,494,250  $6389.44
+## 2    ETH  $21,696,139,172   $210.35
+## 3    XRP  $20,251,896,191 $0.503709
+## 4    BCH   $9,231,705,595   $528.95
+## 5    XLM   $5,137,157,764 $0.271273
+## 6    EOS   $4,824,053,169     $5.32</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -219,7 +219,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
 main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
@@ -227,7 +227,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-36-2.png" width="672" /></p>
 </div>
 <div id="faculty-salaries" class="section level2">
 <h2><span class="header-section-number">3.2</span> Faculty Salaries</h2>
@@ -498,7 +498,7 @@ final.vec</code></pre></div>
 ## [15] &quot;Bone deformities and fractures are common consequences of renal osteodystrophy in the dialysis population. Persistent hypophosphatemia may be observed with more frequent home hemodialysis regimens, but the specific effects on the skeleton are unknown. We present a patient with end-stage renal disease treated with frequent home hemodialysis who developed severe bone pain and multiple fractures, including a hip fracture and a tibia-fibula fracture complicated by nonunion, rendering her nonambulatory and wheelchair bound for more than a year. A bone biopsy revealed severe osteomalacia, likely secondary to chronic hypophosphatemia and hypocalcemia. Treatment changes included the addition of phosphate to the dialysate, a higher dialysate calcium concentration, and increased calcitriol dose. Several months later, the patient no longer required a wheelchair and was able to ambulate without pain. Repeat bone biopsy revealed marked improvements in bone mineralization and turnover parameters. Also, with increased dialysate phosphate and calcium concentrations, as well as increased calcitriol, circulating fibroblast growth factor 23 levels increased.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 ## [16] &quot;The ESRD Prospective Payment System introduced two incentives to increase home dialysis use: bundling injectable medications into a single payment for treatment and paying for home dialysis training. We evaluated the effects of the ESRD Prospective Payment System on home dialysis use by patients starting dialysis in the United States from January 1, 2006 to August 31, 2013. We analyzed data on dialysis modality, insurance type, and comorbidities from the United States Renal Data System. We estimated the effect of the policy on home dialysis use with multivariable logistic regression and compared the effect on Medicare Parts A/B beneficiaries with the effect on patients with other types of insurance. The ESRD Prospective Payment System associated with a 5.0% (95% confidence interval [95% CI], 4.0% to 6.0%) increase in home dialysis use by the end of the study period. Home dialysis use increased by 5.8% (95% CI, 4.3% to 6.9%) among Medicare beneficiaries and 4.1% (95% CI, 2.3% to 5.4%) among patients covered by other forms of health insurance. The difference between these groups was not statistically significant (1.8%; 95% CI, -0.2% to 3.8%). Conversely, in both populations, the training add-on did not associate with increases in home dialysis use beyond the effect of the policy. The ESRD Prospective Payment System bundling, but not the training add-on, associated with substantial increases in home dialysis, which were identical for both Medicare and non-Medicare patients. These spill-over effects suggest that major payment changes in Medicare can affect all patients with ESRD.&quot;
 ## [17] &quot;We present a case of a patient on home hemodialysis who developed Mycobacterium mucogenicum bacteremia. While infections with this particular organism are rare, disseminated infections have been reported and have been associated with significant morbidity and mortality. Diagnosis required appropriate cultures, understanding of natural habitat of organism and complete environmental analysis including blood, dialysis sample port, reverse osmosis and incoming water supply cultures. The patient was treated successfully with systemic antibiotics, removal of central venous catheter, patient education and complete exchange of the hemodialysis circuit.&quot;</code></pre>
-<p>Well that was a lot of work and it’s very tedious. And we procssed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
+<p>Well that was a lot of work and it’s very tedious. And we processed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
 
 </div>
 </div>

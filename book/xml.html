@@ -171,9 +171,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1><span class="header-section-number">Chapter 2</span> XML and JSON</h1>
 <p>This is where things get a little dicey because some web pages will return XML and JSON in response to inquiries and while these formats seem complicated they are actually doing you a really big favor by doing this since these formats can ususally be easily parsed using various packges. XML is a bit hard to get your head around and JSON is the new kid on the block which is easier to use.</p>
 <p>Since this isn’t a full-on course lecture I’ll keep it short as to how and why you would want to use these but any time you spend trying to better understand JSON (and XML) the better of you will be when parsing web pages. It’s not such a big deal if all you are going to be parsing is raw text since the mthods we use to do that avoid XML and JSON although cleaning up raw text has its own problems. Let’s revisit the Wikipedia example from the previous section.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)</code></pre></div>
-<pre><code>## Loading required package: xml2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use read_html to fetch the webpage</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
+
+<span class="co"># Use read_html to fetch the webpage</span>
 url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
 ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) 
   
@@ -181,6 +181,10 @@ ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&g
 <span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()</code></pre></div>
 <div class="figure">
 <img src="PICS/xml.png" width="650" />
+
+</div>
+<div class="figure">
+<img src="PICS/xmls.png" width="450" />
 
 </div>
 <p>Let’s look at an XML file that has some basic content:  </p>
@@ -393,8 +397,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-e381972328d8db477274" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e381972328d8db477274">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-dad09a79fb3699689db1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dad09a79fb3699689db1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>

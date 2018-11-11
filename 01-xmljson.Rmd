@@ -17,6 +17,9 @@ ten_most_populous <- ten_most_df %>%
 
 ![](./PICS/xml.png){width=650px}
 
+![](./PICS/xmls.png){width=450px}
+
+
 Let's look at an XML file that has some basic content:
 \   
 
