@@ -179,6 +179,32 @@ ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url)
   
 ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()</code></pre></div>
+<div class="figure">
+<img src="PICS/xml.png" width="650" />
+
+</div>
+<p>Let’s look at an XML file that has some basic content:  </p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&lt;</span>?xml version=<span class="st">&quot;1.0&quot;</span> encoding=<span class="st">&quot;UTF-8&quot;</span>?<span class="op">&gt;</span>
+<span class="er">&lt;</span>bookstore<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;</span>book category=<span class="st">&quot;COOKING&quot;</span><span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>title lang=<span class="st">&quot;en&quot;</span><span class="op">&gt;</span>Everyday Italian<span class="op">&lt;</span><span class="er">/</span>title<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>author<span class="op">&gt;</span>Giada De Laurentiis<span class="op">&lt;</span><span class="er">/</span>author<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>year<span class="op">&gt;</span><span class="dv">2005</span><span class="op">&lt;</span><span class="er">/</span>year<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>price<span class="op">&gt;</span><span class="fl">30.00</span><span class="op">&lt;</span><span class="er">/</span>price<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;/</span>book<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;</span>book category=<span class="st">&quot;CHILDREN&quot;</span><span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>title lang=<span class="st">&quot;en&quot;</span><span class="op">&gt;</span>Harry Potter<span class="op">&lt;</span><span class="er">/</span>title<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>author<span class="op">&gt;</span>J K. Rowling<span class="op">&lt;</span><span class="er">/</span>author<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>year<span class="op">&gt;</span><span class="dv">2005</span><span class="op">&lt;</span><span class="er">/</span>year<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>price<span class="op">&gt;</span><span class="fl">29.99</span><span class="op">&lt;</span><span class="er">/</span>price<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;/</span>book<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;</span>book category=<span class="st">&quot;WEB&quot;</span><span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>title lang=<span class="st">&quot;en&quot;</span><span class="op">&gt;</span>Learning XML<span class="op">&lt;</span><span class="er">/</span>title<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>author<span class="op">&gt;</span>Erik T. Ray<span class="op">&lt;</span><span class="er">/</span>author<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>year<span class="op">&gt;</span><span class="dv">2003</span><span class="op">&lt;</span><span class="er">/</span>year<span class="op">&gt;</span>
+<span class="st">    </span><span class="er">&lt;</span>price<span class="op">&gt;</span><span class="fl">39.95</span><span class="op">&lt;</span><span class="er">/</span>price<span class="op">&gt;</span>
+<span class="st">  </span><span class="er">&lt;/</span>book<span class="op">&gt;</span>
+<span class="er">&lt;/</span>bookstore<span class="op">&gt;</span></code></pre></div>
 <p>Well we pulled out all tables and then, by experimentation, we isolated table 6 and got the content corresponding to that. But. Is there a more direct way to find the content ? There is. It requires us to install some helper plugins such as the xPath Finder for Firefox and Chrome. In reality there are a number of ways to find the XML Path or CSS Path for an element within a web page but this is a good one to start.</p>
 <div class="figure">
 <img src="PICS/xpath_finder.png" width="350" />
@@ -203,14 +229,14 @@ ten_most_df &lt;-<span class="st"> </span>ten_most_df[[<span class="dv">1</span>
 
 ten_most_df</code></pre></div>
 <pre><code>##    Rank Country / Territory    Population              Date
-## 1     1       China[note 4] 1,395,100,000 November 10, 2018
-## 2     2               India 1,339,370,000 November 10, 2018
-## 3     3       United States   328,150,000 November 10, 2018
+## 1     1       China[note 4] 1,395,120,000 November 11, 2018
+## 2     2               India 1,339,420,000 November 11, 2018
+## 3     3       United States   328,156,000 November 11, 2018
 ## 4     4           Indonesia   265,015,300      July 1, 2018
 ## 5     5            Pakistan   212,742,631      May 25, 2017
-## 6     6              Brazil   209,829,000 November 10, 2018
+## 6     6              Brazil   209,833,000 November 11, 2018
 ## 7     7             Nigeria   188,500,000  October 31, 2016
-## 8     8          Bangladesh   165,508,000 November 10, 2018
+## 8     8          Bangladesh   165,514,000 November 11, 2018
 ## 9     9      Russia[note 5]   146,877,088   January 1, 2018
 ## 10   10               Japan   126,440,000   October 1, 2018
 ##    % of worldpopulation Source
@@ -367,8 +393,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-490bc5c5c4581354dc96" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-490bc5c5c4581354dc96">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ccc464f8d0719fc5f81c" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ccc464f8d0719fc5f81c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>

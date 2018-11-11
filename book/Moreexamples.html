@@ -192,12 +192,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol       Market Cap     Price
-## 1    BTC $111,058,474,479  $6393.67
-## 2    ETH  $21,835,625,789   $211.73
-## 3    XRP  $20,287,390,077 $0.504592
-## 4    BCH   $9,515,649,539   $545.26
-## 5    XLM   $5,094,134,462 $0.269001
-## 6    EOS   $4,876,206,056     $5.38</code></pre>
+## 1    BTC $110,442,775,024  $6357.85
+## 2    ETH  $21,550,110,740   $208.94
+## 3    XRP  $20,132,287,087 $0.500735
+## 4    BCH   $9,120,354,462   $522.58
+## 5    XLM   $5,117,524,562 $0.270236
+## 6    EOS   $4,795,385,400     $5.29</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -219,7 +219,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
 main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
@@ -227,7 +227,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 </div>
 <div id="faculty-salaries" class="section level2">
 <h2><span class="header-section-number">3.2</span> Faculty Salaries</h2>

@@ -15,7 +15,38 @@ ten_most_populous <- ten_most_df %>%
   html_nodes("table") %>% `[[`(6) %>% html_table()
 ```
 
+![](./PICS/xml.png){width=650px}
+
+Let's look at an XML file that has some basic content:
+\   
+
+```{r eval=FALSE}
+<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book category="COOKING">
+    <title lang="en">Everyday Italian</title>
+    <author>Giada De Laurentiis</author>
+    <year>2005</year>
+    <price>30.00</price>
+  </book>
+  <book category="CHILDREN">
+    <title lang="en">Harry Potter</title>
+    <author>J K. Rowling</author>
+    <year>2005</year>
+    <price>29.99</price>
+  </book>
+  <book category="WEB">
+    <title lang="en">Learning XML</title>
+    <author>Erik T. Ray</author>
+    <year>2003</year>
+    <price>39.95</price>
+  </book>
+</bookstore>
+
+```
 Well we pulled out all tables and then, by experimentation, we isolated table 6 and got the content corresponding to that. But. Is there a more direct way to find the content ? There is. It requires us to install some helper plugins such as the xPath Finder for Firefox and Chrome. In reality there are a number of ways to find the XML Path or CSS Path for an element within a web page but this is a good one to start. 
+
+
 
 ![](./PICS/xpath_finder.png){width=350px}
 
