@@ -71,8 +71,6 @@ grid()
 ![Salary](.//PICS/sal_page.png)
 
 ```{r}
-expr <- '//*[contains(concat( " ", @class, " " ), concat( " ", "cols-6", " " ))]'
-
 url <- "https://www.insidehighered.com/aaup-compensation-survey"
 df <- read_html(url) %>% html_table() %>% `[[`(1)
 intost <- c("Institution","Category","State")
@@ -174,7 +172,7 @@ So finding the correct element is more challenging. I use Chrome to do this. Jus
 ![Salary](./PICS/form.png){width=550px}
 
 ```{r}
-expr <-'//*[contains(concat( " ", @class, " " ), concat( " ", "cols-6", " " ))]'
+
 url <- "https://www.insidehighered.com/aaup-compensation-survey"
 
 # Establish a session
@@ -208,7 +206,7 @@ Pubmed provides a rich source of information on published scientific literature.
 url <- "https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D"
 
 # 
-path <- '//*[contains(concat( " ", @class, " " ), concat( " ", "content", " " ))] | //a'
+
 results <- read_html(url) %>% 
   html_nodes("a") %>% 
   html_attr("href") %>%

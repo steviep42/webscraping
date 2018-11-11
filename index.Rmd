@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 bibliography:
 - book.bib
 - packages.bib
-description: This is in support of my talk for the Data Scidence group
+description: This is in support of my talk for the Data Science group
 documentclass: book
 link-citations: yes
 site: bookdown::bookdown_site
@@ -79,7 +79,7 @@ And you could apply some styling to this courtest of the CSS language which allo
 
 ![](.//PICS/css_page.png){width=450px}
 
-There are a number of tools that allow us to inspect web pages and see "what is under the hood"
+There are a number of tools that allow us to inspect web pages and see "what is under the hood". Warning - I just discovered that one of my favorite browser plugins to find the xpaths and/or css paths of page elements is no longer supported under Firefox or Chrome. I've found a couple of replacements but they don't work as well. I'll research it more. 
 
 \   
 
@@ -91,10 +91,13 @@ Google Chrome | Right click to inspect a page element
 Google Chrome | View Developer - Developer Tools
 Oxygen Editor | Can obtain via the Emory Software Express Site
 
+## Packages
+
+You will use the following three primary packages to help you get data from various web pages: *rvest*, *XML*, and *RJSONIO*. Note that you won't always use them simultaneously but you might use them in pairs or individually depending on the task at hand. 
+
 ## Example: Parsing A Table From Wikipedia
 
 Look at the [Wikipedia Page](https://en.wikipedia.org/wiki/World_population) for world population:
-
 
 https://en.wikipedia.org/wiki/World_population
 
@@ -120,6 +123,28 @@ library(wordcloud)
 library(tidyquant)
 ```
 
+Now let's do a quick *rvest* tutorial:
+
+
+```{r}
+url <- "https://en.wikipedia.org/wiki/World_population"
+
+(paragraphs <- read_html(url) %>% html_nodes("p"))
+
+```
+
+Then we might want to actually parse out those paragraphs into text:
+
+```{r}
+paragraphs <- read_html(url) %>% html_nodes("p") %>% html_text()
+paragraphs[1:10]
+```
+
+Get some other types of HTML obejects. Let's get all the "h2" HTML elements:
+
+```{r}
+read_html(url) %>% html_nodes("h2") %>% html_text()
+```
 
 ```{r}
 library(rvest)
@@ -145,10 +170,11 @@ ten_most_populous %>%
   labs(y = "Population / 1,000,000") + coord_flip() +
   ggtitle("Top 10 Most Populous Countries")
 
+
+
 ```
 
 In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn't always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn't correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it's okay to try to use simple elements and then try to refine the search some more.
-
 
 ## Summary
 

@@ -111,6 +111,11 @@ Let's look at an XML file that has some basic content:
 Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. You have to sign up for an account and get an API key. Anyway, let's run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. Let's say that we wanted to get the latitude and longitude associated with the the address *1510 Clidton Rd, Atlanta, GA* which corresponds to the Rollins Research Building. 
 
 ```{r message=FALSE}
+
+# https://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+
+# https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+
 myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   library(XML)
   library(RCurl)
@@ -138,6 +143,7 @@ myGeo()
 ```
 \  
 Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session:
+
 
 
 ![](./PICS/oxygen2.png){width=650px}
