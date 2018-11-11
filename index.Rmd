@@ -39,7 +39,7 @@ Here is a summary:
 
 * If the Web site doesn't have an API then you will need to scrape text. This isn't hard but it is tedious. You will need to use *rvest* to parse HMTL elements. If you want to parse mutliple pages then you will need to use *rvest* to move to the other pages and possibly fill out forms. If there is a lot of Javascript then you might need to use RSelenium to programmatically manage the web page. 
 
-## Understanding the language of the Web
+## Understanding The Language of The Web
 
 The Web has its own languages: HTML, CSS, Javascript
 

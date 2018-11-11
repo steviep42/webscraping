@@ -108,13 +108,15 @@ Let's look at an XML file that has some basic content:
 
 ## Example: GeoCoding With Google 
 
-Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. You have to sign up for an account and get an API key. Anyway, let's run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. Let's say that we wanted to get the latitude and longitude associated with the the address *1510 Clidton Rd, Atlanta, GA* which corresponds to the Rollins Research Building. 
+Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. You have to sign up for an account and get an API key. Anyway, let's run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. Let's say that we wanted to get the latitude and longitude associated with the the address *1510 Clifton Rd, Atlanta, GA* which corresponds to the Rollins Research Building. 
+
+First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information. 
 
 ```{r message=FALSE}
 
-# https://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+# https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
 
-# https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+# https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
 
 myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   library(XML)
