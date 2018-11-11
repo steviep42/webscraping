@@ -206,7 +206,7 @@ my_abstracts_xml <- fetch_pubmed_data(my_entrez_id)
 ```
 
 
-Well the results aren't bad but we still have to parse out some junk but nothing like before. It's a minor problem. 
+Well the results aren't bad but we still have to parse out some junk but nothing like before. It's a minor problem. In this case the API gives us some XML back that we then have to parse. 
 
 ```{r}
 my_abstracts <- unlist(xpathApply(my_abstracts_xml, "//AbstractText", saveXML))

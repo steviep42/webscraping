@@ -66,6 +66,8 @@ grid()
 
 ## Faculty Salaries
 
+In this example we have to parse the main table associated with the results page. 
+
 ![Salary](.//PICS/salary.png)
 
 ![Salary](.//PICS/sal_page.png)
@@ -201,6 +203,7 @@ Pubmed provides a rich source of information on published scientific literature.
 
 ![](./PICS/mesh.png){width=550px}
 
+What we do here is get the links associated with each publication so we can then process each of those and get the abstract associated with each publication. 
 
 ```{r}
 url <- "https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D"

@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2018-11-10">
+<meta name="date" content="2018-11-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -430,7 +430,7 @@ my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="
 ##  [9] &quot;&quot;                                                                                  
 ## [10] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts_xml &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)</code></pre></div>
-<p>Well the results aren’t bad but we still have to parse out some junk but nothing like before. It’s a minor problem.</p>
+<p>Well the results aren’t bad but we still have to parse out some junk but nothing like before. It’s a minor problem. In this case the API gives us some XML back that we then have to parse.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">xpathApply</span>(my_abstracts_xml, <span class="st">&quot;//AbstractText&quot;</span>, saveXML))
 
 <span class="co"># Still have to clear out some junk in each abstract</span>

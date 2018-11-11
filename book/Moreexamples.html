@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2018-11-10">
+<meta name="date" content="2018-11-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -192,12 +192,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol       Market Cap     Price
-## 1    BTC $111,126,974,329  $6397.63
-## 2    ETH  $21,787,875,276   $211.27
-## 3    XRP  $20,236,134,866 $0.503317
-## 4    BCH   $9,517,517,124   $545.36
-## 5    XLM   $5,044,985,213 $0.266405
-## 6    EOS   $4,865,500,431     $5.37</code></pre>
+## 1    BTC $111,500,535,213  $6419.13
+## 2    ETH  $21,884,325,108   $212.21
+## 3    XRP  $20,322,397,945 $0.505463
+## 4    BCH   $9,557,556,660   $547.66
+## 5    XLM   $5,075,125,487 $0.267997
+## 6    EOS   $4,889,401,090     $5.40</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -219,7 +219,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
 main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
@@ -227,10 +227,11 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 </div>
 <div id="faculty-salaries" class="section level2">
 <h2><span class="header-section-number">3.2</span> Faculty Salaries</h2>
+<p>In this example we have to parse the main table associated with the results page.</p>
 <div class="figure">
 <img src="PICS/salary.png" alt="Salary" />
 <p class="caption">Salary</p>
@@ -445,6 +446,7 @@ first_page</code></pre></div>
 <img src="PICS/mesh.png" width="550" />
 
 </div>
+<p>What we do here is get the links associated with each publication so we can then process each of those and get the abstract associated with each publication.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span>
 
 <span class="co"># </span>
