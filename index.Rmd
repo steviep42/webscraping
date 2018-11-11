@@ -91,9 +91,36 @@ Google Chrome | Right click to inspect a page element
 Google Chrome | View Developer - Developer Tools
 Oxygen Editor | Can obtain via the Emory Software Express Site
 
-## Packages
+## Useful Packages
 
 You will use the following three primary packages to help you get data from various web pages: *rvest*, *XML*, and *RJSONIO*. Note that you won't always use them simultaneously but you might use them in pairs or individually depending on the task at hand. 
+
+## Quick **rvest** tutorial
+
+Now let's do a quick *rvest* tutorial:
+
+
+```{r}
+url <- "https://en.wikipedia.org/wiki/World_population"
+
+(paragraphs <- read_html(url) %>% html_nodes("p"))
+
+```
+
+
+Then we might want to actually parse out those paragraphs into text:
+
+```{r}
+paragraphs <- read_html(url) %>% html_nodes("p") %>% html_text()
+paragraphs[1:10]
+```
+
+
+Get some other types of HTML obejects. Let's get all the "h2" HTML elements:
+
+```{r}
+read_html(url) %>% html_nodes("h2") %>% html_text()
+```
 
 ## Example: Parsing A Table From Wikipedia
 
@@ -112,7 +139,7 @@ https://en.wikipedia.org/wiki/World_population
 
 First we will load packages that will help us throughout this session.
 
-```{r message=F, echo=TRUE}
+```{r message=F, echo=FALSE}
 library(rvest)
 library(tidytext)
 library(dplyr)
@@ -123,28 +150,8 @@ library(wordcloud)
 library(tidyquant)
 ```
 
-Now let's do a quick *rvest* tutorial:
-
-
-```{r}
-url <- "https://en.wikipedia.org/wiki/World_population"
-
-(paragraphs <- read_html(url) %>% html_nodes("p"))
-
-```
-
-Then we might want to actually parse out those paragraphs into text:
-
-```{r}
-paragraphs <- read_html(url) %>% html_nodes("p") %>% html_text()
-paragraphs[1:10]
-```
-
-Get some other types of HTML obejects. Let's get all the "h2" HTML elements:
-
-```{r}
-read_html(url) %>% html_nodes("h2") %>% html_text()
-```
+In this case we'll need to figure out what number table it is we want. We could fetch
+all the tables and then experiment to find the precise one. 
 
 ```{r}
 library(rvest)
@@ -169,8 +176,6 @@ ten_most_populous %>%
   ggplot(aes(x=Country_Territory,y=Population)) + geom_point() + 
   labs(y = "Population / 1,000,000") + coord_flip() +
   ggtitle("Top 10 Most Populous Countries")
-
-
 
 ```
 

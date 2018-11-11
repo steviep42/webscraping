@@ -115,9 +115,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding the language of the Web</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#packages"><i class="fa fa-check"></i><b>1.4</b> Packages</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.5</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.6</b> Summary</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.7</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
@@ -191,12 +192,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol       Market Cap     Price
-## 1    BTC $111,078,977,113  $6394.87
-## 2    ETH  $21,786,397,434   $211.26
-## 3    XRP  $20,334,520,750 $0.505765
-## 4    BCH   $9,520,239,389   $545.52
-## 5    XLM   $4,970,117,836 $0.262452
-## 6    EOS   $4,879,530,666     $5.38</code></pre>
+## 1    BTC $111,126,974,329  $6397.63
+## 2    ETH  $21,787,875,276   $211.27
+## 3    XRP  $20,236,134,866 $0.503317
+## 4    BCH   $9,517,517,124   $545.36
+## 5    XLM   $5,044,985,213 $0.266405
+## 6    EOS   $4,865,500,431     $5.37</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -218,7 +219,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
 main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
@@ -226,7 +227,7 @@ bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw
               <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
 <span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-51-2.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
 </div>
 <div id="faculty-salaries" class="section level2">
 <h2><span class="header-section-number">3.2</span> Faculty Salaries</h2>
