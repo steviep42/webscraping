@@ -140,6 +140,8 @@ text_df <- data_frame(line = 1:length(my_abstracts), text = my_abstracts)
 token_text <- text_df %>%
   unnest_tokens(word, text)
 
+# Many of these words aren't helpful 
+token_text %>% count(total=word,sort=TRUE)
 
 # Now remove stop words
 data(stop_words)
