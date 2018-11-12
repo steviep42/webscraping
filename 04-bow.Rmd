@@ -222,7 +222,7 @@ nrc_joy <- get_sentiments("nrc") %>%
   filter(sentiment == "joy")
 
 bing_word_counts <- tidy_text_nonum %>% 
-  inner_join(get_sentiments("bing")) %>% 
+  inner_join(get_sentiments("nrc")) %>% 
   count(word,sentiment,sort=TRUE)
 ```
 

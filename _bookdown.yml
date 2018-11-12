@@ -1,4 +1,4 @@
-book_filename: "Web Scraping"
+book_filename: "Web_Scraping"
 delete_merged_file: true
 output_dir: "book"
 language:
