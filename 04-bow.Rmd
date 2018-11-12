@@ -166,7 +166,7 @@ Some of the most frequently occurring words are in fact "dialysis", "patients" s
 
 ```{r}
 tidy_text <- token_text %>%
-   filter(!word %in% c(stop_words$word,"dialysis","patients","home",
+   filter(!word %in% c(stop_words$word,"dialysis","patients","home","kidney",
                        "hemodialysis","haemodialysis","patient","hhd",
                        "pd","peritoneal","hd","renal","study","care",
                        "ci","chd","nhd","disease"))

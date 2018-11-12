@@ -418,7 +418,7 @@ rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
 my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)
 my_abstracts_txt &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id, <span class="dt">format =</span> <span class="st">&quot;abstract&quot;</span>)
-my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
 <pre><code>##  [1] &quot;&quot;                                                                                  
 ##  [2] &quot;1. Medicine (Baltimore). 2018 Sep;97(37):e12018. doi: 10.1097/MD.0000000000012018.&quot;
 ##  [3] &quot;&quot;                                                                                  
@@ -428,7 +428,17 @@ my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="
 ##  [7] &quot;&quot;                                                                                  
 ##  [8] &quot;Dai H, Zhou J, Zhu B.&quot;                                                             
 ##  [9] &quot;&quot;                                                                                  
-## [10] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in&quot;</code></pre>
+## [10] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in&quot;    
+## [11] &quot;which the kidney is not sufficient to meet the needs of daily life. It is&quot;         
+## [12] &quot;necessary to understand the role of genes expression involved in ESRD patient&quot;     
+## [13] &quot;responses to nocturnal hemodialysis (NHD) and to improve the immunity&quot;             
+## [14] &quot;responsiveness. The aim of this study was to investigate novel immune-associated &quot; 
+## [15] &quot;genes that may play important roles in patients with ESRD.The microarray&quot;          
+## [16] &quot;expression profiles of peripheral blood in patients with ESRD before and after&quot;    
+## [17] &quot;NHD were analyzed by network-based approaches, and then using Gene Ontology (GO) &quot; 
+## [18] &quot;and Kyoto Encyclopedia of Genes and Genomes pathway analysis to explore the&quot;       
+## [19] &quot;biological process and molecular functions of differentially expressed genes.&quot;     
+## [20] &quot;Subsequently, a transcriptional regulatory network of the core genes and the&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts_xml &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)</code></pre></div>
 <p>Well the results aren’t bad but we still have to parse out some junk but nothing like before. It’s a minor problem. In this case the API gives us some XML back that we then have to parse.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">xpathApply</span>(my_abstracts_xml, <span class="st">&quot;//AbstractText&quot;</span>, saveXML))

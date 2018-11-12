@@ -199,7 +199,7 @@ Let's do some searching
 my_query <- 'hemodialysis, home" [MeSH Terms]'
 my_entrez_id <- get_pubmed_ids(my_query)
 my_abstracts_txt <- fetch_pubmed_data(my_entrez_id, format = "abstract")
-my_abstracts_txt[1:10]
+my_abstracts_txt[1:20]
 
 my_abstracts_xml <- fetch_pubmed_data(my_entrez_id)
 
