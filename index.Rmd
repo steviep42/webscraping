@@ -12,7 +12,10 @@ site: bookdown::bookdown_site
 biblio-style: apalike
 ---
 
+
 # Motivations
+
+
 
 ## Lots of Data For The Taking ? 
 
@@ -26,6 +29,8 @@ css|You can access parts of a web site using style or css selectors
 Tweets|Process tweets including emojis
 Web Sites| User forums have lots of content
 Instagram| Yes you can "scrape" photos also
+
+
 
 ## Web Scraping Can Be Ugly
 
@@ -101,6 +106,7 @@ Now let's do a quick *rvest* tutorial:
 
 
 ```{r}
+library(rvest)
 url <- "https://en.wikipedia.org/wiki/World_population"
 
 (paragraphs <- read_html(url) %>% html_nodes("p"))
@@ -167,6 +173,9 @@ all the tables and then experiment to find the precise one.
 
 ```{r}
 library(rvest)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
 
 # Use read_html to fetch the webpage
 url <- "https://en.wikipedia.org/wiki/World_population"
