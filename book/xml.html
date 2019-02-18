@@ -119,7 +119,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.7</b> Summary</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
+<li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
@@ -234,14 +238,14 @@ ten_most_df &lt;-<span class="st"> </span>ten_most_df[[<span class="dv">1</span>
 
 ten_most_df</code></pre></div>
 <pre><code>##    Rank Country / Territory    Population              Date
-## 1     1       China[note 4] 1,394,540,000 February 14, 2019
-## 2     2               India 1,343,460,000 February 14, 2019
-## 3     3       United States   328,694,000 February 14, 2019
+## 1     1       China[note 4] 1,394,590,000 February 18, 2019
+## 2     2               India 1,343,630,000 February 18, 2019
+## 3     3       United States   328,717,000 February 18, 2019
 ## 4     4           Indonesia   265,015,300      July 1, 2018
 ## 5     5            Pakistan   212,742,631      May 25, 2017
-## 6     6              Brazil   209,516,000 February 14, 2019
+## 6     6              Brazil   209,533,000 February 18, 2019
 ## 7     7             Nigeria   188,500,000  October 31, 2016
-## 8     8          Bangladesh   166,048,000 February 14, 2019
+## 8     8          Bangladesh   166,071,000 February 18, 2019
 ## 9     9      Russia[note 5]   146,877,088   January 1, 2018
 ## 10   10               Japan   126,440,000   October 1, 2018
 ##    % of worldpopulation Source
@@ -410,8 +414,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-6f318e00e8757e920b1e" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6f318e00e8757e920b1e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-87f82afa7af38f5f16f8" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-87f82afa7af38f5f16f8">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>

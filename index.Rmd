@@ -202,6 +202,118 @@ ten_most_populous %>%
 
 In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn't always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn't correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it's okay to try to use simple elements and then try to refine the search some more.
 
+
+## Scraping Patient Dialysis Stories
+
+Here is an example relating to the experiences of dialysis patients with a specific dialysis provider. It might be more useful to find a support forum that is managed by dialysis patients to get more general opinions but this example is helpful in showing you what is involved. Check out this website:
+
+```{r eval=FALSE}
+https://www.americanrenal.com/dialysis-centers/patient-stories
+
+```
+
+![](./PICS/dia1.png){}
+
+
+### Getting More Detail 
+
+In looking at this page you will see that there are a number of patient stories. Actually, there is a summary line followed by a "Read More" link that provides more detail on the patient experience. Our goal is to get the full content as opposed to only the summary. How would we do this ? 
+
+
+![](./PICS/dia2.png){}
+
+
+![](./PICS/dia3.png){width=550}
+
+### Writing Some Code 
+
+Let's use our new found knowledge of **rvest** to help us get these detailed stories. Maybe we want to do some sentiment analysis on this. If you hover over the **Read More** link on the website it will provide a specific link for each patient. For example, 
+
+```{r john,eval=FALSE}
+https://www.americanrenal.com/dialysis-centers/patient-stories/john-baguchinsky
+```
+
+
+
+
+What we want to do is first get a list of all these links from the main page after which we can loop over each of the patient specific links and capture that information into a vector. Each element of the vector will be the content of a specific patient's story. 
+
+
+```{r dialysis}
+library(rvest)
+
+burl <- "https://www.americanrenal.com/dialysis-centers/patient-stories"
+
+# Setup an empty vector to which we will add the content of each story
+workVector <- vector()
+
+
+# Grab the links from the site that relate patient stories
+  
+  links <- read_html(burl) %>% 
+    html_nodes(css="a") %>% 
+    html_attr("href") %>% 
+    grep("stories",.,value=TRUE)
+  
+links
+
+
+```
+
+
+Some of these links do not correspond directly to a specific patient name so we need to filter those out. 
+
+
+```{r}
+# Get only the ones that seem to have actual names associated with them
+
+ storiesLinks <- links[-grep("stories$",links)] 
+
+ storiesLinks
+```
+
+
+Next we will visit each of these pages and scrape the text information. We'll step through this in class so you can see this in action but here is the code. We will get each story and place each paragrpah of the story into a vector element. After that we will eliminate blank lines and some junk lines that begin with a new line character. Then we will collapse all of the vector text into a single paragraph and store it into a list element. 
+
+
+```{r}
+ # Now go to these pages and scrape the text necessary to
+  # build a corpus
+
+  tmpResult <- vector()
+  textList <- list()
+  
+  for (ii in 1:length(storiesLinks)) {
+    tmpResult <- read_html(storiesLinks[ii]) %>% 
+                       html_nodes("p") %>% html_text()
+  
+  # Get rid of elements that are a blank line
+    
+    tmpResult <- tmpResult[tmpResult!=""]
+  
+  # Get rid of elements that begin with a newline character "\n"
+    
+    newlines_begin <- sum(grepl("^\n",tmpResult))
+
+    if (newlines_begin > 0) {
+      tmpResult <- tmpResult[-grep("^\n",tmpResult)]
+    }
+        
+    tmpResult <- paste(tmpResult,collapse="")
+    textList[[ii]] <- tmpResult
+    
+  }
+```
+
+If we did our job correctly then each element of the **textList** will have text in it corresponding to each patient
+
+
+```{r}
+textList[[1]]
+```
+
+
+
 ## Summary
 
 * Need some basic HTML and CSS knowledge to find correct elements

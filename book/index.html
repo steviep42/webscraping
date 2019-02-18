@@ -119,7 +119,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.7</b> Summary</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
+<li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
@@ -414,11 +418,107 @@ ten_most_populous <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Country_Territory,<span class="dt">y=</span>Population)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Population / 1,000,000&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Top 10 Most Populous Countries&quot;</span>)</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn’t always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn’t correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it’s okay to try to use simple elements and then try to refine the search some more.</p>
 </div>
+<div id="scraping-patient-dialysis-stories" class="section level2">
+<h2><span class="header-section-number">1.7</span> Scraping Patient Dialysis Stories</h2>
+<p>Here is an example relating to the experiences of dialysis patients with a specific dialysis provider. It might be more useful to find a support forum that is managed by dialysis patients to get more general opinions but this example is helpful in showing you what is involved. Check out this website:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">https<span class="op">:</span><span class="er">//</span>www.americanrenal.com<span class="op">/</span>dialysis<span class="op">-</span>centers<span class="op">/</span>patient<span class="op">-</span>stories</code></pre></div>
+<div class="figure">
+<img src="PICS/dia1.png" />
+
+</div>
+<div id="getting-more-detail" class="section level3">
+<h3><span class="header-section-number">1.7.1</span> Getting More Detail</h3>
+<p>In looking at this page you will see that there are a number of patient stories. Actually, there is a summary line followed by a “Read More” link that provides more detail on the patient experience. Our goal is to get the full content as opposed to only the summary. How would we do this ?</p>
+<div class="figure">
+<img src="PICS/dia2.png" />
+
+</div>
+<div class="figure">
+<img src="PICS/dia3.png" width="550" />
+
+</div>
+</div>
+<div id="writing-some-code" class="section level3">
+<h3><span class="header-section-number">1.7.2</span> Writing Some Code</h3>
+<p>Let’s use our new found knowledge of <strong>rvest</strong> to help us get these detailed stories. Maybe we want to do some sentiment analysis on this. If you hover over the <strong>Read More</strong> link on the website it will provide a specific link for each patient. For example,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">https<span class="op">:</span><span class="er">//</span>www.americanrenal.com<span class="op">/</span>dialysis<span class="op">-</span>centers<span class="op">/</span>patient<span class="op">-</span>stories<span class="op">/</span>john<span class="op">-</span>baguchinsky</code></pre></div>
+<p>What we want to do is first get a list of all these links from the main page after which we can loop over each of the patient specific links and capture that information into a vector. Each element of the vector will be the content of a specific patient’s story.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
+
+burl &lt;-<span class="st"> &quot;https://www.americanrenal.com/dialysis-centers/patient-stories&quot;</span>
+
+<span class="co"># Setup an empty vector to which we will add the content of each story</span>
+workVector &lt;-<span class="st"> </span><span class="kw">vector</span>()
+
+
+<span class="co"># Grab the links from the site that relate patient stories</span>
+  
+  links &lt;-<span class="st"> </span><span class="kw">read_html</span>(burl) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">html_nodes</span>(<span class="dt">css=</span><span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">grep</span>(<span class="st">&quot;stories&quot;</span>,.,<span class="dt">value=</span><span class="ot">TRUE</span>)
+  
+links</code></pre></div>
+<pre><code>##  [1] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;                 
+##  [2] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot;   
+##  [3] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/patricia-garcia&quot; 
+##  [4] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/john-baguchinsky&quot;
+##  [5] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/sheryll-wyman&quot;   
+##  [6] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/carol-sykes&quot;     
+##  [7] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/sharon-cauthen&quot;  
+##  [8] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/remond-ellis&quot;    
+##  [9] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;                 
+## [10] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;</code></pre>
+<p>Some of these links do not correspond directly to a specific patient name so we need to filter those out.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get only the ones that seem to have actual names associated with them</span>
+
+ storiesLinks &lt;-<span class="st"> </span>links[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;stories$&quot;</span>,links)] 
+
+ storiesLinks</code></pre></div>
+<pre><code>## [1] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot;   
+## [2] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/patricia-garcia&quot; 
+## [3] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/john-baguchinsky&quot;
+## [4] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/sheryll-wyman&quot;   
+## [5] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/carol-sykes&quot;     
+## [6] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/sharon-cauthen&quot;  
+## [7] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/remond-ellis&quot;</code></pre>
+<p>Next we will visit each of these pages and scrape the text information. We’ll step through this in class so you can see this in action but here is the code. We will get each story and place each paragrpah of the story into a vector element. After that we will eliminate blank lines and some junk lines that begin with a new line character. Then we will collapse all of the vector text into a single paragraph and store it into a list element.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="co"># Now go to these pages and scrape the text necessary to</span>
+  <span class="co"># build a corpus</span>
+
+  tmpResult &lt;-<span class="st"> </span><span class="kw">vector</span>()
+  textList &lt;-<span class="st"> </span><span class="kw">list</span>()
+  
+  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(storiesLinks)) {
+    tmpResult &lt;-<span class="st"> </span><span class="kw">read_html</span>(storiesLinks[ii]) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                       </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
+  
+  <span class="co"># Get rid of elements that are a blank line</span>
+    
+    tmpResult &lt;-<span class="st"> </span>tmpResult[tmpResult<span class="op">!=</span><span class="st">&quot;&quot;</span>]
+  
+  <span class="co"># Get rid of elements that begin with a newline character &quot;\n&quot;</span>
+    
+    newlines_begin &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult))
+
+    <span class="cf">if</span> (newlines_begin <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
+      tmpResult &lt;-<span class="st"> </span>tmpResult[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult)]
+    }
+        
+    tmpResult &lt;-<span class="st"> </span><span class="kw">paste</span>(tmpResult,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)
+    textList[[ii]] &lt;-<span class="st"> </span>tmpResult
+    
+  }</code></pre></div>
+<p>If we did our job correctly then each element of the <strong>textList</strong> will have text in it corresponding to each patient</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">textList[[<span class="dv">1</span>]]</code></pre></div>
+<pre><code>## [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes LaneIn April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”So for three years, he waited, hoping to find his miracle. But by August 2013, he knew he waited too long.“Before my first dialysis treatment, I could feel myself pulling away from everyone, especially my family. I didn’t want to go anywhere or do anything and I was sick all the time. I realized at that point that how I was feeling was exactly what I wanted to avoid.”He began his in-center dialysis treatments with American Renal Associates (ARA) at University Kidney Center in Louisville, Kentucky in August 2013 and transferred to another local ARA facility – University Kidney Center Hikes Lane – in May 2014 since it was closer to his home.“In a short time, dialysis completely changed me,” he said. His health improved, along with his confidence, encouraging him to start driving himself to and from treatments. Not only did this give him a renewed feeling of independence, but a strong sense of accomplishment, as well.Now 67 years old, Mr. Beatty says he can do everything he did before, including keeping up with his two granddaughters, playing basketball, among other hobbies, and going on family vacations. In fact, with the help of ARA’s Travel Department, Mr. Beatty can travel stress free. Though he admits traveling while on dialysis can be intimidating, he explained, “All I had to do was show up. ARA’s Travel Team took care of everything.”Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”Read more patient storiesAs of June 30, 2018American Renal Associates operates 233 dialysis clinics in 26 states and Washington, D.C., serving approximately 16,000 patients with end stage renal disease in partnership with approximately 400 local nephrologists.\r\nOur core values emphasize taking good care of patients, providing physicians with clinical autonomy and support, hiring the best possible staff and providing best practices management.&quot;</code></pre>
+</div>
+</div>
 <div id="summary" class="section level2">
-<h2><span class="header-section-number">1.7</span> Summary</h2>
+<h2><span class="header-section-number">1.8</span> Summary</h2>
 <ul>
 <li>Need some basic HTML and CSS knowledge to find correct elements</li>
 <li>How to extract text from common elements</li>
