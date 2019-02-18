@@ -59,7 +59,8 @@ The Web has its own languages: HTML, CSS, Javascript
 <form> Web forms
 ```
 
-So to be productive at scraping requires you to have some familiairty with HMTL XML, and CSS. Here we look at a very basic HTML file
+So to be productive at scraping requires you to have some familiarity with HMTL XML, and CSS. Here we look at a very basic HTML file. Refer to See http://bradleyboehmke.github.io/2015/12/scraping-html-text.html
+ for a basic introductory session on HTML and webscraping with R
 
 
 ```{r eval=FALSE}
@@ -273,7 +274,46 @@ Some of these links do not correspond directly to a specific patient name so we 
 ```
 
 
-Next we will visit each of these pages and scrape the text information. We'll step through this in class so you can see this in action but here is the code. We will get each story and place each paragrpah of the story into a vector element. After that we will eliminate blank lines and some junk lines that begin with a new line character. Then we will collapse all of the vector text into a single paragraph and store it into a list element. 
+Next we will visit each of these pages and scrape the text information. We'll step through this in class so you can see this in action but here is the code. We will get each story and place each paragrpah of the story into a vector element. After that we will eliminate blank lines and some junk lines that begin with a new line character. Then we will collapse all of the vector text into a single paragraph and store it into a list element. Let's step through it for the first link.
+
+
+```{r}
+# This corresponds to the first link
+# "http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty" 
+
+tmpResult <- read_html(storiesLinks[1]) %>% 
+                       html_nodes("p") %>% html_text()
+
+tmpResult
+```
+
+Okay, that has some junk in it like blank lines and lines that begin with new line characters. 
+
+```{r}
+# Get rid of elements that are a blank line
+    
+    tmpResult <- tmpResult[tmpResult!=""]
+  
+  # Get rid of elements that begin with a newline character "\n"
+    
+    newlines_begin <- sum(grepl("^\n",tmpResult))
+
+    if (newlines_begin > 0) {
+      tmpResult <- tmpResult[-grep("^\n",tmpResult)]
+    }
+
+    tmpResult
+```
+
+Next, let's create a more compact version of the data. We'll cram it all into a single element. 
+
+
+```{r}
+(tmpResult <- paste(tmpResult,collapse=""))
+```
+
+
+So we could put this logic into a loop and process each of the links programmatically. 
 
 
 ```{r}
@@ -298,7 +338,12 @@ Next we will visit each of these pages and scrape the text information. We'll st
     if (newlines_begin > 0) {
       tmpResult <- tmpResult[-grep("^\n",tmpResult)]
     }
-        
+      
+    # Let's collpase all the elements into a single element and then store
+    # it into a list element so we can maintain each patient story separately
+    # This is not necessary but until we figure out what we want to do with
+    # the data then this gives us some options
+    
     tmpResult <- paste(tmpResult,collapse="")
     textList[[ii]] <- tmpResult
     

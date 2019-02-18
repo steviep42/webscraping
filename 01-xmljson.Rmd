@@ -170,7 +170,10 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   library(RCurl)
   
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
+  
+  # You will need to replace this with your OWN key !
   key <- "AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+  
   address <- gsub(" ","+",address)
   
   add <- paste0(geourl,form,sep="?address=")

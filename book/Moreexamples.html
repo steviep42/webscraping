@@ -197,12 +197,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol      Market Cap     Price
-## 1    BTC $68,657,444,868  $3913.08
-## 2    ETH $15,208,852,766   $144.97
-## 3    XRP $13,278,884,784 $0.322240
-## 4    EOS  $3,139,331,505     $3.46
-## 5    LTC  $2,902,507,659    $47.95
-## 6    BCH  $2,513,001,475   $142.55</code></pre>
+## 1    BTC $68,438,010,219  $3900.55
+## 2    ETH $15,046,874,261   $143.42
+## 3    XRP $13,126,017,871 $0.318530
+## 4    EOS  $3,123,624,111     $3.45
+## 5    LTC  $2,864,620,957    $47.33
+## 6    BCH  $2,494,858,387   $141.52</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
