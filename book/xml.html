@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Web Scraping with R</title>
+  <title>Chapter 2 XML and JSON | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:title" content="Chapter 2 XML and JSON | Web Scraping with R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Web Scraping with R" />
+  <meta name="twitter:title" content="Chapter 2 XML and JSON | Web Scraping with R" />
   
   <meta name="twitter:description" content="This is in support of my talk for the Data Science group" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2018-11-11">
+<meta name="date" content="2019-02-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="Moreexamples.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -47,14 +48,14 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -233,26 +234,26 @@ ten_most_df &lt;-<span class="st"> </span>ten_most_df[[<span class="dv">1</span>
 
 ten_most_df</code></pre></div>
 <pre><code>##    Rank Country / Territory    Population              Date
-## 1     1       China[note 4] 1,395,120,000 November 11, 2018
-## 2     2               India 1,339,420,000 November 11, 2018
-## 3     3       United States   328,156,000 November 11, 2018
+## 1     1       China[note 4] 1,394,540,000 February 14, 2019
+## 2     2               India 1,343,460,000 February 14, 2019
+## 3     3       United States   328,694,000 February 14, 2019
 ## 4     4           Indonesia   265,015,300      July 1, 2018
 ## 5     5            Pakistan   212,742,631      May 25, 2017
-## 6     6              Brazil   209,833,000 November 11, 2018
+## 6     6              Brazil   209,516,000 February 14, 2019
 ## 7     7             Nigeria   188,500,000  October 31, 2016
-## 8     8          Bangladesh   165,514,000 November 11, 2018
+## 8     8          Bangladesh   166,048,000 February 14, 2019
 ## 9     9      Russia[note 5]   146,877,088   January 1, 2018
 ## 10   10               Japan   126,440,000   October 1, 2018
 ##    % of worldpopulation Source
-## 1                 18.2%   [82]
+## 1                 18.1%   [82]
 ## 2                 17.5%   [83]
 ## 3                 4.28%   [84]
-## 4                 3.46%   [85]
-## 5                 2.78%   [86]
-## 6                 2.74%   [87]
-## 7                 2.46%   [88]
+## 4                 3.45%   [85]
+## 5                 2.77%   [86]
+## 6                 2.73%   [87]
+## 7                 2.45%   [88]
 ## 8                 2.16%   [89]
-## 9                 1.92%   [90]
+## 9                 1.91%   [90]
 ## 10                1.65%   [91]</code></pre>
 <div id="finding-xpaths" class="section level2">
 <h2><span class="header-section-number">2.1</span> Finding XPaths</h2>
@@ -327,18 +328,30 @@ ten_most_df</code></pre></div>
 </div>
 <div id="example-geocoding-with-google" class="section level2">
 <h2><span class="header-section-number">2.2</span> Example: GeoCoding With Google</h2>
-<p>Let’s run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. You have to sign up for an account and get an API key. Anyway, let’s run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. Let’s say that we wanted to get the latitude and longitude associated with the the address <em>1510 Clifton Rd, Atlanta, GA</em> which corresponds to the Rollins Research Building.</p>
-<p>First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM</span>
+<p>Let’s run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. Still, you have to sign up for an account and get an API key. You need to go to the Google Cloud Website and enable the Geocoding API service. Again, this is free but you must generate an API key that you can use to access the service. If you plan on doing thousands of gecoding requests per day then you will need to pay some money. But for learning and examples you can stick with the free version.</p>
+<div class="figure">
+<img src="PICS/google_api2.png" />
 
-<span class="co"># https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM</span>
+</div>
+<p>So one way to do this is to create a URL according to the specification given in the Google Geocoding documentation. We need 1) the base Google URL for the Geocoding service, 2) the format of the desired output (XML or JSON), 3) and address for which we want to find the latitude and longitude, and 4) the API key we create at the Google API service. Here is a fully functional URL you can paste into your browser:</p>
+<p><a href="https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw" class="uri">https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</a></p>
+<p>If you paste this into Chome then you get something back like this:</p>
+<div class="figure">
+<img src="PICS/geocode1.png" />
+
+</div>
+<p>So I could create an R function to take care of this kind of thing so I could maybe pass in arbitrary addressess to be geocided. Let’s run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. We will stick with the <em>1510 Clifton Rd, Atlanta, GA</em> address which corresponds to the Rollins Research Building.</p>
+<p>First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span>
+
+<span class="co"># https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span>
 
 myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="dt">form=</span><span class="st">&quot;xml&quot;</span>) {
   <span class="kw">library</span>(XML)
   <span class="kw">library</span>(RCurl)
   
   geourl &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span>
-  key &lt;-<span class="st"> &quot;AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM&quot;</span>
+  key &lt;-<span class="st"> &quot;AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
   address &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)
   
   add &lt;-<span class="st"> </span><span class="kw">paste0</span>(geourl,form,<span class="dt">sep=</span><span class="st">&quot;?address=&quot;</span>)
@@ -359,12 +372,12 @@ myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class
 <span class="kw">myGeo</span>()</code></pre></div>
 <pre><code>##       lat       lng 
 ##  33.79667 -84.32319</code></pre>
-<p>  Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session:</p>
+<p>  Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*</p>
 <div class="figure">
 <img src="PICS/oxygen2.png" width="650" />
 
 </div>
-<p>  We could expand this considerable to process a number of addresses:</p>
+<p>  We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">namevec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, 
              <span class="st">&quot;Birmingham AL&quot;</span>, 
              <span class="st">&quot;Seattle WA&quot;</span>, 
@@ -397,8 +410,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-89d26632ff13048f04be" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-89d26632ff13048f04be">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6f318e00e8757e920b1e" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6f318e00e8757e920b1e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>
@@ -456,7 +469,7 @@ m</code></pre></div>
 <p>So we parse lists instead of using XPath. Many people feel this to be easier than trying to construct XPath statments. You will have to decide for yourself.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJSONIO)
 
-url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM&quot;</span>
+url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
 geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
 <span class="kw">str</span>(geo,<span class="dv">3</span>)</code></pre></div>
 <pre><code>## List of 2
@@ -503,7 +516,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -516,7 +529,11 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
 "toc": {
 "collapse": "subsection"
 }

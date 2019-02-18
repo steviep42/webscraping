@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Web Scraping with R</title>
+  <title>Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:title" content="Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Web Scraping with R" />
+  <meta name="twitter:title" content="Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R" />
   
   <meta name="twitter:description" content="This is in support of my talk for the Data Science group" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2018-11-11">
+<meta name="date" content="2019-02-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="final-words.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -47,14 +48,14 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -276,7 +277,7 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
 <p>A better way would be to use the tidytext package. First we need to create a data frame out of the text. Then we “tokenize” the text which means we have one line per word.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
-
+<span class="kw">library</span>(tidyr)
 text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
 token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
@@ -295,7 +296,7 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ##  8 all      10
 ##  9 for       9
 ## 10 in        9
-## # ... with 329 more rows</code></pre>
+## # … with 329 more rows</code></pre>
 <p>But we need to get rid of the “stop words”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words</span>
 <span class="kw">data</span>(stop_words)
@@ -323,7 +324,7 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 ##  8 altogether     2
 ##  9 answered       2
 ## 10 cease          2
-## # ... with 183 more rows</code></pre>
+## # … with 183 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## # A tibble: 193 x 2
 ##    word           n
@@ -338,7 +339,7 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 ##  8 altogether     2
 ##  9 answered       2
 ## 10 cease          2
-## # ... with 183 more rows</code></pre>
+## # … with 183 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
@@ -347,39 +348,41 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 <span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow6-1.png" width="672" /></p>
 </div>
 <div id="back-to-the-pubmed-example" class="section level2">
 <h2><span class="header-section-number">5.4</span> Back To The PubMed Example</h2>
 <p>We have around 935 abstracts that we can now mess with</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;my_abstracts&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a data frame out of the cleaned up abstracts</span>
-
+<span class="kw">library</span>(tidytext)
+<span class="kw">library</span>(dplyr)
 text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(my_abstracts), <span class="dt">text =</span> my_abstracts)
 token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
 
 <span class="co"># Many of these words aren&#39;t helpful </span>
 token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(<span class="dt">total=</span>word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 6,942 x 2
+<pre><code>## # A tibble: 6,936 x 2
 ##    total        n
 ##    &lt;chr&gt;    &lt;int&gt;
-##  1 the       3087
-##  2 of        2929
-##  3 and       2880
-##  4 in        1919
-##  5 to        1863
-##  6 a         1376
-##  7 dialysis  1335
-##  8 patients  1324
-##  9 home      1236
+##  1 the       3062
+##  2 of        2896
+##  3 and       2871
+##  4 in        1915
+##  5 to        1884
+##  6 a         1373
+##  7 dialysis  1365
+##  8 patients  1335
+##  9 home      1281
 ## 10 with      1035
-## # ... with 6,932 more rows</code></pre>
+## # … with 6,926 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words</span>
 <span class="kw">data</span>(stop_words)
 tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">anti_join</span>(stop_words)</code></pre></div>
-<pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This could also be done by the following. I point this out only because some people react</span>
+<span class="st">  </span><span class="kw">anti_join</span>(stop_words)
+
+<span class="co"># This could also be done by the following. I point this out only because some people react</span>
 <span class="co"># negatively to &quot;joins&quot; although fully understanding what joins are can only help you since</span>
 <span class="co"># much of what the dplyr package does is based on SQL type joins. </span>
 
@@ -390,20 +393,20 @@ tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span
 
 tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) </code></pre></div>
-<pre><code>## # A tibble: 6,465 x 2
+<pre><code>## # A tibble: 6,460 x 2
 ##    word             n
 ##    &lt;chr&gt;        &lt;int&gt;
-##  1 dialysis      1335
-##  2 patients      1324
-##  3 home          1236
-##  4 hemodialysis   665
-##  5 hd             472
-##  6 hhd            406
-##  7 patient        380
-##  8 pd             307
-##  9 renal          277
-## 10 study          270
-## # ... with 6,455 more rows</code></pre>
+##  1 dialysis      1365
+##  2 patients      1335
+##  3 home          1281
+##  4 hemodialysis   674
+##  5 hd             463
+##  6 hhd            440
+##  7 patient        395
+##  8 pd             303
+##  9 renal          279
+## 10 study          268
+## # … with 6,450 more rows</code></pre>
 <p>Some of the most frequently occurring words are in fact “dialysis”, “patients” so maybe we should consider them to be stop words also since we already know quite well that the overall theme is, well, dialysis and kidneys. There are also synonymns and abbreviations that are somewhat redundant such as “pdd”,“pd”,“hhd” so let’s eliminate them also.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span>word <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
@@ -413,22 +416,23 @@ tidy_text <span class="op">%&gt;%</span>
 
 tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) </code></pre></div>
-<pre><code>## # A tibble: 6,447 x 2
+<pre><code>## # A tibble: 6,442 x 2
 ##    word             n
 ##    &lt;chr&gt;        &lt;int&gt;
-##  1 treatment      228
-##  2 therapy        191
-##  3 survival       188
-##  4 clinical       180
-##  5 center         178
-##  6 conventional   177
-##  7 nocturnal      177
-##  8 quality        176
-##  9 compared       172
-## 10 outcomes       165
-## # ... with 6,437 more rows</code></pre>
+##  1 treatment      219
+##  2 therapy        193
+##  3 conventional   191
+##  4 survival       191
+##  5 center         186
+##  6 compared       180
+##  7 clinical       175
+##  8 nocturnal      171
+##  9 outcomes       171
+## 10 quality        171
+## # … with 6,432 more rows</code></pre>
 <p>Let’s do some plotting of these words</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">120</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">reorder</span>(word, n)) <span class="op">%&gt;%</span>
@@ -436,11 +440,11 @@ tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow9-1.png" width="672" /></p>
 <p>Okay, it looks like there are numbers in there which might be useful. I suspect that the “95” is probably associated with the idea of a confidence interval. But there are other references to numbers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word)[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
-<pre><code>##  [1] 203 260 268 269 271 333 347 351 356 400 401 409 410 446 513 523 530
-## [18] 545 552 569</code></pre>
+<pre><code>##  [1]  10 276 278 287 291 296 299 308 311 390 391 557 617 674 682 683 685
+## [18] 747 761 765</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum &lt;-<span class="st"> </span>tidy_text[<span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word,<span class="dt">invert=</span><span class="ot">TRUE</span>),]</code></pre></div>
 <p>Okay well I think maybe we have some reasonable data to examine. As you might have realized by now, manipulating data to get it “clean” can be tedious and frustrating though it is an inevitable part of the process.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum <span class="op">%&gt;%</span>
@@ -451,12 +455,12 @@ tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow11-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
 
 bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">inner_join</span>(<span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(<span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(word,sentiment,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
 <p>t the positive vs negative words</p>
@@ -472,7 +476,7 @@ bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">
        <span class="dt">x =</span> <span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
 <pre><code>## Selecting by n</code></pre>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow13-1.png" width="672" /></p>
 <p>Let’s create a word cloud</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wordcloud)
 <span class="co">#</span>
@@ -480,7 +484,7 @@ bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">
 tidy_text_nonum <span class="op">%&gt;%</span><span class="st">  </span>
 <span class="st">  </span><span class="kw">count</span>(word) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">with</span>(<span class="kw">wordcloud</span>(word,n,<span class="dt">max.words=</span><span class="dv">100</span>,<span class="dt">colors=</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;Dark2&quot;</span>)))</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow14-1.png" width="672" /></p>
 </div>
 <div id="bigrams" class="section level2">
 <h2><span class="header-section-number">5.5</span> BiGrams</h2>
@@ -491,22 +495,23 @@ dialysis_bigrams &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</
 
 dialysis_bigrams <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(bigram, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 41,630 x 2
+<pre><code>## # A tibble: 41,738 x 2
 ##    bigram                  n
 ##    &lt;chr&gt;               &lt;int&gt;
 ##  1 in the                382
-##  2 of the                316
-##  3 home dialysis         280
-##  4 home hemodialysis     267
-##  5 peritoneal dialysis   198
-##  6 of home               189
-##  7 associated with       172
+##  2 of the                310
+##  3 home dialysis         300
+##  4 home hemodialysis     279
+##  5 of home               195
+##  6 peritoneal dialysis   193
+##  7 associated with       174
 ##  8 home hd               153
-##  9 home haemodialysis    138
-## 10 in center             138
-## # ... with 41,620 more rows</code></pre>
+##  9 home haemodialysis    144
+## 10 in center             144
+## # … with 41,728 more rows</code></pre>
 <p>But we have to filter out stop words</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigrams_sep &lt;-<span class="st"> </span>dialysis_bigrams <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+bigrams_sep &lt;-<span class="st"> </span>dialysis_bigrams <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">separate</span>(bigram,<span class="kw">c</span>(<span class="st">&quot;word1&quot;</span>,<span class="st">&quot;word2&quot;</span>),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 stop_list &lt;-<span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
@@ -525,36 +530,37 @@ bigrams_united &lt;-<span class="st"> </span>bigrams_filtered <span class="op">%
 <span class="st">  </span><span class="kw">unite</span>(bigram, word1, word2, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>)
 
 bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">count</span>(bigram, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">25</span>)</code></pre></div>
-<pre><code>## # A tibble: 11,825 x 2
+<pre><code>## # A tibble: 11,957 x 2
 ##    bigram                     n
 ##    &lt;chr&gt;                  &lt;int&gt;
-##  1 replacement therapy       69
-##  2 vascular access           62
+##  1 replacement therapy       71
+##  2 vascular access           65
 ##  3 technique failure         54
-##  4 left ventricular          42
-##  5 confidence interval       40
-##  6 blood pressure            39
-##  7 clinical outcomes         36
-##  8 thrice weekly             32
-##  9 short daily               31
+##  4 confidence interval       41
+##  5 left ventricular          39
+##  6 blood pressure            36
+##  7 short daily               35
+##  8 clinical outcomes         33
+##  9 thrice weekly             30
 ## 10 technique survival        29
-## 11 quality improvement       26
-## 12 hazard ratio              25
+## 11 hazard ratio              26
+## 12 quality improvement       26
 ## 13 adverse events            22
-## 14 6 months                  20
-## 15 access related            20
-## 16 ventricular mass          19
-## 17 12 months                 18
-## 18 arteriovenous fistula     17
+## 14 6 months                  21
+## 15 access related            21
+## 16 arteriovenous fistula     21
+## 17 12 months                 19
+## 18 ventricular mass          18
 ## 19 3 times                   15
 ## 20 buttonhole cannulation    15
-## 21 daily life                15
-## 22 health related            15
-## 23 observational studies     15
-## 24 cost effective            14
-## 25 cost effectiveness        14
-## # ... with 1.18e+04 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigram_counts <span class="op">%&gt;%</span>
+## 21 cost effective            15
+## 22 observational studies     15
+## 23 retrospective cohort      15
+## 24 cost effectiveness        14
+## 25 daily life                14
+## # … with 1.193e+04 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)
+bigram_counts <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(word1, <span class="op">-</span>n), <span class="dt">y =</span> <span class="kw">reorder</span>(word2, <span class="op">-</span>n), <span class="dt">fill =</span> n)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_tile</span>(<span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
@@ -565,7 +571,7 @@ bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span cla
 <span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">45</span>, <span class="dt">vjust =</span> <span class="dv">1</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;first word in pair&quot;</span>,
          <span class="dt">y =</span> <span class="st">&quot;second word in pair&quot;</span>)</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/bow17-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -595,7 +601,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -608,7 +614,11 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
 "toc": {
 "collapse": "subsection"
 }

@@ -4,7 +4,7 @@ This is where things get a little dicey because some web pages will return XML a
 
 Since this isn't a full-on course lecture I'll keep it short as to how and why you would want to use these but any time you spend trying to better understand JSON (and XML) the better of you will be when parsing web pages. It's not such a big deal if all you are going to be parsing is raw text since the mthods we use to do that avoid XML and JSON although cleaning up raw text has its own problems. Let's revisit the Wikipedia example from the previous section.
 
-```{r}
+```{r wiki}
 library(rvest)
 
 # Use read_html to fetch the webpage
@@ -23,7 +23,7 @@ ten_most_populous <- ten_most_df %>%
 Let's look at an XML file that has some basic content:
 \   
 
-```{r eval=FALSE}
+```{r xmlchunk, eval=FALSE}
 <?xml version="1.0" encoding="UTF-8"?>
 <bookstore>
   <book category="COOKING">
@@ -59,7 +59,7 @@ Remeber that we want to find the table corresponding to the "10 Most Populous Co
 
 \   
  
-```{r}
+```{r populous}
 # Use read_html to fetch the webpage
 url <- "https://en.wikipedia.org/wiki/World_population"
 ten_most_populous <- read_html(url) 
@@ -87,7 +87,7 @@ In addition to Browser Plugins there are standalone tools such as the Oxygen XML
 Let's look at an XML file that has some basic content:
 \   
 
-```{r eval=FALSE}
+```{r book, eval=FALSE}
 <?xml version="1.0" encoding="UTF-8"?>
 <bookstore>
   <book category="COOKING">
@@ -159,7 +159,7 @@ So I could create an R function to take care of this kind of thing so I could ma
 
 First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information. 
 
-```{r message=FALSE}
+```{r mygeo, message=FALSE}
 
 # https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw
 
@@ -201,7 +201,7 @@ Now. We could have saved the report to a file on our local computer and open it 
 We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess. 
 
 
-```{r message=FALSE}
+```{r geoapply, message=FALSE}
 namevec <- c("Atlanta GA", 
              "Birmingham AL", 
              "Seattle WA", 
@@ -239,7 +239,7 @@ JSON is fast becoming the primary interchange format over XML although XML is st
 
 There are rules and regulations about how JSON is formed and we will learn them by example but you can look at the numerous tutotorials on the web to locate definitive references. See http://www.w3schools.com/json/  Here is an XML file that describes some employees. 
 
-```{r eval=FALSE}
+```{r employee, eval=FALSE}
 <employees>
      <employee>
          <firstName>John</firstName>
@@ -259,7 +259,7 @@ There are rules and regulations about how JSON is formed and we will learn them 
 
 And here is the corresposning JSON file:
 
-```{r eval=FALSE}
+```{r json, eval=FALSE}
 {
   "employees":[
     {"firstName":"John", "lastName":"Doe"},
@@ -307,7 +307,7 @@ There is a function called fromJSON which will parse the JSON file and return a 
 So we parse lists instead of using XPath. Many people feel this to be easier than trying to construct XPath statments. You will have to decide for yourself.
 
 
-```{r}
+```{r rjsonio}
 library(RJSONIO)
 
 url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
@@ -317,7 +317,7 @@ str(geo,3)
 
 Since what we get back is a list we can directly access whatever we want. We just index into the list. No need for complicated XPATHS.
 
-```{r}
+```{r georesult}
 geo$results[[1]]$geometry$location
 ```
 

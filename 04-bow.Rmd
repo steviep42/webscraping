@@ -36,6 +36,10 @@ However, consider that:
 * They all offer similar capabilities
 * We’ll look at tidytext
 
+```{r echo=FALSE}
+library(dplyr)
+library(ggplot2)
+```
 
 ## Simple Example
 
@@ -44,7 +48,7 @@ However, consider that:
 
 Find the URL for Lincoln’s March 4, 1865 Speech:
 
-```{r}
+```{r bow1}
 url <- "https://millercenter.org/the-presidency/presidential-speeches/march-4-1865-second-inaugural-address"
 library(rvest)
 lincoln_doc <- read_html(url) %>%
@@ -57,7 +61,7 @@ lincoln_doc
 
 There are probably lots of words that don't really "matter" or contribute to the "real" meaning of the speech. 
 
-```{r}
+```{r bow2}
 word_vec <- unlist(strsplit(lincoln_doc," "))
 word_vec[1:20]
 sort(table(word_vec),decreasing = TRUE)[1:10]
@@ -65,7 +69,7 @@ sort(table(word_vec),decreasing = TRUE)[1:10]
 
 How do we remove all the uninteresting words ? We could do it manaully
 
-```{r}
+```{r bow3}
 # Remove all punctuation marks
 word_vec <- gsub("[[:punct:]]","",word_vec)
 stop_words <- c("the","to","and","of","the","for","in","it",
@@ -86,9 +90,9 @@ word_vec[1:30]
 
 A better way would be to use the tidytext package. First we need to create a data frame out of the text. Then we "tokenize" the text which means we have one line per word. 
 
-```{r}
+```{r bow4}
 library(tidytext)
-
+library(tidyr)
 text_df <- data_frame(line = 1:length(lincoln_doc), text = lincoln_doc)
 token_text <- text_df %>%
   unnest_tokens(word, text)
@@ -100,7 +104,7 @@ token_text %>% count(word,sort=TRUE)
 But we need to get rid of the "stop words"
 
 
-```{r}
+```{r bow5}
 # Now remove stop words
 data(stop_words)
 tidy_text <- token_text %>%
@@ -116,7 +120,7 @@ tidy_text <- token_text %>%
 tidy_text %>% count(word,sort=TRUE)
 ```
 
-```{r}
+```{r bow6}
 tidy_text %>% count(word,sort=TRUE)
 
 tidy_text %>%
@@ -133,9 +137,15 @@ tidy_text %>%
 
 We have around 935 abstracts that we can now mess with
 
-```{r}
-# Create a data frame out of the cleaned up abstracts
+```{r echo=FALSE}
+my_abstracts <- readRDS("my_abstracts")
+```
 
+
+```{r bow7,message=FALSE}
+# Create a data frame out of the cleaned up abstracts
+library(tidytext)
+library(dplyr)
 text_df <- data_frame(line = 1:length(my_abstracts), text = my_abstracts)
 token_text <- text_df %>%
   unnest_tokens(word, text)
@@ -164,7 +174,7 @@ tidy_text %>%
 Some of the most frequently occurring words are in fact "dialysis", "patients" so maybe we should consider them to be stop words also since we already know quite well that the overall theme is, well, dialysis and kidneys. There are also synonymns and abbreviations that are somewhat redundant such as "pdd","pd","hhd" so let's eliminate them also. 
 
 
-```{r}
+```{r bow8}
 tidy_text <- token_text %>%
    filter(!word %in% c(stop_words$word,"dialysis","patients","home","kidney",
                        "hemodialysis","haemodialysis","patient","hhd",
@@ -179,7 +189,8 @@ tidy_text %>%
 Let's do some plotting of these words
 
 
-```{r}
+```{r bow9}
+library(ggplot2)
 tidy_text %>%
   count(word, sort = TRUE) %>%
   filter(n > 120) %>%
@@ -194,7 +205,7 @@ tidy_text %>%
 
 Okay, it looks like there are numbers in there which might be useful. I suspect that the "95" is probably associated with the idea of a confidence interval. But there are other references to numbers. 
 
-```{r}
+```{r bow10}
 grep("^[0-9]{1,3}$",tidy_text$word)[1:20]
 
 tidy_text_nonum <- tidy_text[grep("^[0-9]{1,3}$",tidy_text$word,invert=TRUE),]
@@ -204,7 +215,7 @@ tidy_text_nonum <- tidy_text[grep("^[0-9]{1,3}$",tidy_text$word,invert=TRUE),]
 
 Okay well I think maybe we have some reasonable data to examine. As you might have realized by now, manipulating data to get it "clean" can be tedious and frustrating though it is an inevitable part of the process. 
 
-```{r}
+```{r bow11}
 tidy_text_nonum %>%
   count(word, sort = TRUE) %>%
   filter(n > 120) %>%
@@ -217,7 +228,7 @@ tidy_text_nonum %>%
 
 
 
-```{r}
+```{r bow12}
 nrc_joy <- get_sentiments("nrc") %>% 
   filter(sentiment == "joy")
 
@@ -229,7 +240,7 @@ bing_word_counts <- tidy_text_nonum %>%
 
 t the positive vs negative words
 
-```{r}
+```{r bow13}
 bing_word_counts %>%
   group_by(sentiment) %>%
   top_n(10) %>%
@@ -247,7 +258,7 @@ bing_word_counts %>%
 Let's create a word cloud
 
 
-```{r message=FALSE, warning=FALSE}
+```{r bow14,message=FALSE, warning=FALSE}
 library(wordcloud)
 #
 
@@ -261,7 +272,7 @@ tidy_text_nonum %>%
 Let's look at bigrams. We need to go back to the cleaned abstracts and pair words to get phrase that might be suggestive of some sentiment
 
 
-```{r}
+```{r bow15}
 text_df <- data_frame(line = 1:length(my_abstracts), text = my_abstracts)
 dialysis_bigrams <- text_df %>%
   unnest_tokens(bigram, text, token = "ngrams", n = 2)
@@ -274,7 +285,8 @@ dialysis_bigrams %>%
 
 But we have to filter out stop words
 
-```{r}
+```{r bow16,message=FALSE}
+library(tidyr)
 bigrams_sep <- dialysis_bigrams %>% 
   separate(bigram,c("word1","word2"),sep=" ")
 
@@ -298,7 +310,8 @@ bigrams_united %>%  count(bigram, sort = TRUE) %>% print(n=25)
 
 
 
-```{r}
+```{r bow17,message=FALSE}
+library(tidyquant)
 bigram_counts %>%
   filter(n > 30) %>%
   ggplot(aes(x = reorder(word1, -n), y = reorder(word2, -n), fill = n)) +

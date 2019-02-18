@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Web Scraping with R</title>
+  <title>Chapter 4 APIs | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Web Scraping with R" />
+  <meta property="og:title" content="Chapter 4 APIs | Web Scraping with R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Web Scraping with R" />
+  <meta name="twitter:title" content="Chapter 4 APIs | Web Scraping with R" />
   
   <meta name="twitter:description" content="This is in support of my talk for the Data Science group" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2018-11-11">
+<meta name="date" content="2019-02-18">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="bagofwords.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -47,14 +48,14 @@
 
 
 
-<script src="libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -180,7 +181,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &#39;https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2&#39;</span>
 summary &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;.summary_text&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_text</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">html_text</span>()
+
+summary</code></pre></div>
 <p>But here we go again. We have to parse the desired elements on this page and then what if we wanted to follow other links or set up a general function to search IMDB for other movies of various genres, titles, directors, etc.</p>
 <div class="figure">
 <img src="PICS/omdb.png" width="550" />
@@ -235,7 +238,7 @@ movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class
 ##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
 ##  $ Metascore : chr &quot;100&quot;
 ##  $ imdbRating: chr &quot;9.2&quot;
-##  $ imdbVotes : chr &quot;1,378,375&quot;
+##  $ imdbVotes : chr &quot;1,408,749&quot;
 ##  $ imdbID    : chr &quot;tt0068646&quot;
 ##  $ Type      : chr &quot;movie&quot;
 ##  $ DVD       : chr &quot;09 Oct 2001&quot;
@@ -318,7 +321,7 @@ movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<
 ## 1 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
 ## 2 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
 ## 3 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
-## # ... with 15 more variables: Language &lt;chr&gt;, Country &lt;chr&gt;, Awards &lt;chr&gt;,
+## # … with 15 more variables: Language &lt;chr&gt;, Country &lt;chr&gt;, Awards &lt;chr&gt;,
 ## #   Poster &lt;chr&gt;, Ratings &lt;list&gt;, Metascore &lt;chr&gt;, imdbRating &lt;dbl&gt;,
 ## #   imdbVotes &lt;dbl&gt;, imdbID &lt;chr&gt;, Type &lt;chr&gt;, DVD &lt;date&gt;,
 ## #   BoxOffice &lt;chr&gt;, Production &lt;chr&gt;, Website &lt;chr&gt;, Response &lt;chr&gt;</code></pre>
@@ -417,44 +420,61 @@ rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span c
 <p>Let’s do some searching</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
 my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)
-my_abstracts_txt &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id, <span class="dt">format =</span> <span class="st">&quot;abstract&quot;</span>)
-my_abstracts_txt[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
-<pre><code>##  [1] &quot;&quot;                                                                                  
-##  [2] &quot;1. Medicine (Baltimore). 2018 Sep;97(37):e12018. doi: 10.1097/MD.0000000000012018.&quot;
-##  [3] &quot;&quot;                                                                                  
-##  [4] &quot;Gene co-expression network analysis identifies the hub genes associated with&quot;      
-##  [5] &quot;immune functions for nocturnal hemodialysis in patients with end-stage renal&quot;      
-##  [6] &quot;disease.&quot;                                                                          
-##  [7] &quot;&quot;                                                                                  
-##  [8] &quot;Dai H, Zhou J, Zhu B.&quot;                                                             
-##  [9] &quot;&quot;                                                                                  
-## [10] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in&quot;    
-## [11] &quot;which the kidney is not sufficient to meet the needs of daily life. It is&quot;         
-## [12] &quot;necessary to understand the role of genes expression involved in ESRD patient&quot;     
-## [13] &quot;responses to nocturnal hemodialysis (NHD) and to improve the immunity&quot;             
-## [14] &quot;responsiveness. The aim of this study was to investigate novel immune-associated &quot; 
-## [15] &quot;genes that may play important roles in patients with ESRD.The microarray&quot;          
-## [16] &quot;expression profiles of peripheral blood in patients with ESRD before and after&quot;    
-## [17] &quot;NHD were analyzed by network-based approaches, and then using Gene Ontology (GO) &quot; 
-## [18] &quot;and Kyoto Encyclopedia of Genes and Genomes pathway analysis to explore the&quot;       
-## [19] &quot;biological process and molecular functions of differentially expressed genes.&quot;     
-## [20] &quot;Subsequently, a transcriptional regulatory network of the core genes and the&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts_xml &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)</code></pre></div>
-<p>Well the results aren’t bad but we still have to parse out some junk but nothing like before. It’s a minor problem. In this case the API gives us some XML back that we then have to parse.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">xpathApply</span>(my_abstracts_xml, <span class="st">&quot;//AbstractText&quot;</span>, saveXML))
 
-<span class="co"># Still have to clear out some junk in each abstract</span>
+my_abstracts &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)
+my_abstracts &lt;-<span class="st"> </span><span class="kw">custom_grep</span>(my_abstracts,<span class="st">&quot;AbstractText&quot;</span>,<span class="st">&quot;char&quot;</span>)
 
-my_abstracts &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&#39;&lt;(.*)&quot;&gt;&#39;</span>,<span class="st">&quot;&quot;</span>,my_abstracts)
-my_abstracts &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&#39;&lt;AbstractText&gt;|&lt;/AbstractText&gt;&#39;</span>,<span class="st">&quot;&quot;</span>,my_abstracts)
 
-<span class="kw">length</span>(my_abstracts)</code></pre></div>
-<pre><code>## [1] 935</code></pre>
-<p>But we have around 935 abstracts that we can now mess with. The benefit of this approach is that we dont’ have to do all the text conversions and manipulations that we would have with the manual approach. Plus, we are able to get a lot more results more conveniently.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_abstracts[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
-<pre><code>## [1] &quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease in which the kidney is not sufficient to meet the needs of daily life. It is necessary to understand the role of genes expression involved in ESRD patient responses to nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of this study was to investigate novel immune-associated genes that may play important roles in patients with ESRD.The microarray expression profiles of peripheral blood in patients with ESRD before and after NHD were analyzed by network-based approaches, and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes pathway analysis to explore the biological process and molecular functions of differentially expressed genes. Subsequently, a transcriptional regulatory network of the core genes and the connected transcriptional regulators was constructed. We found that NHD had a significant effect on neutrophil activation and immune response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL genes maybe potential targets regulated by core transcriptional factors, including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, and EGR3.&quot;                                               
-## [2] &quot;Only a minority of patients with chronic kidney disease treated by hemodialysis are currently treated at home. Until relatively recently, the only type of hemodialysis machine available for these patients was a slightly smaller version of the standard machines used for in-center dialysis treatments. Areas covered: There are now an alternative generation of dialysis machines specifically designed for home hemodialysis. The home dialysis patient wants a smaller machine, which is intuitive to use, easy to trouble shoot, robust and reliable, quick to setup and put away, requiring minimal waste disposal. The machines designed for home dialysis have some similarities in terms of touch-screen patient interfaces, and using pre-prepared cartridges to speed up setting up the machine. On the other hand, they differ in terms of whether they use slower or standard dialysate flows, prepare batches of dialysis fluid, require separate water purification equipment, or whether this is integrated, or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis machine complexity is one of the hurdles reducing the number of patients opting for home hemodialysis and the introduction of the newer generation of dialysis machines designed for ease of use will hopefully increase the number of patients opting for home hemodialysis.&quot;
-## [3] &quot;Home haemodialysis (HHD) has the potential to impact positively on patient outcomes and health resource management. There has been rejuvenated international interest in HHD in recent years.&quot;</code></pre>
+my_abstracts[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]
+
+[<span class="dv">1</span>] <span class="st">&quot;Assisted PD (assPD) is an option of home dialysis treatment for dependent </span>
+<span class="st">end-stage renal patients and worldwide applied in different countries since more </span>
+<span class="st">than 40 years. China and Germany shares similar trends in demographic development </span>
+<span class="st">with a growing proportion of elderly referred to dialysis treatment. So far number </span>
+<span class="st">of patients treated by assPD is low in both countries. We analyze experiences in </span>
+<span class="st">the implementation process, barriers, and benefits of ass PD in the aging population </span>
+<span class="st">to provide a model for sustainable home dialysis treatment with PD in both countries. Differences and similarities of different factors (industrial, patient and facility </span>
+<span class="st">based) which affect utilization of assPD are discussed. AssPD should be promoted in </span>
+<span class="st">China and Germany to realize the benefits of home dialysis for the aging population </span>
+<span class="st">by providing a structured model of implementation and quality assurance.&quot;</span>                                                                                                
+
+
+[<span class="dv">2</span>] <span class="st">&quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease </span>
+<span class="st">in which the kidney is not sufficient to meet the needs of daily life. It is necessary </span>
+<span class="st">to understand the role of genes expression involved in ESRD patient responses to </span>
+<span class="st">nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of </span>
+<span class="st">this study was to investigate novel immune-associated genes that may play important </span>
+<span class="st">roles in patients with ESRD.The microarray expression profiles of peripheral blood </span>
+<span class="st">in patients with ESRD before and after NHD were analyzed by network-based approaches, </span>
+<span class="st">and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes </span>
+<span class="st">pathway analysis to explore the biological process and molecular functions of </span>
+<span class="st">differentially expressed genes. Subsequently, a transcriptional regulatory network </span>
+<span class="st">of the core genes and the connected transcriptional regulators was constructed. </span>
+<span class="st">We found that NHD had a significant effect on neutrophil activation and immune </span>
+<span class="st">response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, </span>
+<span class="st">RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL </span>
+<span class="st">genes maybe potential targets regulated by core transcriptional factors, </span>
+<span class="st">including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, </span>
+<span class="st">and EGR3.&quot;</span> 
+
+[<span class="dv">3</span>] <span class="st">&quot;Only a minority of patients with chronic kidney disease treated by </span>
+<span class="st">hemodialysis are currently treated at home. Until relatively recently, the </span>
+<span class="st">only type of hemodialysis machine available for these patients was a slightly </span>
+<span class="st">smaller version of the standard machines used for in-center dialysis treatments. </span>
+<span class="st">Areas covered: There are now an alternative generation of dialysis machines </span>
+<span class="st">specifically designed for home hemodialysis. The home dialysis patient wants </span>
+<span class="st">a smaller machine, which is intuitive to use, easy to trouble shoot, robust </span>
+<span class="st">and reliable, quick to setup and put away, requiring minimal waste disposal. </span>
+<span class="st">The machines designed for home dialysis have some similarities in terms of </span>
+<span class="st">touch-screen patient interfaces, and using pre-prepared cartridges to speed </span>
+<span class="st">up setting up the machine. On the other hand, they differ in terms of whether </span>
+<span class="st">they use slower or standard dialysate flows, prepare batches of dialysis fluid, </span>
+<span class="st">require separate water purification equipment, or whether this is integrated, </span>
+<span class="st">or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis </span>
+<span class="st">machine complexity is one of the hurdles reducing the number of patients opting </span>
+<span class="st">for home hemodialysis and the introduction of the newer generation of dialysis </span>
+<span class="st">machines designed for ease of use will hopefully increase the number of patients </span>
+<span class="st">opting for home hemodialysis.&quot;</span></code></pre></div>
 
 </div>
 </div>
@@ -484,7 +504,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -497,7 +517,11 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Web Scraping.pdf", "Web Scraping.epub"],
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
 "toc": {
 "collapse": "subsection"
 }

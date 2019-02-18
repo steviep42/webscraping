@@ -212,10 +212,3 @@ In the above example we leveraged the fact that we were looking specifically for
 
 See http://bradleyboehmke.github.io/2015/12/scraping-html-text.html
 
-
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```

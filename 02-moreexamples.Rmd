@@ -1,6 +1,6 @@
 # More Real Life Examples {#Moreexamples}
 
-```{r message=FALSE,echo=FALSE}
+```{r loadlibs, message=FALSE,echo=FALSE}
 library(rvest)
 library(tidytext)
 library(dplyr)
@@ -21,7 +21,7 @@ Okay. This is a tour of some sites that will serve as important examples on how 
 
 ![](./PICS/view_source.png){width=750px}
 
-```{r}
+```{r bitcoin1}
 library(rvest)
 url <- "https://coinmarketcap.com/all/views/all/"
 bc <- read_html(url)
@@ -34,7 +34,7 @@ path <- '//*[@id="currencies-all"]'
  head(bc_table[,3:5])
 ```
 
-```{r}
+```{r bitcoin2}
 # The data is "dirty" and has characers in it that need cleaning
 bc_table <- bc_table %>% select(Name,Symbol,Price)
 bc_table <- bc_table %>% mutate(Name=gsub("\n"," ",Name))
@@ -72,7 +72,7 @@ In this example we have to parse the main table associated with the results page
 
 ![Salary](.//PICS/sal_page.png)
 
-```{r}
+```{r sal1}
 url <- "https://www.insidehighered.com/aaup-compensation-survey"
 df <- read_html(url) %>% html_table() %>% `[[`(1)
 intost <- c("Institution","Category","State")
@@ -84,7 +84,7 @@ salary
 So we could process multiple pages
 
 
-```{r eval=FALSE}
+```{r sal2,eval=FALSE}
 # So now we could process multiple pages
 
 url <- 'https://www.insidehighered.com/aaup-compensation-survey?institution-name=&professor-category=1591&page=1'
@@ -109,7 +109,7 @@ salary
 Look at the URLs at the bottom of the main page to find beginning and ending page numbers. Visually this is easy. Programmatically we could  do something like the following:
 
 
-```{r eval=FALSE}
+```{r sal3, eval=FALSE}
 # https://www.insidehighered.com/aaup-compensation-survey?page=1
 # https://www.insidehighered.com/aaup-compensation-survey?page=94
 
@@ -173,7 +173,7 @@ So finding the correct element is more challenging. I use Chrome to do this. Jus
 
 ![Salary](./PICS/form.png){width=550px}
 
-```{r}
+```{r sal4,eval=FALSE}
 
 url <- "https://www.insidehighered.com/aaup-compensation-survey"
 
@@ -205,7 +205,7 @@ Pubmed provides a rich source of information on published scientific literature.
 
 What we do here is get the links associated with each publication so we can then process each of those and get the abstract associated with each publication. 
 
-```{r}
+```{r hemo}
 
 # "hemodialysis, home" [MeSH Terms] 
 
@@ -225,7 +225,7 @@ results
 
 So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 10 results per page. As before we would have to dive in to the underlying structure of the page to get the correct XML pathnames or we could look for Paragraph elements and pick out the links that way. 
 
-```{r}
+```{r abs1}
 
 text.vec <- vector()
 
