@@ -142,22 +142,35 @@ Let's look at an XML file that has some basic content:
 
 ## Example: GeoCoding With Google 
 
-Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. You have to sign up for an account and get an API key. Anyway, let's run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. Let's say that we wanted to get the latitude and longitude associated with the the address *1510 Clifton Rd, Atlanta, GA* which corresponds to the Rollins Research Building. 
+Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. Still, you have to sign up for an account and get an API key. You need to go to the Google Cloud Website and enable the Geocoding API service. Again, this is free but you must generate an API key that you can use to access the service. If you plan on doing thousands of gecoding requests per day then you will need to pay some money. But for learning and examples you can stick with the free version. 
+
+![](./PICS/google_api2.png){}
+
+So one way to do this is to create a URL according to the specification given in the Google Geocoding documentation. We need 1) the base Google URL for the Geocoding service, 2) the format of the desired output (XML or JSON), 3) and address for which we want to find the latitude and longitude, and 4) the API key we create at the Google API service. Here is a fully functional URL you can paste into your browser:
+
+https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw
+
+If you paste this into Chome then you get something back like this:
+
+![](./PICS/geocode1.png){width=550x}
+
+
+So I could create an R function to take care of this kind of thing so I could maybe pass in arbitrary addressess to be geocided. Let's run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. We will stick with the *1510 Clifton Rd, Atlanta, GA* address which corresponds to the Rollins Research Building. 
 
 First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information. 
 
 ```{r message=FALSE}
 
-# https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+# https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw
 
-# https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM
+# https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw
 
 myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   library(XML)
   library(RCurl)
   
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
-  key <- "AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM"
+  key <- "AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
   address <- gsub(" ","+",address)
   
   add <- paste0(geourl,form,sep="?address=")
@@ -178,14 +191,14 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
 myGeo()
 ```
 \  
-Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session:
+Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*
 
 
 
 ![](./PICS/oxygen2.png){width=650px}
 
 \  
-We could expand this considerable to process a number of addresses:
+We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess. 
 
 
 ```{r message=FALSE}
@@ -297,7 +310,7 @@ So we parse lists instead of using XPath. Many people feel this to be easier tha
 ```{r}
 library(RJSONIO)
 
-url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM"
+url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
 geo <- fromJSON(url)
 str(geo,3)
 ```
