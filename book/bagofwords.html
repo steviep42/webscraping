@@ -48,14 +48,6 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -215,6 +207,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>They all offer similar capabilities</li>
 <li>We’ll look at tidytext</li>
 </ul>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
 </div>
 <div id="simple-example" class="section level2">
 <h2><span class="header-section-number">5.2</span> Simple Example</h2>
@@ -224,8 +224,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>Find the URL for Lincoln’s March 4, 1865 Speech:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://millercenter.org/the-presidency/presidential-speeches/march-4-1865-second-inaugural-address&quot;</span>
-<span class="kw">library</span>(rvest)
-lincoln_doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span>
+<span class="kw">library</span>(rvest)</code></pre></div>
+<pre><code>## Loading required package: xml2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lincoln_doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span>
 <span class="st">                    </span><span class="kw">html_nodes</span>(<span class="st">&quot;.view-transcript&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">                    </span><span class="kw">html_text</span>()
 lincoln_doc</code></pre></div>
@@ -284,11 +285,17 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 <div id="tidytext" class="section level2">
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
 <p>So the tidytext package provides some accomodations to convert your body of text into individual <strong>tokens</strong> which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
-<span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
-
-text_df</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)</code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;tidytext&#39;</code></pre>
+<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     stop_words</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
+<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
+## This warning is displayed once per session.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text_df</code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##    line text                                                               
 ##   &lt;int&gt; &lt;chr&gt;                                                              
@@ -321,18 +328,18 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 
 stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
 <pre><code>## # A tibble: 40 x 2
-##    word     lexicon 
-##    &lt;chr&gt;    &lt;chr&gt;   
-##  1 somewhat SMART   
-##  2 will     SMART   
-##  3 over     snowball
-##  4 her      snowball
-##  5 those    SMART   
-##  6 thought  onix    
-##  7 j        SMART   
-##  8 some     onix    
-##  9 uucp     SMART   
-## 10 contains SMART   
+##    word   lexicon 
+##    &lt;chr&gt;  &lt;chr&gt;   
+##  1 doing  SMART   
+##  2 having SMART   
+##  3 best   SMART   
+##  4 give   onix    
+##  5 she    SMART   
+##  6 later  SMART   
+##  7 unless SMART   
+##  8 with   snowball
+##  9 likely SMART   
+## 10 men    onix    
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -447,24 +454,24 @@ tidy_text <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span>word <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
                        <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,
                        <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,
-                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;disease&quot;</span>))
+                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;disease&quot;</span>,<span class="st">&quot;treatment&quot;</span>))
 
 tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) </code></pre></div>
-<pre><code>## # A tibble: 6,442 x 2
+<pre><code>## # A tibble: 6,441 x 2
 ##    word             n
 ##    &lt;chr&gt;        &lt;int&gt;
-##  1 treatment      219
-##  2 therapy        193
-##  3 conventional   191
-##  4 survival       191
-##  5 center         186
-##  6 compared       180
-##  7 clinical       175
-##  8 nocturnal      171
-##  9 outcomes       171
-## 10 quality        171
-## # … with 6,432 more rows</code></pre>
+##  1 therapy        193
+##  2 conventional   191
+##  3 survival       191
+##  4 center         186
+##  5 compared       180
+##  6 clinical       175
+##  7 nocturnal      171
+##  8 outcomes       171
+##  9 quality        171
+## 10 data           161
+## # … with 6,431 more rows</code></pre>
 <p>Let’s do some plotting of these words</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 tidy_text <span class="op">%&gt;%</span>
@@ -478,8 +485,8 @@ tidy_text <span class="op">%&gt;%</span>
 <p><img src="Web_Scraping_files/figure-html/bow9-1.png" width="672" /></p>
 <p>Okay, it looks like there are numbers in there which might be useful. I suspect that the “95” is probably associated with the idea of a confidence interval. But there are other references to numbers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word)[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
-<pre><code>##  [1]  10 276 278 287 291 296 299 308 311 390 391 557 617 674 682 683 685
-## [18] 747 761 765</code></pre>
+<pre><code>##  [1]   9 273 275 284 288 293 296 305 308 387 388 554 614 671 679 680 682
+## [18] 744 758 762</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum &lt;-<span class="st"> </span>tidy_text[<span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word,<span class="dt">invert=</span><span class="ot">TRUE</span>),]</code></pre></div>
 <p>Okay well I think maybe we have some reasonable data to examine. As you might have realized by now, manipulating data to get it “clean” can be tedious and frustrating though it is an inevitable part of the process.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum <span class="op">%&gt;%</span>
@@ -497,78 +504,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word        sentiment   
-##    &lt;chr&gt;       &lt;chr&gt;       
-##  1 venom       disgust     
-##  2 burglary    negative    
-##  3 cautious    anticipation
-##  4 intense     surprise    
-##  5 solace      positive    
-##  6 coincidence surprise    
-##  7 disposed    trust       
-##  8 underpaid   sadness     
-##  9 illicit     disgust     
-## 10 interviewer fear        
-## 11 intrusive   surprise    
-## 12 physiology  positive    
-## 13 demolish    anger       
-## 14 parade      joy         
-## 15 locust      fear        
-## 16 minimize    negative    
-## 17 gulp        fear        
-## 18 grim        sadness     
-## 19 pry         anticipation
-## 20 conjuring   negative</code></pre>
+##    word           sentiment   
+##    &lt;chr&gt;          &lt;chr&gt;       
+##  1 rehabilitation positive    
+##  2 troublesome    anger       
+##  3 completeness   positive    
+##  4 disgraced      negative    
+##  5 humanity       joy         
+##  6 respecting     positive    
+##  7 architecture   trust       
+##  8 lose           disgust     
+##  9 civil          positive    
+## 10 phantom        fear        
+## 11 swelling       fear        
+## 12 cardiomyopathy fear        
+## 13 violence       anger       
+## 14 payment        negative    
+## 15 board          anticipation
+## 16 helmet         fear        
+## 17 prudent        trust       
+## 18 panier         positive    
+## 19 glimmer        positive    
+## 20 cove           anticipation</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word             sentiment
-##    &lt;chr&gt;            &lt;chr&gt;    
-##  1 misunderstanding negative 
-##  2 uneasy           negative 
-##  3 outcry           negative 
-##  4 busts            negative 
-##  5 fortunately      positive 
-##  6 foolish          negative 
-##  7 crisp            positive 
-##  8 fried            negative 
-##  9 depressed        negative 
-## 10 exasperated      negative 
-## 11 unproved         negative 
-## 12 crash            negative 
-## 13 diffidence       negative 
-## 14 rattled          negative 
-## 15 falsehood        negative 
-## 16 impious          negative 
-## 17 lethal           negative 
-## 18 delicate         positive 
-## 19 reasonable       positive 
-## 20 dazzled          positive</code></pre>
+##    word         sentiment
+##    &lt;chr&gt;        &lt;chr&gt;    
+##  1 stately      positive 
+##  2 loot         negative 
+##  3 leakage      negative 
+##  4 cheer        positive 
+##  5 unfamiliar   negative 
+##  6 pleasure     positive 
+##  7 led          positive 
+##  8 stresses     negative 
+##  9 hearten      positive 
+## 10 clunky       negative 
+## 11 hollow       negative 
+## 12 skeletons    negative 
+## 13 unproductive negative 
+## 14 catchy       positive 
+## 15 tremendously positive 
+## 16 navigable    positive 
+## 17 fulminate    negative 
+## 18 beg          negative 
+## 19 bravo        positive 
+## 20 meticulous   positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word          sentiment  
-##    &lt;chr&gt;         &lt;chr&gt;      
-##  1 intermittent  negative   
-##  2 coercing      negative   
-##  3 effective     positive   
-##  4 motions       litigious  
-##  5 devastate     negative   
-##  6 confusing     negative   
-##  7 empower       positive   
-##  8 indicted      litigious  
-##  9 beneficiated  litigious  
-## 10 summoning     negative   
-## 11 arbitrates    litigious  
-## 12 imprecisions  uncertainty
-## 13 assuming      uncertainty
-## 14 confusion     uncertainty
-## 15 corruptly     negative   
-## 16 arrearages    negative   
-## 17 danger        negative   
-## 18 circumvention negative   
-## 19 appeal        litigious  
-## 20 aggravating   negative</code></pre>
+##    word           sentiment  
+##    &lt;chr&gt;          &lt;chr&gt;      
+##  1 misjudging     negative   
+##  2 abnormal       negative   
+##  3 restate        negative   
+##  4 dissenting     negative   
+##  5 prosecuted     litigious  
+##  6 risky          uncertainty
+##  7 inconveniences negative   
+##  8 deviate        uncertainty
+##  9 suspect        negative   
+## 10 derogating     litigious  
+## 11 controvert     litigious  
+## 12 misusing       negative   
+## 13 dissolution    negative   
+## 14 reassessment   uncertainty
+## 15 ineffective    negative   
+## 16 improves       positive   
+## 17 provisoes      litigious  
+## 18 disagreeing    negative   
+## 19 interrogators  litigious  
+## 20 outage         negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
@@ -646,7 +653,7 @@ bigrams_sep &lt;-<span class="st"> </span>dialysis_bigrams <span class="op">%&gt
 <span class="st">  </span><span class="kw">separate</span>(bigram,<span class="kw">c</span>(<span class="st">&quot;word1&quot;</span>,<span class="st">&quot;word2&quot;</span>),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 stop_list &lt;-<span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
-                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,
+                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;treatment&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,
                        <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,
                        <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;esrd&quot;</span>,<span class="st">&quot;lt&quot;</span>,<span class="st">&quot;95&quot;</span>,<span class="st">&quot;0.001&quot;</span>)
 
@@ -661,7 +668,7 @@ bigrams_united &lt;-<span class="st"> </span>bigrams_filtered <span class="op">%
 <span class="st">  </span><span class="kw">unite</span>(bigram, word1, word2, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>)
 
 bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">count</span>(bigram, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">25</span>)</code></pre></div>
-<pre><code>## # A tibble: 11,957 x 2
+<pre><code>## # A tibble: 11,842 x 2
 ##    bigram                     n
 ##    &lt;chr&gt;                  &lt;int&gt;
 ##  1 replacement therapy       71
@@ -689,9 +696,12 @@ bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span cla
 ## 23 retrospective cohort      15
 ## 24 cost effectiveness        14
 ## 25 daily life                14
-## # … with 1.193e+04 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)
-bigram_counts <span class="op">%&gt;%</span>
+## # … with 1.182e+04 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)</code></pre></div>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigram_counts <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(word1, <span class="op">-</span>n), <span class="dt">y =</span> <span class="kw">reorder</span>(word2, <span class="op">-</span>n), <span class="dt">fill =</span> n)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_tile</span>(<span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
