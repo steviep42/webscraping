@@ -282,8 +282,10 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 <p>A better way would be to use the tidytext package. First we need to create a data frame out of the text. Then we “tokenize” the text which means we have one line per word.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
 <span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
-token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
+text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
+<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
+## This warning is displayed once per session.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
 
 token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>

@@ -188,7 +188,12 @@ rD[["server"]]$stop()
 
 ## EasyPubMed
 
-So there is an R package called *EasyPubMed* that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format.  The PubMed records can be downloaded and saved as XML or text files if desired.  According to the package authours, "Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly". The bottom line is that you can do what you want after that. Let's look at an example involving home hemodialysis
+So there is an R package called *EasyPubMed* that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format.  
+
+
+![](./PICS/easypubmed.png)
+
+The PubMed records can be downloaded and saved as XML or text files if desired.  According to the package authours, "Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly". The bottom line is that you can do what you want after that. Let's look at an example involving home hemodialysis
 
 
 ```{r ezpub}

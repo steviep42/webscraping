@@ -293,8 +293,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="quick-rvest-tutorial" class="section level2">
 <h2><span class="header-section-number">1.5</span> Quick <strong>rvest</strong> tutorial</h2>
 <p>Now let’s do a quick <em>rvest</em> tutorial:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
-url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)</code></pre></div>
+<pre><code>## Loading required package: xml2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
 
 (paragraphs &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>))</code></pre></div>
 <pre><code>## {xml_nodeset (64)}
@@ -392,6 +393,9 @@ tables</code></pre></div>
 
 </div>
 <p>First we will load packages that will help us throughout this session.</p>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
 <p>In this case we’ll need to figure out what number table it is we want. We could fetch all the tables and then experiment to find the precise one.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
 <span class="kw">library</span>(tidyr)

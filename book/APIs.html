@@ -303,8 +303,11 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(omdbapi)
 <span class="co"># The first time you use this you will be prompted to enter your</span>
  <span class="co"># API key</span>
-movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)
-(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
+movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## Couldn&#39;t find env var OMDB_API_KEY See ?omdb_api_key for more details.</code></pre>
+<pre><code>## Please enter your API key and press enter:</code></pre>
+<pre><code>## Updating OMDB_API_KEY env var to PAT</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##                                     Title      Year    imdbID   Type
 ## 1               Star Wars: The Clone Wars      2008 tt1185834  movie
 ## 2               Star Wars: The Clone Wars 2008–2019 tt0458290 series
@@ -419,8 +422,14 @@ rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span c
 </div>
 <div id="easypubmed" class="section level2">
 <h2><span class="header-section-number">4.4</span> EasyPubMed</h2>
-<p>So there is an R package called <em>EasyPubMed</em> that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format. The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
+<p>So there is an R package called <em>EasyPubMed</em> that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format.</p>
+<div class="figure">
+<img src="PICS/easypubmed.png" />
+
+</div>
+<p>The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(easyPubMed)</code></pre></div>
+<pre><code>## Warning: package &#39;easyPubMed&#39; was built under R version 3.5.2</code></pre>
 <p>Let’s do some searching</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
 my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)
