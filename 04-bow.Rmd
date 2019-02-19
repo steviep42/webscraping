@@ -307,7 +307,7 @@ library(wordcloud)
 
 tidy_text_nonum %>%  
   count(word) %>%
-  with(wordcloud(word,n,max.words=90,colors=brewer.pal(8,"Dark2")))
+  with(wordcloud(word,n,max.words=90,scale=c(4,.5),colors=brewer.pal(8,"Dark2")))
 ```
 
 ## BiGrams
