@@ -417,8 +417,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-fdca5e5548a834e3fa6f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fdca5e5548a834e3fa6f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c631902972eb69603db6" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c631902972eb69603db6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>
@@ -462,8 +462,8 @@ m</code></pre></div>
 <li><p>A value can be a string in double quotes, or a number, or true or false or null, or an object or an array. These structures can be nested.</p></li>
 <li><p>A string is a sequence of zero or more Unicode characters, wrapped in double quotes, using backslash escapes. A character is represented as a single character string.</p></li>
 </ul>
-<p>Do you remember the Google Geocding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM&quot;</span></code></pre></div>
+<p>Do you remember the Google Geocoding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span></code></pre></div>
 <div class="figure">
 <img src="PICS/json_google.png" width="650" />
 
@@ -494,6 +494,64 @@ geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">geo<span class="op">$</span>results[[<span class="dv">1</span>]]<span class="op">$</span>geometry<span class="op">$</span>location</code></pre></div>
 <pre><code>##       lat       lng 
 ##  33.79667 -84.32319</code></pre>
+<p>Let’s put this into a function that helps us get the information for a number of addresses</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="dt">form=</span><span class="st">&quot;json&quot;</span>) {
+  <span class="kw">library</span>(RJSONIO)
+  
+  geourl &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span>
+  
+  <span class="co"># You will need to replace this with your OWN key !</span>
+  key &lt;-<span class="st"> &quot;AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
+  
+  address &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)
+  
+  add &lt;-<span class="st"> </span><span class="kw">paste0</span>(geourl,form,<span class="dt">sep=</span><span class="st">&quot;?address=&quot;</span>)
+  add &lt;-<span class="st"> </span><span class="kw">paste0</span>(add,address,<span class="st">&quot;&amp;key=&quot;</span>)
+  geourl &lt;-<span class="st"> </span><span class="kw">paste0</span>(add,key)
+  
+  geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(geourl)
+  
+  
+  lat  &lt;-<span class="st"> </span>geo<span class="op">$</span>results[[<span class="dv">1</span>]]<span class="op">$</span>geometry<span class="op">$</span>location[<span class="dv">1</span>]
+  lng  &lt;-<span class="st"> </span>geo<span class="op">$</span>results[[<span class="dv">1</span>]]<span class="op">$</span>geometry<span class="op">$</span>location[<span class="dv">2</span>]
+  
+  <span class="kw">return</span>(<span class="kw">c</span>(lat,lng))  
+}</code></pre></div>
+<p>Consider the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">namevec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, 
+             <span class="st">&quot;Birmingham AL&quot;</span>, 
+             <span class="st">&quot;Seattle WA&quot;</span>, 
+             <span class="st">&quot;Sacramento CA&quot;</span>,
+             <span class="st">&quot;Denver CO&quot;</span>, 
+             <span class="st">&quot;LosAngeles CA&quot;</span>, 
+             <span class="st">&quot;Rochester NY&quot;</span>)
+
+cityList &lt;-<span class="st"> </span><span class="kw">lapply</span>(namevec,myGeo)
+
+<span class="co"># Or to get a data frame</span>
+
+cities &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">city=</span>namevec,<span class="kw">do.call</span>(rbind,cityList),
+                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+cities</code></pre></div>
+<pre><code>##            city      lat        lng
+## 1    Atlanta GA 33.74900  -84.38798
+## 2 Birmingham AL 33.51859  -86.81036
+## 3    Seattle WA 47.60621 -122.33207
+## 4 Sacramento CA 38.58157 -121.49440
+## 5     Denver CO 39.73924 -104.99025
+## 6 LosAngeles CA 34.05223 -118.24368
+## 7  Rochester NY 43.15658  -77.60885</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s create a Map</span>
+
+<span class="kw">library</span>(leaflet)
+m &lt;-<span class="st"> </span><span class="kw">leaflet</span>(<span class="dt">data=</span>cities)
+m &lt;-<span class="st"> </span><span class="kw">addTiles</span>(m)
+m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class="dt">popup=</span>cities<span class="op">$</span>city)
+
+<span class="co"># Put up the Map - click on the markers</span>
+m</code></pre></div>
+<div id="htmlwidget-4ef8f8e9656732c3a05f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4ef8f8e9656732c3a05f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>

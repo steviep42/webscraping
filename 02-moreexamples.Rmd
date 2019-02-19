@@ -209,9 +209,11 @@ What we do here is get the links associated with each publication so we can then
 
 # "hemodialysis, home" [MeSH Terms] 
 
-url <- "https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D"
+url<-"https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D"
 
 # 
+# The results from the search will be of the form:
+# https://www.ncbi.nlm.nih.gov/pubmed/30380542
 
 results <- read_html(url) %>% 
   html_nodes("a") %>% 
@@ -223,7 +225,7 @@ results
 
 ![](./PICS/pubmed_results.png){width=550px}
 
-So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 10 results per page. As before we would have to dive in to the underlying structure of the page to get the correct XML pathnames or we could look for Paragraph elements and pick out the links that way. 
+So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 20 results per page. As before we would have to dive in to the underlying structure of the page to get the correct HTML pathnames or we could just look for Paragraph elements and pick out the links that way. 
 
 ```{r abs1}
 

@@ -292,10 +292,10 @@ See http:..www.json.org/ for a full description of the specification
 * A string is a sequence of zero or more Unicode characters, wrapped in double quotes, using backslash escapes. A character is represented as a single character string.
 
 
-Do you remember the Google Geocding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:
+Do you remember the Google Geocoding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:
 
 ```{r}
-url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&key=AIzaSyAbhVdPH0wDVWUayUaj5N4r379Fbkq5NBM"
+url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
 ```
 
 
@@ -324,3 +324,62 @@ Since what we get back is a list we can directly access whatever we want. We jus
 geo$results[[1]]$geometry$location
 ```
 
+Let's put this into a function that helps us get the information for a number of addresses
+
+```{r}
+myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="json") {
+  library(RJSONIO)
+  
+  geourl <- "https://maps.googleapis.com/maps/api/geocode/"
+  
+  # You will need to replace this with your OWN key !
+  key <- "AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+  
+  address <- gsub(" ","+",address)
+  
+  add <- paste0(geourl,form,sep="?address=")
+  add <- paste0(add,address,"&key=")
+  geourl <- paste0(add,key)
+  
+  geo <- fromJSON(geourl)
+  
+  
+  lat  <- geo$results[[1]]$geometry$location[1]
+  lng  <- geo$results[[1]]$geometry$location[2]
+  
+  return(c(lat,lng))  
+}
+```
+
+
+Consider the following:
+
+
+```{r geoapplyjson, message=FALSE}
+namevec <- c("Atlanta GA", 
+             "Birmingham AL", 
+             "Seattle WA", 
+             "Sacramento CA",
+             "Denver CO", 
+             "LosAngeles CA", 
+             "Rochester NY")
+
+cityList <- lapply(namevec,myGeo)
+
+# Or to get a data frame
+
+cities <- data.frame(city=namevec,do.call(rbind,cityList),
+                     stringsAsFactors = FALSE)
+cities
+
+
+# Let's create a Map
+
+library(leaflet)
+m <- leaflet(data=cities)
+m <- addTiles(m)
+m <- addMarkers(m,popup=cities$city)
+
+# Put up the Map - click on the markers
+m
+```

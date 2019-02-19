@@ -197,12 +197,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol      Market Cap     Price
-## 1    BTC $68,438,010,219  $3900.55
-## 2    ETH $15,046,874,261   $143.42
-## 3    XRP $13,126,017,871 $0.318530
-## 4    EOS  $3,123,624,111     $3.45
-## 5    LTC  $2,864,620,957    $47.33
-## 6    BCH  $2,494,858,387   $141.52</code></pre>
+## 1    BTC $68,684,243,977  $3914.57
+## 2    ETH $15,333,052,659   $146.15
+## 3    XRP $13,247,121,208 $0.321469
+## 4    EOS  $3,148,393,358     $3.47
+## 5    LTC  $2,909,392,353    $48.07
+## 6    BCH  $2,543,531,769   $144.28</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -407,9 +407,11 @@ first_page</code></pre></div>
 <p>What we do here is get the links associated with each publication so we can then process each of those and get the abstract associated with each publication.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># &quot;hemodialysis, home&quot; [MeSH Terms] </span>
 
-url &lt;-<span class="st"> &quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span>
+url&lt;-<span class="st">&quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span>
 
 <span class="co"># </span>
+<span class="co"># The results from the search will be of the form:</span>
+<span class="co"># https://www.ncbi.nlm.nih.gov/pubmed/30380542</span>
 
 results &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -428,7 +430,7 @@ results</code></pre></div>
 <img src="PICS/pubmed_results.png" width="550" />
 
 </div>
-<p>So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 10 results per page. As before we would have to dive in to the underlying structure of the page to get the correct XML pathnames or we could look for Paragraph elements and pick out the links that way.</p>
+<p>So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 20 results per page. As before we would have to dive in to the underlying structure of the page to get the correct HTML pathnames or we could just look for Paragraph elements and pick out the links that way.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text.vec &lt;-<span class="st"> </span><span class="kw">vector</span>()
 
 <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(results)) {

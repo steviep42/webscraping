@@ -252,7 +252,7 @@ workVector <- vector()
 # Grab the links from the site that relate patient stories
   
   links <- read_html(burl) %>% 
-    html_nodes(css="a") %>% 
+    html_nodes("a") %>% 
     html_attr("href") %>% 
     grep("stories",.,value=TRUE)
   
