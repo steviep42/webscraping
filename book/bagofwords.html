@@ -321,16 +321,16 @@ stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <pre><code>## # A tibble: 40 x 2
 ##    word       lexicon 
 ##    &lt;chr&gt;      &lt;chr&gt;   
-##  1 twice      SMART   
-##  2 those      onix    
-##  3 containing SMART   
-##  4 my         snowball
-##  5 myself     SMART   
-##  6 n          SMART   
-##  7 presented  onix    
-##  8 without    onix    
-##  9 downed     onix    
-## 10 else       SMART   
+##  1 everything SMART   
+##  2 alone      SMART   
+##  3 before     onix    
+##  4 wouldn&#39;t   SMART   
+##  5 gives      onix    
+##  6 its        snowball
+##  7 long       onix    
+##  8 e          SMART   
+##  9 after      snowball
+## 10 isn&#39;t      SMART   
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -495,103 +495,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word          sentiment   
-##    &lt;chr&gt;         &lt;chr&gt;       
-##  1 isolate       sadness     
-##  2 interrogate   fear        
-##  3 grandchildren anticipation
-##  4 brute         anger       
-##  5 morn          anticipation
-##  6 dependency    negative    
-##  7 mad           anger       
-##  8 tactics       trust       
-##  9 error         negative    
-## 10 deliberate    positive    
-## 11 dolphin       positive    
-## 12 admire        trust       
-## 13 difficulty    negative    
-## 14 humanitarian  surprise    
-## 15 amicable      joy         
-## 16 musical       anticipation
-## 17 closeness     joy         
-## 18 hunting       anger       
-## 19 fortune       anticipation
-## 20 tortious      disgust</code></pre>
+##    word         sentiment   
+##    &lt;chr&gt;        &lt;chr&gt;       
+##  1 pained       negative    
+##  2 slavery      sadness     
+##  3 segregate    disgust     
+##  4 depth        trust       
+##  5 shatter      negative    
+##  6 sensual      joy         
+##  7 aftermath    fear        
+##  8 descriptive  positive    
+##  9 denunciation anger       
+## 10 omnipotence  negative    
+## 11 script       positive    
+## 12 neurosis     negative    
+## 13 frustrate    sadness     
+## 14 animate      positive    
+## 15 fungus       negative    
+## 16 abundance    disgust     
+## 17 lash         fear        
+## 18 madness      negative    
+## 19 assets       positive    
+## 20 digress      anticipation</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
 ##    word            sentiment
 ##    &lt;chr&gt;           &lt;chr&gt;    
-##  1 pickets         negative 
-##  2 disoobedient    negative 
-##  3 irrepressible   negative 
-##  4 lustrous        positive 
-##  5 misbehavior     negative 
-##  6 euphoric        positive 
-##  7 incessantly     negative 
-##  8 audible         positive 
-##  9 undue           negative 
-## 10 plea            negative 
-## 11 unwilling       negative 
-## 12 intimacy        positive 
-## 13 remarkably      positive 
-## 14 troubled        negative 
-## 15 incomprehension negative 
-## 16 dastardly       negative 
-## 17 redeem          positive 
-## 18 fondly          positive 
-## 19 luster          positive 
-## 20 dies            negative</code></pre>
+##  1 cooperatively   positive 
+##  2 drippy          negative 
+##  3 timidness       negative 
+##  4 insanity        negative 
+##  5 zealously       negative 
+##  6 glitter         positive 
+##  7 undercuts       negative 
+##  8 incomprehension negative 
+##  9 grate           negative 
+## 10 sickening       negative 
+## 11 cheaply         negative 
+## 12 scolding        negative 
+## 13 emphatic        negative 
+## 14 stump           negative 
+## 15 disquieting     negative 
+## 16 right           positive 
+## 17 shatter         negative 
+## 18 garbage         negative 
+## 19 hollow          negative 
+## 20 despicable      negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word              sentiment   
-##    &lt;chr&gt;             &lt;chr&gt;       
-##  1 demote            negative    
-##  2 hamper            negative    
-##  3 faulted           negative    
-##  4 contradict        negative    
-##  5 misinterpretation negative    
-##  6 restraining       constraining
-##  7 hindrances        negative    
-##  8 abandoning        negative    
-##  9 exploits          negative    
-## 10 inaccurate        negative    
-## 11 scrutiny          negative    
-## 12 committing        constraining
-## 13 inconclusive      negative    
-## 14 constraining      constraining
-## 15 misstatements     negative    
-## 16 disparaging       negative    
-## 17 unsustainable     negative    
-## 18 disaffirm         litigious   
-## 19 unspecified       uncertainty 
-## 20 inefficient       negative</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Finn Arup Nielsen - uses a &quot;score&quot; model</span>
-<span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
-<pre><code>## # A tibble: 20 x 2
-##    word        score
-##    &lt;chr&gt;       &lt;int&gt;
-##  1 demoralized    -2
-##  2 felony         -3
-##  3 kill           -3
-##  4 accepted        1
-##  5 gain            2
-##  6 incapable      -2
-##  7 rotfl           4
-##  8 woo             3
-##  9 beautiful       3
-## 10 chaos          -2
-## 11 hurting        -2
-## 12 nervously      -2
-## 13 boycott        -2
-## 14 free            1
-## 15 raptured        2
-## 16 reaching        1
-## 17 benefitted      2
-## 18 flops          -2
-## 19 protect         1
-## 20 fraud          -4</code></pre>
+##    word             sentiment  
+##    &lt;chr&gt;            &lt;chr&gt;      
+##  1 discourage       negative   
+##  2 inactivate       negative   
+##  3 accident         negative   
+##  4 liquidating      negative   
+##  5 collapses        negative   
+##  6 adjudging        litigious  
+##  7 assertable       litigious  
+##  8 breach           litigious  
+##  9 advantage        positive   
+## 10 overbuilds       negative   
+## 11 collaborations   positive   
+## 12 liquidated       negative   
+## 13 ambiguities      uncertainty
+## 14 exacerbating     negative   
+## 15 neglected        negative   
+## 16 conservatorships litigious  
+## 17 vary             uncertainty
+## 18 interrupts       negative   
+## 19 accessions       litigious  
+## 20 may              uncertainty</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
