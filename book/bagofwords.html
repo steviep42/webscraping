@@ -25,7 +25,7 @@
 <meta name="author" content="Steve Pittard">
 
 
-<meta name="date" content="2019-02-18">
+<meta name="date" content="2019-02-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -115,7 +115,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#useful-tools"><i class="fa fa-check"></i><b>1.3.1</b> Useful tools</a></li>
+</ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
@@ -319,18 +321,18 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 
 stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
 <pre><code>## # A tibble: 40 x 2
-##    word       lexicon 
-##    &lt;chr&gt;      &lt;chr&gt;   
-##  1 everything SMART   
-##  2 alone      SMART   
-##  3 before     onix    
-##  4 wouldn&#39;t   SMART   
-##  5 gives      onix    
-##  6 its        snowball
-##  7 long       onix    
-##  8 e          SMART   
-##  9 after      snowball
-## 10 isn&#39;t      SMART   
+##    word     lexicon 
+##    &lt;chr&gt;    &lt;chr&gt;   
+##  1 somewhat SMART   
+##  2 will     SMART   
+##  3 over     snowball
+##  4 her      snowball
+##  5 those    SMART   
+##  6 thought  onix    
+##  7 j        SMART   
+##  8 some     onix    
+##  9 uucp     SMART   
+## 10 contains SMART   
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -495,78 +497,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word         sentiment   
-##    &lt;chr&gt;        &lt;chr&gt;       
-##  1 pained       negative    
-##  2 slavery      sadness     
-##  3 segregate    disgust     
-##  4 depth        trust       
-##  5 shatter      negative    
-##  6 sensual      joy         
-##  7 aftermath    fear        
-##  8 descriptive  positive    
-##  9 denunciation anger       
-## 10 omnipotence  negative    
-## 11 script       positive    
-## 12 neurosis     negative    
-## 13 frustrate    sadness     
-## 14 animate      positive    
-## 15 fungus       negative    
-## 16 abundance    disgust     
-## 17 lash         fear        
-## 18 madness      negative    
-## 19 assets       positive    
-## 20 digress      anticipation</code></pre>
+##    word        sentiment   
+##    &lt;chr&gt;       &lt;chr&gt;       
+##  1 venom       disgust     
+##  2 burglary    negative    
+##  3 cautious    anticipation
+##  4 intense     surprise    
+##  5 solace      positive    
+##  6 coincidence surprise    
+##  7 disposed    trust       
+##  8 underpaid   sadness     
+##  9 illicit     disgust     
+## 10 interviewer fear        
+## 11 intrusive   surprise    
+## 12 physiology  positive    
+## 13 demolish    anger       
+## 14 parade      joy         
+## 15 locust      fear        
+## 16 minimize    negative    
+## 17 gulp        fear        
+## 18 grim        sadness     
+## 19 pry         anticipation
+## 20 conjuring   negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word            sentiment
-##    &lt;chr&gt;           &lt;chr&gt;    
-##  1 cooperatively   positive 
-##  2 drippy          negative 
-##  3 timidness       negative 
-##  4 insanity        negative 
-##  5 zealously       negative 
-##  6 glitter         positive 
-##  7 undercuts       negative 
-##  8 incomprehension negative 
-##  9 grate           negative 
-## 10 sickening       negative 
-## 11 cheaply         negative 
-## 12 scolding        negative 
-## 13 emphatic        negative 
-## 14 stump           negative 
-## 15 disquieting     negative 
-## 16 right           positive 
-## 17 shatter         negative 
-## 18 garbage         negative 
-## 19 hollow          negative 
-## 20 despicable      negative</code></pre>
+##    word             sentiment
+##    &lt;chr&gt;            &lt;chr&gt;    
+##  1 misunderstanding negative 
+##  2 uneasy           negative 
+##  3 outcry           negative 
+##  4 busts            negative 
+##  5 fortunately      positive 
+##  6 foolish          negative 
+##  7 crisp            positive 
+##  8 fried            negative 
+##  9 depressed        negative 
+## 10 exasperated      negative 
+## 11 unproved         negative 
+## 12 crash            negative 
+## 13 diffidence       negative 
+## 14 rattled          negative 
+## 15 falsehood        negative 
+## 16 impious          negative 
+## 17 lethal           negative 
+## 18 delicate         positive 
+## 19 reasonable       positive 
+## 20 dazzled          positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word             sentiment  
-##    &lt;chr&gt;            &lt;chr&gt;      
-##  1 discourage       negative   
-##  2 inactivate       negative   
-##  3 accident         negative   
-##  4 liquidating      negative   
-##  5 collapses        negative   
-##  6 adjudging        litigious  
-##  7 assertable       litigious  
-##  8 breach           litigious  
-##  9 advantage        positive   
-## 10 overbuilds       negative   
-## 11 collaborations   positive   
-## 12 liquidated       negative   
-## 13 ambiguities      uncertainty
-## 14 exacerbating     negative   
-## 15 neglected        negative   
-## 16 conservatorships litigious  
-## 17 vary             uncertainty
-## 18 interrupts       negative   
-## 19 accessions       litigious  
-## 20 may              uncertainty</code></pre>
+##    word          sentiment  
+##    &lt;chr&gt;         &lt;chr&gt;      
+##  1 intermittent  negative   
+##  2 coercing      negative   
+##  3 effective     positive   
+##  4 motions       litigious  
+##  5 devastate     negative   
+##  6 confusing     negative   
+##  7 empower       positive   
+##  8 indicted      litigious  
+##  9 beneficiated  litigious  
+## 10 summoning     negative   
+## 11 arbitrates    litigious  
+## 12 imprecisions  uncertainty
+## 13 assuming      uncertainty
+## 14 confusion     uncertainty
+## 15 corruptly     negative   
+## 16 arrearages    negative   
+## 17 danger        negative   
+## 18 circumvention negative   
+## 19 appeal        litigious  
+## 20 aggravating   negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)

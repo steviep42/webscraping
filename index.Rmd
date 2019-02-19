@@ -85,7 +85,9 @@ And you could apply some styling to this courtest of the CSS language which allo
 
 ![](.//PICS/css_page.png){width=450px}
 
-There are a number of tools that allow us to inspect web pages and see "what is under the hood". Warning - I just discovered that one of my favorite browser plugins to find the xpaths and/or css paths of page elements is no longer supported under Firefox or Chrome. I've found a couple of replacements but they don't work as well. I'll research it more. 
+### Useful tools 
+
+There are a number of tools that allow us to inspect web pages and see "what is under the hood". Warning - I just discovered that one of my favorite browser plugins (firebug) to find the xpaths and/or css paths of page elements is no longer supported under Firefox or Chrome. I've found a couple of replacements but they don't work as well. I'll research it more. The way that **Selector Gadget** and **xPath** work is that you install them into your browswer and then activate them whenever you need to identify the **selector** associated with a part of a web page. 
 
 \   
 
@@ -93,6 +95,7 @@ There are a number of tools that allow us to inspect web pages and see "what is 
 ------|--------------------------------
 Selector Gadget | http://selectorgadget.com/
 Firebug | https://getfirebug.com/ (now integrated into a version of Firefox)
+xPath | https://addons.mozilla.org/en-US/firefox/addon/xpath_finder/ 
 Google Chrome | Right click to inspect a page element 
 Google Chrome | View Developer - Developer Tools
 Oxygen Editor | Can obtain via the Emory Software Express Site
@@ -103,7 +106,16 @@ You will use the following three primary packages to help you get data from vari
 
 ## Quick **rvest** tutorial
 
-Now let's do a quick *rvest* tutorial:
+Now let's do a quick *rvest* tutorial. There are several steps involved in using **rvest** which are conceptually quite straightforward:
+
+1) Identify a URL to be examined for content
+2) Use Selector Gadet, xPath, or Google Insepct to identify the "selector"
+   This will be a paragraph, table, hyper links, images
+3) Load rvest
+4) Use **read_html** to "read" the URL
+5) Pass the result to **html_nodes** to get the selectors identified in step number 2
+6) Get the text or table content
+
 
 
 ```{r}
@@ -206,7 +218,7 @@ In the above example we leveraged the fact that we were looking specifically for
 
 
 ```{r}
-# Could have use the xPath pliugin to help
+# Could have use the xPath plugin to help
 
 url <- "https://en.wikipedia.org/wiki/World_population"
 ten_most_df <- read_html(url) 
