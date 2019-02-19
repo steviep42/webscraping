@@ -147,7 +147,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a></li>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
+</ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
@@ -279,14 +281,21 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 </div>
 <div id="tidytext" class="section level2">
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
-<p>A better way would be to use the tidytext package. First we need to create a data frame out of the text. Then we “tokenize” the text which means we have one line per word.</p>
+<p>So the tidytext package provides some accomodations to convert your body of text into individual <strong>tokens</strong> which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
 <span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
-<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
-## This warning is displayed once per session.</code></pre>
+text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
+
+text_df</code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##    line text                                                               
+##   &lt;int&gt; &lt;chr&gt;                                                              
+## 1     1 &quot;TranscriptFellow-Countrymen:  At this second appearing to take th…</code></pre>
+<p>The next step is to breakup each of text lines (we have only 1) into invdividual rows, each with it’s own line. We also want to count the number of times that each word appears. This is known as <strong>tokenizing</strong> the data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
+
+<span class="co"># Let&#39;s now count them</span>
 
 token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## # A tibble: 339 x 2
@@ -303,9 +312,28 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ##  9 for       9
 ## 10 in        9
 ## # … with 329 more rows</code></pre>
-<p>But we need to get rid of the “stop words”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words</span>
-<span class="kw">data</span>(stop_words)
+<p>But we need to get rid of the “stop words”. It’s a good thing that the <strong>tidytext</strong> package has a way to filter out the common words that do not significantly contribute to the meaning of the overall text. The <strong>stop_words</strong> data frame is built into <strong>tidytext</strong>. Take a look to see some of the words contained therein:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(stop_words)
+
+<span class="co"># Sample 40 random stop words</span>
+
+stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
+<pre><code>## # A tibble: 40 x 2
+##    word    lexicon
+##    &lt;chr&gt;   &lt;chr&gt;  
+##  1 became  onix   
+##  2 needs   SMART  
+##  3 might   SMART  
+##  4 much    onix   
+##  5 made    onix   
+##  6 may     onix   
+##  7 above   SMART  
+##  8 certain onix   
+##  9 showed  onix   
+## 10 likely  onix   
+## # … with 30 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
+
 tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">anti_join</span>(stop_words)</code></pre></div>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
@@ -358,7 +386,7 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 </div>
 <div id="back-to-the-pubmed-example" class="section level2">
 <h2><span class="header-section-number">5.4</span> Back To The PubMed Example</h2>
-<p>We have around 935 abstracts that we can now mess with</p>
+<p>We have around 935 abstracts that we mess with based on our work using the <strong>easyPubMed</strong> package</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a data frame out of the cleaned up abstracts</span>
 <span class="kw">library</span>(tidytext)
 <span class="kw">library</span>(dplyr)
@@ -461,10 +489,130 @@ tidy_text <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow11-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<div id="how-do-you-feel" class="section level3">
+<h3><span class="header-section-number">5.4.1</span> How Do You Feel ?</h3>
+<p>The next step is to explore what some of these words might mean. The <strong>tidytext</strong> package has four dictionaries that help you figure out what sentiment is being expressed by your data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
+<span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
+<pre><code>## # A tibble: 20 x 2
+##    word          sentiment
+##    &lt;chr&gt;         &lt;chr&gt;    
+##  1 kick          anger    
+##  2 renovation    positive 
+##  3 disingenuous  negative 
+##  4 joy           positive 
+##  5 reverence     positive 
+##  6 frankness     positive 
+##  7 gubernatorial positive 
+##  8 risky         fear     
+##  9 expertise     positive 
+## 10 begging       negative 
+## 11 unguarded     surprise 
+## 12 unfulfilled   negative 
+## 13 offend        negative 
+## 14 ornamented    positive 
+## 15 unsurpassed   trust    
+## 16 sticky        disgust  
+## 17 inheritance   surprise 
+## 18 luxury        joy      
+## 19 honesty       positive 
+## 20 priesthood    positive</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
+<span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
+<pre><code>## # A tibble: 20 x 2
+##    word          sentiment
+##    &lt;chr&gt;         &lt;chr&gt;    
+##  1 desperation   negative 
+##  2 terribleness  negative 
+##  3 easygoing     positive 
+##  4 willing       positive 
+##  5 insupportably negative 
+##  6 sardonic      negative 
+##  7 haywire       negative 
+##  8 dissemble     negative 
+##  9 continuity    positive 
+## 10 love          positive 
+## 11 cruelest      negative 
+## 12 affirm        positive 
+## 13 fabulously    positive 
+## 14 overawe       negative 
+## 15 sensible      positive 
+## 16 invincibility positive 
+## 17 unproven      negative 
+## 18 manic         negative 
+## 19 intense       negative 
+## 20 glaringly     negative</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
+<span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
+<pre><code>## # A tibble: 20 x 2
+##    word           sentiment   
+##    &lt;chr&gt;          &lt;chr&gt;       
+##  1 satisfying     positive    
+##  2 therefrom      litigious   
+##  3 winning        positive    
+##  4 unavailability constraining
+##  5 nonappealable  litigious   
+##  6 overage        negative    
+##  7 grossly        negative    
+##  8 solvency       negative    
+##  9 excellent      positive    
+## 10 amended        litigious   
+## 11 inconsistency  negative    
+## 12 constraining   constraining
+## 13 criminal       litigious   
+## 14 unobservable   uncertainty 
+## 15 libeled        litigious   
+## 16 anticipation   uncertainty 
+## 17 adjudge        litigious   
+## 18 progress       positive    
+## 19 reassigns      negative    
+## 20 unscheduled    negative</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Finn Arup Nielsen - uses a &quot;score&quot; model</span>
+<span class="kw">get_sentiments</span>(<span class="st">&quot;afinn&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
+<pre><code>## # A tibble: 20 x 2
+##    word         score
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 snub            -2
+##  2 rescued          2
+##  3 restricting     -2
+##  4 lighthearted     1
+##  5 steal           -2
+##  6 terrorize       -3
+##  7 fucking         -4
+##  8 impressive       3
+##  9 criticizing     -2
+## 10 interrupt       -2
+## 11 oversell        -2
+## 12 increase         1
+## 13 stupidly        -2
+## 14 smiled           2
+## 15 haunting         1
+## 16 mischiefs       -1
+## 17 sorrowful       -2
+## 18 complains       -2
+## 19 gagged          -2
+## 20 poor            -2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
+nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
 
-bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">%&gt;%</span><span class="st"> </span>
+nrc_joy</code></pre></div>
+<pre><code>## # A tibble: 689 x 2
+##    word          sentiment
+##    &lt;chr&gt;         &lt;chr&gt;    
+##  1 absolution    joy      
+##  2 abundance     joy      
+##  3 abundant      joy      
+##  4 accolade      joy      
+##  5 accompaniment joy      
+##  6 accomplish    joy      
+##  7 accomplished  joy      
+##  8 achieve       joy      
+##  9 achievement   joy      
+## 10 acrobat       joy      
+## # … with 679 more rows</code></pre>
+<p>So we will use the <strong>nrc</strong> sentiment dictionary to see the “sentiment” expressed in our abstracts.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">inner_join</span>(<span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(word,sentiment,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
@@ -488,8 +636,9 @@ bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">
 
 tidy_text_nonum <span class="op">%&gt;%</span><span class="st">  </span>
 <span class="st">  </span><span class="kw">count</span>(word) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">with</span>(<span class="kw">wordcloud</span>(word,n,<span class="dt">max.words=</span><span class="dv">100</span>,<span class="dt">colors=</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;Dark2&quot;</span>)))</code></pre></div>
+<span class="st">  </span><span class="kw">with</span>(<span class="kw">wordcloud</span>(word,n,<span class="dt">max.words=</span><span class="dv">90</span>,<span class="dt">colors=</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;Dark2&quot;</span>)))</code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow14-1.png" width="672" /></p>
+</div>
 </div>
 <div id="bigrams" class="section level2">
 <h2><span class="header-section-number">5.5</span> BiGrams</h2>

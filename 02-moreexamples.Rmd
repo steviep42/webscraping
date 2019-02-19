@@ -244,5 +244,5 @@ final.vec
 ```
 
 
-Well that was a lot of work and it's very tedious. And we processed only the first page of results. How do we "progrmmatically" hit the "Next" Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn't obvious how to do this. If we hove over the "Next" button we don't get an associated link.
+Well that was tedious. And we processed only the first page of results. How do we "progrmmatically" hit the "Next" Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn't obvious how to do this. If we hove over the "Next" button we don't get an associated link.
 

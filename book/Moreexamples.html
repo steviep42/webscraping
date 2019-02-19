@@ -147,7 +147,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a></li>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
+</ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
@@ -197,12 +199,12 @@ path &lt;-<span class="st"> &#39;//*[@id=&quot;currencies-all&quot;]&#39;</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[[<span class="dv">1</span>]]
  <span class="kw">head</span>(bc_table[,<span class="dv">3</span><span class="op">:</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##   Symbol      Market Cap     Price
-## 1    BTC $69,178,719,928  $3942.74
-## 2    ETH $15,546,163,703   $148.18
-## 3    XRP $13,395,234,755 $0.325063
-## 4    EOS  $3,319,504,612     $3.66
-## 5    LTC  $2,950,214,742    $48.74
-## 6    BCH  $2,600,550,948   $147.51</code></pre>
+## 1    BTC $68,726,164,764  $3916.86
+## 2    ETH $15,450,531,071   $147.26
+## 3    XRP $13,283,232,215 $0.322345
+## 4    EOS  $3,275,937,623     $3.61
+## 5    LTC  $2,874,621,227    $47.49
+## 6    BCH  $2,572,183,264   $145.90</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Name,Symbol,Price)
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Name=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,<span class="st">&quot; &quot;</span>,Name))
@@ -461,7 +463,7 @@ final.vec</code></pre></div>
 ## [16] &quot;Internationally, the use of patient-reported outcomes (PROs) is increasing. Electronic PROs (ePROs) offer immediate access of such reports to healthcare providers. The objectives of this study were to assess nurses&#39; perspectives on the usefulness and impact of ePRO administration in home dialysis clinics and assess patient perceptions of satisfaction with nursing care following use of ePROs.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 ## [17] &quot;The Lancashire Teaching Hospitals NHS Trust in the UK has been providing renal care through video-as-a-service (VAAS) to patients since 2013, with support from the North West NHS Shared Infrastructure Service, a collaborative team that supports information and communication technology use in the UK National Health Service.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 ## [18] &quot;Neonatal autosomal recessive polycystic kidney disease (ARPKD) is associated with giant kidneys, lung hypoplasia, pulmonal hypertension, and end-stage renal failure. Depending on the study, mortality is reported to range between 20 and 80%.&quot;</code></pre>
-<p>Well that was a lot of work and it’s very tedious. And we processed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
+<p>Well that was tedious. And we processed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
 
 </div>
 </div>

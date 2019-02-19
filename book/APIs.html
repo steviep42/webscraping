@@ -147,7 +147,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a></li>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
+</ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
@@ -303,11 +305,8 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(omdbapi)
 <span class="co"># The first time you use this you will be prompted to enter your</span>
  <span class="co"># API key</span>
-movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>## Couldn&#39;t find env var OMDB_API_KEY See ?omdb_api_key for more details.</code></pre>
-<pre><code>## Please enter your API key and press enter:</code></pre>
-<pre><code>## Updating OMDB_API_KEY env var to PAT</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
+movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)
+(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
 <pre><code>##                                     Title      Year    imdbID   Type
 ## 1               Star Wars: The Clone Wars      2008 tt1185834  movie
 ## 2               Star Wars: The Clone Wars 2008–2019 tt0458290 series
@@ -429,7 +428,6 @@ rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span c
 </div>
 <p>The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(easyPubMed)</code></pre></div>
-<pre><code>## Warning: package &#39;easyPubMed&#39; was built under R version 3.5.2</code></pre>
 <p>Let’s do some searching</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
 my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)

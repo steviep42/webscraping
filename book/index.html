@@ -147,7 +147,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a></li>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
+</ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
@@ -293,9 +295,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="quick-rvest-tutorial" class="section level2">
 <h2><span class="header-section-number">1.5</span> Quick <strong>rvest</strong> tutorial</h2>
 <p>Now let’s do a quick <em>rvest</em> tutorial:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)</code></pre></div>
-<pre><code>## Loading required package: xml2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
+url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
 
 (paragraphs &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>))</code></pre></div>
 <pre><code>## {xml_nodeset (64)}
@@ -334,22 +335,30 @@ paragraphs[<span class="dv">1</span><span class="op">:</span><span class="dv">10
 ##  [8] &quot;It is difficult for estimates to be better than rough approximations, as even modern population estimates are fraught with uncertainties on the order of 3% to 5%.[17]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 ##  [9] &quot;Estimates of the population of the world at the time agriculture emerged in around 10,000 BC have ranged between 1 million and 15 million.[18][19]  Even earlier, genetic evidence suggests humans may have gone through a population bottleneck of between 1,000 and 10,000 people about 70,000 BC, according to the Toba catastrophe theory. By contrast, it is estimated that around 50–60 million people lived in the combined eastern and western Roman Empire in the 4th century AD.[20]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 ## [10] &quot;The Plague of Justinian, which first emerged during the reign of the Roman emperor Justinian, caused Europe&#39;s population to drop by around 50% between the 6th and 8th centuries AD.[21] The population of Europe was more than 70 million in 1340.[22] The Black Death pandemic of the 14th century may have reduced the world&#39;s population from an estimated 450 million in 1340 to between 350 and 375 million in 1400;[23] it took 200 years for population figures to recover.[24] The population of China decreased from 123 million in 1200 to 65 million in 1393,[25] presumably due to a combination of Mongol invasions, famine, and plague.[26]&quot;</code></pre>
-<p>Get some other types of HTML obejects. Let’s get all the “h2” HTML elements:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;h2&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()</code></pre></div>
-<pre><code>##  [1] &quot;Contents&quot;                            
-##  [2] &quot;Population by region&quot;                
-##  [3] &quot;History&quot;                             
-##  [4] &quot;Global demographics&quot;                 
-##  [5] &quot;Largest populations by country&quot;      
-##  [6] &quot;Fluctuation&quot;                         
-##  [7] &quot;Mathematical approximations&quot;         
-##  [8] &quot;Overpopulation&quot;                      
-##  [9] &quot;Number of humans who have ever lived&quot;
-## [10] &quot;See also&quot;                            
-## [11] &quot;Notes&quot;                               
-## [12] &quot;References&quot;                          
-## [13] &quot;External links&quot;                      
-## [14] &quot;Navigation menu&quot;</code></pre>
+<p>Get some other types of HTML obejects. Let’s get all the hyperlinks to other pages</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) </code></pre></div>
+<pre><code>## {xml_nodeset (1715)}
+##  [1] &lt;a id=&quot;top&quot;&gt;&lt;/a&gt;
+##  [2] &lt;a href=&quot;/wiki/Wikipedia:Protection_policy#semi&quot; title=&quot;This articl ...
+##  [3] &lt;a class=&quot;mw-jump-link&quot; href=&quot;#mw-head&quot;&gt;Jump to navigation&lt;/a&gt;
+##  [4] &lt;a class=&quot;mw-jump-link&quot; href=&quot;#p-search&quot;&gt;Jump to search&lt;/a&gt;
+##  [5] &lt;a href=&quot;/wiki/File:Question_book-new.svg&quot; class=&quot;image&quot;&gt;&lt;img alt=&quot; ...
+##  [6] &lt;a href=&quot;/wiki/Wikipedia:Citing_sources#Inline_citations&quot; title=&quot;Wi ...
+##  [7] &lt;a class=&quot;external text&quot; href=&quot;//en.wikipedia.org/w/index.php?title ...
+##  [8] &lt;a href=&quot;/wiki/Wikipedia:Verifiability&quot; title=&quot;Wikipedia:Verifiabil ...
+##  [9] &lt;a href=&quot;/wiki/Template:Citation_needed&quot; title=&quot;Template:Citation n ...
+## [10] &lt;a href=&quot;/wiki/Wikipedia:Identifying_reliable_sources&quot; class=&quot;mw-re ...
+## [11] &lt;a href=&quot;/wiki/Wikipedia:Verifiability#Burden_of_evidence&quot; title=&quot;W ...
+## [12] &lt;a href=&quot;/wiki/Help:Maintenance_template_removal&quot; title=&quot;Help:Maint ...
+## [13] &lt;a href=&quot;/wiki/File:World_population_v3.svg&quot; class=&quot;image&quot;&gt;&lt;img alt ...
+## [14] &lt;a href=&quot;/wiki/File:World_population_v3.svg&quot; class=&quot;internal&quot; title ...
+## [15] &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://esa.un.org/wpp ...
+## [16] &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https://esa.un.org/un ...
+## [17] &lt;a href=&quot;/wiki/File:Population_Growth_by_World_Bank_continental_div ...
+## [18] &lt;a href=&quot;/wiki/File:Population_Growth_by_World_Bank_continental_div ...
+## [19] &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https://www.google.co ...
+## [20] &lt;a href=&quot;/wiki/Public_data&quot; class=&quot;mw-redirect&quot; title=&quot;Public data&quot; ...
+## ...</code></pre>
 <p>What about tables ?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
 tables &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) 
@@ -393,9 +402,6 @@ tables</code></pre></div>
 
 </div>
 <p>First we will load packages that will help us throughout this session.</p>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
 <p>In this case we’ll need to figure out what number table it is we want. We could fetch all the tables and then experiment to find the precise one.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
 <span class="kw">library</span>(tidyr)
@@ -422,8 +428,15 @@ ten_most_populous <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Country_Territory,<span class="dt">y=</span>Population)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Population / 1,000,000&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Top 10 Most Populous Countries&quot;</span>)</code></pre></div>
-<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="Web_Scraping_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn’t always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn’t correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it’s okay to try to use simple elements and then try to refine the search some more.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Could have use the xPath pliugin to help</span>
+
+url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
+ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) 
+  
+ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span><span class="st">&quot;/html/body/div[3]/div[3]/div[4]/div/table[5]&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()</code></pre></div>
 </div>
 <div id="scraping-patient-dialysis-stories" class="section level2">
 <h2><span class="header-section-number">1.7</span> Scraping Patient Dialysis Stories</h2>

@@ -124,12 +124,13 @@ paragraphs[1:10]
 ```
 
 
-Get some other types of HTML obejects. Let's get all the "h2" HTML elements:
+Get some other types of HTML obejects. Let's get all the hyperlinks to other pages
 
 ```{r}
 
-read_html(url) %>% html_nodes("h2") %>% html_text()
+read_html(url) %>% html_nodes("a") 
 ```
+
 
 What about tables ? 
 
@@ -202,6 +203,17 @@ ten_most_populous %>%
 ```
 
 In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn't always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn't correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it's okay to try to use simple elements and then try to refine the search some more.
+
+
+```{r}
+# Could have use the xPath pliugin to help
+
+url <- "https://en.wikipedia.org/wiki/World_population"
+ten_most_df <- read_html(url) 
+  
+ten_most_populous <- ten_most_df %>% 
+  html_nodes(xpath="/html/body/div[3]/div[3]/div[4]/div/table[5]") %>% html_table()
+```
 
 
 ## Scraping Patient Dialysis Stories

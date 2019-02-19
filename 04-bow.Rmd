@@ -88,25 +88,44 @@ word_vec[1:30]
 
 ## tidytext
 
-A better way would be to use the tidytext package. First we need to create a data frame out of the text. Then we "tokenize" the text which means we have one line per word. 
+So the tidytext package provides some accomodations to convert your body of text into individual **tokens** which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.
 
-```{r bow4}
+
+```{r}
 library(tidytext)
 library(tidyr)
 text_df <- data_frame(line = 1:length(lincoln_doc), text = lincoln_doc)
+
+text_df
+```
+
+The next step is to breakup each of text lines (we have only 1) into invdividual rows, each with it's own line. We also want to count the number of times that each word appears. This is known as **tokenizing** the data frame.
+
+```{r bow4}
 token_text <- text_df %>%
   unnest_tokens(word, text)
+
+# Let's now count them
 
 token_text %>% count(word,sort=TRUE)
 
 ```
 
-But we need to get rid of the "stop words"
+But we need to get rid of the "stop words". It's a good thing that the **tidytext** package has a way to filter out the common words that do not significantly contribute to the meaning of the overall text. The **stop_words** data frame is built into **tidytext**. Take a look to see some of the words contained therein:
+
+```{r}
+data(stop_words)
+
+# Sample 40 random stop words
+
+stop_words %>% sample_n(40)
+```
+
 
 
 ```{r bow5}
-# Now remove stop words
-data(stop_words)
+# Now remove stop words from the document
+
 tidy_text <- token_text %>%
   anti_join(stop_words)
 
@@ -135,11 +154,12 @@ tidy_text %>%
 
 ## Back To The PubMed Example
 
-We have around 935 abstracts that we can now mess with
+We have around 935 abstracts that we mess with based on our work using the **easyPubMed** package
 
 ```{r echo=FALSE}
 my_abstracts <- readRDS("my_abstracts")
 ```
+
 
 
 ```{r bow7,message=FALSE}
@@ -226,11 +246,34 @@ tidy_text_nonum %>%
   coord_flip()
 ```
 
+### How Do You Feel ?
+
+The next step is to explore what some of these words might mean. The **tidytext** package has four dictionaries that help you figure out what sentiment is being expressed by your data frame. 
 
 
-```{r bow12}
+```{r}
+# NRC Emotion Lexicon from Saif Mohammad and Peter Turney
+get_sentiments("nrc") %>% sample_n(20)
+
+# the sentiment lexicon from Bing Liu and collaborators
+get_sentiments("bing") %>% sample_n(20)
+
+# Tim Loughran and Bill McDonald
+get_sentiments("loughran") %>% sample_n(20)
+
+# Finn Arup Nielsen - uses a "score" model
+get_sentiments("afinn") %>% sample_n(20)
+
+# Pull out words that correspond to joy
 nrc_joy <- get_sentiments("nrc") %>% 
   filter(sentiment == "joy")
+
+nrc_joy
+```
+
+So we will use the **nrc** sentiment dictionary to see the "sentiment" expressed in our abstracts.
+
+```{r bow12}
 
 bing_word_counts <- tidy_text_nonum %>% 
   inner_join(get_sentiments("nrc")) %>% 
@@ -264,7 +307,7 @@ library(wordcloud)
 
 tidy_text_nonum %>%  
   count(word) %>%
-  with(wordcloud(word,n,max.words=100,colors=brewer.pal(8,"Dark2")))
+  with(wordcloud(word,n,max.words=90,colors=brewer.pal(8,"Dark2")))
 ```
 
 ## BiGrams
