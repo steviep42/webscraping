@@ -971,7 +971,7 @@ salary
 ```
 
 
-So we could process multiple pages
+So the default is 10 listings per page but there are many more pages we could process to get more information. If we look at the bottom of the page we can get some clues as to what the URLs are. Here we'll just process the first two pages since it will be quick and won't burden the server. 
 
 
 ```{r sal2,eval=FALSE}
@@ -983,6 +983,9 @@ str2 <- "institution-name=&professor-category=1591&page="
 intost <- c("Institution","Category","State")
 
 salary <- data.frame()
+
+# We'll get just the first two pages
+
 for (ii in 1:2) {
   nurl  <- paste(str1,str2,ii,sep="")
   df <- read_html(nurl)
