@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 XML and JSON | Web Scraping with R</title>
-  <meta name="description" content="This is in support of my talk for the Data Science group">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is in support of my talk for the Data Science group" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 XML and JSON | Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -22,18 +21,18 @@
   <meta name="twitter:description" content="This is in support of my talk for the Data Science group" />
   
 
-<meta name="author" content="Steve Pittard">
+<meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2020-02-08" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="Moreexamples.html">
+<link rel="prev" href="index.html"/>
+<link rel="next" href="Moreexamples.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -41,6 +40,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -48,7 +48,9 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
@@ -135,9 +137,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
-<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
-<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
-<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.4</b> PubMed</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
+<li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
@@ -241,28 +244,28 @@ ten_most_df &lt;-<span class="st"> </span>ten_most_populous <span class="op">%&g
 ten_most_df &lt;-<span class="st"> </span>ten_most_df[[<span class="dv">1</span>]]
 
 ten_most_df</code></pre></div>
-<pre><code>##    Rank Country / Territory    Population              Date
-## 1     1       China[note 4] 1,394,600,000 February 19, 2019
-## 2     2               India 1,343,670,000 February 19, 2019
-## 3     3       United States   328,722,000 February 19, 2019
-## 4     4           Indonesia   265,015,300      July 1, 2018
-## 5     5            Pakistan   212,742,631      May 25, 2017
-## 6     6              Brazil   209,537,000 February 19, 2019
-## 7     7             Nigeria   188,500,000  October 31, 2016
-## 8     8          Bangladesh   166,077,000 February 19, 2019
-## 9     9      Russia[note 5]   146,877,088   January 1, 2018
-## 10   10               Japan   126,440,000   October 1, 2018
-##    % of worldpopulation Source
-## 1                 18.1%   [82]
-## 2                 17.5%   [83]
-## 3                 4.28%   [84]
-## 4                 3.45%   [85]
-## 5                 2.77%   [86]
-## 6                 2.73%   [87]
-## 7                 2.45%   [88]
-## 8                 2.16%   [89]
-## 9                 1.91%   [90]
-## 10                1.64%   [91]</code></pre>
+<pre><code>##    Rank Country / Territory    Population % of worldpopulation
+## 1     1       China[note 4] 1,401,231,560                18.0%
+## 2     2               India 1,358,326,450                17.5%
+## 3     3       United States   329,293,594                4.24%
+## 4     4           Indonesia   265,015,300                3.41%
+## 5     5            Pakistan   212,742,631                2.74%
+## 6     6              Brazil   211,093,998                2.72%
+## 7     7             Nigeria   188,500,000                2.43%
+## 8     8          Bangladesh   168,062,490                2.16%
+## 9     9      Russia[note 5]   146,877,088                1.89%
+## 10   10              Mexico   126,577,691                1.63%
+##               Date Source
+## 1       7 Feb 2020   [87]
+## 2       7 Feb 2020   [88]
+## 3       7 Feb 2020   [89]
+## 4      1 July 2018   [90]
+## 5      25 May 2017   [91]
+## 6       7 Feb 2020   [92]
+## 7  31 October 2016   [93]
+## 8       7 Feb 2020   [94]
+## 9   1 January 2018   [95]
+## 10     1 July 2019   [96]</code></pre>
 <div id="finding-xpaths" class="section level2">
 <h2><span class="header-section-number">2.1</span> Finding XPaths</h2>
 <div class="figure">
@@ -381,8 +384,6 @@ myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class
 }
 
 <span class="kw">myGeo</span>()</code></pre></div>
-<pre><code>##       lat       lng 
-##  33.79667 -84.32319</code></pre>
 <p>  Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*</p>
 <div class="figure">
 <img src="PICS/oxygen2.png" width="650" />
@@ -397,22 +398,16 @@ myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class
              <span class="st">&quot;LosAngeles CA&quot;</span>, 
              <span class="st">&quot;Rochester NY&quot;</span>)
 
-cityList &lt;-<span class="st"> </span><span class="kw">lapply</span>(namevec,myGeo)
+cityList &lt;-<span class="st"> </span><span class="kw">lapply</span>(namevec,myGeo,<span class="dt">eval=</span><span class="ot">FALSE</span>)
 
 <span class="co"># Or to get a data frame</span>
 
 cities &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">city=</span>namevec,<span class="kw">do.call</span>(rbind,cityList),
                      <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-cities</code></pre></div>
-<pre><code>##            city      lat        lng
-## 1    Atlanta GA 33.74900  -84.38798
-## 2 Birmingham AL 33.51859  -86.81036
-## 3    Seattle WA 47.60621 -122.33207
-## 4 Sacramento CA 38.58157 -121.49440
-## 5     Denver CO 39.73924 -104.99025
-## 6 LosAngeles CA 34.05223 -118.24368
-## 7  Rochester NY 43.15658  -77.60885</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s create a Map</span>
+cities
+
+
+<span class="co"># Let&#39;s create a Map</span>
 
 <span class="kw">library</span>(leaflet)
 m &lt;-<span class="st"> </span><span class="kw">leaflet</span>(<span class="dt">data=</span>cities)
@@ -421,8 +416,6 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-e69e818fb7c710d79f26" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e69e818fb7c710d79f26">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>
@@ -467,7 +460,7 @@ m</code></pre></div>
 <li><p>A string is a sequence of zero or more Unicode characters, wrapped in double quotes, using backslash escapes. A character is represented as a single character string.</p></li>
 </ul>
 <p>Do you remember the Google Geocoding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span></code></pre></div>
 <div class="figure">
 <img src="PICS/json_google.png" width="650" />
 
@@ -480,7 +473,7 @@ m</code></pre></div>
 <p>So we parse lists instead of using XPath. Many people feel this to be easier than trying to construct XPath statments. You will have to decide for yourself.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJSONIO)
 
-url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
+url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span>
 geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
 <span class="kw">str</span>(geo,<span class="dv">3</span>)</code></pre></div>
 <pre><code>## List of 2
@@ -505,7 +498,7 @@ geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
   geourl &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span>
   
   <span class="co"># You will need to replace this with your OWN key !</span>
-  key &lt;-<span class="st"> &quot;AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
+  key &lt;-<span class="st"> &quot;AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span>
   
   address &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)
   
@@ -554,8 +547,8 @@ m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class
 
 <span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-fae87325a71712348658" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fae87325a71712348658">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2b6594d1a1234cbe965e" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b6594d1a1234cbe965e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
@@ -570,11 +563,13 @@ m</code></pre></div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({

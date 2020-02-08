@@ -159,7 +159,7 @@ So I could create an R function to take care of this kind of thing so I could ma
 
 First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information. 
 
-```{r mygeo, message=FALSE}
+```{r mygeo, message=FALSE, eval=FALSE}
 
 # https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw
 
@@ -204,7 +204,7 @@ Now. We could have saved the report to a file on our local computer and open it 
 We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess. 
 
 
-```{r geoapply, message=FALSE}
+```{r geoapply, message=FALSE, eval=FALSE}
 namevec <- c("Atlanta GA", 
              "Birmingham AL", 
              "Seattle WA", 
@@ -213,7 +213,7 @@ namevec <- c("Atlanta GA",
              "LosAngeles CA", 
              "Rochester NY")
 
-cityList <- lapply(namevec,myGeo)
+cityList <- lapply(namevec,myGeo,eval=FALSE)
 
 # Or to get a data frame
 
@@ -295,7 +295,7 @@ See http:..www.json.org/ for a full description of the specification
 Do you remember the Google Geocoding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:
 
 ```{r}
-url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y"
 ```
 
 
@@ -313,7 +313,7 @@ So we parse lists instead of using XPath. Many people feel this to be easier tha
 ```{r rjsonio}
 library(RJSONIO)
 
-url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y"
 geo <- fromJSON(url)
 str(geo,3)
 ```
@@ -333,7 +333,7 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="json") {
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
   
   # You will need to replace this with your OWN key !
-  key <- "AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+  key <- "AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y"
   
   address <- gsub(" ","+",address)
   

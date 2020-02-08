@@ -17,29 +17,30 @@ Okay. This is a tour of some sites that will serve as important examples on how 
 ## BitCoin Prices
 
 
-![](./PICS/crypto.png){width=650px}
+![](./PICS/bc4.png){}
 
-![](./PICS/view_source.png){width=750px}
+The challenge here is that it's all one big table and it's not clear how to adress it. And the owners of the web site will ususally change the format or start using Javascript or HTML5 which will mess things up in the future. One solid approach I frequently use is to simply pull out all the tables and, by experimentation, try to figure out which one has the information I want. This always require some work.
 
 ```{r bitcoin1}
 library(rvest)
 url <- "https://coinmarketcap.com/all/views/all/"
 bc <- read_html(url)
 
-path <- '//*[@id="currencies-all"]'
- bc_table <- bc %>% html_nodes(xpath=path) %>% html_table()
+bc_table <- bc %>% 
+  html_nodes('table') %>% 
+  html_table() %>% .[[3]]
  # We get back a one element list that is a data frame
  str(bc_table,0)
- bc_table <- bc_table[[1]]
- head(bc_table[,3:5])
+ bc_table <- bc_table[,c(2:3,5)]
+ head(bc_table)
 ```
+
+Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.
 
 ```{r bitcoin2}
 # The data is "dirty" and has characers in it that need cleaning
-bc_table <- bc_table %>% select(Name,Symbol,Price)
-bc_table <- bc_table %>% mutate(Name=gsub("\n"," ",Name))
-bc_table <- bc_table %>% mutate(Name=gsub("\\.+","",Name))
 bc_table <- bc_table %>% mutate(Price=gsub("\\$","",Price))
+bc_table <- bc_table %>% mutate(Price=gsub(",","",Price))
 bc_table <- bc_table %>% mutate(Price=round(as.numeric(Price),2))
 
 # There are four rows wherein the Price is missing NA
@@ -47,7 +48,12 @@ bc_table <- bc_table %>% filter(complete.cases(bc_table))
 
 # Let's get the Crypto currencies with the Top 10 highest prices 
 top_10 <- bc_table %>% arrange(desc(Price)) %>% head(10)
+top_10
+```
 
+Let's make a barplot of the top 10 crypto currencies. 
+
+```{r bitbar}
 # Next we want to make a barplot of the Top 10
 ylim=c(0,max(top_10$Price)+10000)
 main="Top 10 Crypto Currencies in Terms of Price"
@@ -55,6 +61,11 @@ bp <- barplot(top_10$Price,col="aquamarine",
               ylim=ylim,main=main)
 axis(1, at=bp, labels=top_10$Symbol,  cex.axis = 0.7)
 grid()
+```
+
+So that didn't work out so well since one of the crypto currencies dominates the others in terms of price. So let's create a log transformed verion of the plot.
+
+```{r bitbarlog}
 # Let's take the log of the price
 ylim=c(0,max(log(top_10$Price))+5)
 main="Top 10 Crypto Currencies in Terms of log(Price)"
@@ -63,6 +74,67 @@ bp <- barplot(log(top_10$Price),col="aquamarine",
 axis(1, at=bp, labels=top_10$Symbol,  cex.axis = 0.7)
 grid()
 ```
+
+## IMDB 
+
+Look at this example from IMDb (Internet Movie Database). According to Wikipedia:
+
+IMDb (Internet Movie Database)[2] is an online database of   information related to films, television programs, home    videos, video games, and streaming content online – including cast, production crew and personal biographies, plot summaries, trivia, fan and critical reviews, and ratings. We can search or refer to specific movies by URL if we wanted. For example, consider the following link to the "Lego Movie":  http://www.imdb.com/title/tt1490017/ 
+
+![](./PICS/legom.png)
+
+In terms of scraping information from this site we could do that using the **rvest** package. Let's say that we wanted to capture the rating information which is 7.8 out of 10. We could use the xPath Tool or the Selector gadet tool to zone in on this information. According to selector gadget we have the following xpath expression:
+
+![](./PICS/sg.png)
+
+```{r}
+url <- "http://www.imdb.com/title/tt1490017/"
+lego_movie <- read_html(url)
+
+# Scrape the website for the movie rating
+rating <- lego_movie %>%
+  html_nodes(".ratingValue span") %>%
+  html_text() 
+```
+
+So that gives us what we need albeit in character form. Now it's a simple matter of parsing out the first rating value:
+
+```{r}
+(rating <- as.numeric(rating[1]))
+```
+
+That wasn't so bad. Let's see what using the xPath plugin gives us:
+
+![](./PICS/xpp.png)
+
+We get a much longer xpath expression which should provide us with direct access to the value. 
+
+```{r}
+
+xp <- "/html/body/div[3]/div/div[2]/div[5]/div[1]/div[2]/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/strong/span"
+
+# Scrape the website for the movie rating
+rating <- lego_movie %>%
+  html_nodes(xpath=xp) %>%
+  html_text() %>% as.numeric()
+
+rating
+```
+
+Let's access the summary section of the link. We could use Selector Gadget or the xPath plugin. I'll use the former.
+
+![](./PICS/summary.png)
+
+![](./PICS/sumxt.png)
+
+```{r}
+mov_summary <- lego_movie %>%
+  html_nodes(".summary_text") %>%
+  html_text() 
+
+mov_summary
+```
+
 
 ## Faculty Salaries
 
@@ -233,7 +305,7 @@ text.vec <- vector()
 
 for (ii in 1:length(results)) {
   string <- paste0("https://www.ncbi.nlm.nih.gov",results[ii])
-  text.vec[ii] <- read_html(string) %>% html_nodes("p") %>% `[[`(10) %>% html_text()
+  text.vec[ii] <- read_html(string) %>% html_nodes("p") %>% `[[`(11) %>% html_text()
 }
 
 # Eliminate lines with newlines characters

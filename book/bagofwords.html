@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R</title>
-  <meta name="description" content="This is in support of my talk for the Data Science group">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="description" content="This is in support of my talk for the Data Science group" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -22,18 +21,18 @@
   <meta name="twitter:description" content="This is in support of my talk for the Data Science group" />
   
 
-<meta name="author" content="Steve Pittard">
+<meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2019-02-19">
+<meta name="date" content="2020-02-08" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="APIs.html">
-<link rel="next" href="final-words.html">
+<link rel="prev" href="APIs.html"/>
+<link rel="next" href="final-words.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -41,6 +40,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -48,6 +48,16 @@
 
 
 
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -127,9 +137,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
-<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.2</b> Faculty Salaries</a></li>
-<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.3</b> Filling Out Forms From a Program</a></li>
-<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.4</b> PubMed</a></li>
+<li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
+<li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
+<li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
+<li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
@@ -207,14 +218,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>They all offer similar capabilities</li>
 <li>We’ll look at tidytext</li>
 </ul>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
 </div>
 <div id="simple-example" class="section level2">
 <h2><span class="header-section-number">5.2</span> Simple Example</h2>
@@ -224,9 +227,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>Find the URL for Lincoln’s March 4, 1865 Speech:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://millercenter.org/the-presidency/presidential-speeches/march-4-1865-second-inaugural-address&quot;</span>
-<span class="kw">library</span>(rvest)</code></pre></div>
-<pre><code>## Loading required package: xml2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lincoln_doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span>
+<span class="kw">library</span>(rvest)
+lincoln_doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span>
 <span class="st">                    </span><span class="kw">html_nodes</span>(<span class="st">&quot;.view-transcript&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">                    </span><span class="kw">html_text</span>()
 lincoln_doc</code></pre></div>
@@ -285,17 +287,11 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 <div id="tidytext" class="section level2">
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
 <p>So the tidytext package provides some accomodations to convert your body of text into individual <strong>tokens</strong> which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)</code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;tidytext&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     stop_words</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
-<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
-## This warning is displayed once per session.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text_df</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
+<span class="kw">library</span>(tidyr)
+text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
+
+text_df</code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##    line text                                                               
 ##   &lt;int&gt; &lt;chr&gt;                                                              
@@ -328,18 +324,18 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 
 stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
 <pre><code>## # A tibble: 40 x 2
-##    word   lexicon 
-##    &lt;chr&gt;  &lt;chr&gt;   
-##  1 doing  SMART   
-##  2 having SMART   
-##  3 best   SMART   
-##  4 give   onix    
-##  5 she    SMART   
-##  6 later  SMART   
-##  7 unless SMART   
-##  8 with   snowball
-##  9 likely SMART   
-## 10 men    onix    
+##    word      lexicon 
+##    &lt;chr&gt;     &lt;chr&gt;   
+##  1 ordering  onix    
+##  2 knows     onix    
+##  3 in        onix    
+##  4 becomes   SMART   
+##  5 his       snowball
+##  6 not       onix    
+##  7 name      SMART   
+##  8 well      onix    
+##  9 indicates SMART   
+## 10 despite   SMART   
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -504,78 +500,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word           sentiment   
-##    &lt;chr&gt;          &lt;chr&gt;       
-##  1 rehabilitation positive    
-##  2 troublesome    anger       
-##  3 completeness   positive    
-##  4 disgraced      negative    
-##  5 humanity       joy         
-##  6 respecting     positive    
-##  7 architecture   trust       
-##  8 lose           disgust     
-##  9 civil          positive    
-## 10 phantom        fear        
-## 11 swelling       fear        
-## 12 cardiomyopathy fear        
-## 13 violence       anger       
-## 14 payment        negative    
-## 15 board          anticipation
-## 16 helmet         fear        
-## 17 prudent        trust       
-## 18 panier         positive    
-## 19 glimmer        positive    
-## 20 cove           anticipation</code></pre>
+##    word          sentiment
+##    &lt;chr&gt;         &lt;chr&gt;    
+##  1 blister       negative 
+##  2 avarice       anger    
+##  3 rapt          positive 
+##  4 alb           trust    
+##  5 dishonor      fear     
+##  6 profusion     negative 
+##  7 tribune       trust    
+##  8 vulture       fear     
+##  9 fun           positive 
+## 10 mortification disgust  
+## 11 appreciation  trust    
+## 12 sorrow        negative 
+## 13 derelict      negative 
+## 14 copycat       disgust  
+## 15 mother        joy      
+## 16 fair          positive 
+## 17 instinctive   positive 
+## 18 blemish       sadness  
+## 19 deacon        trust    
+## 20 dumps         negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
 ##    word         sentiment
 ##    &lt;chr&gt;        &lt;chr&gt;    
-##  1 stately      positive 
-##  2 loot         negative 
-##  3 leakage      negative 
-##  4 cheer        positive 
-##  5 unfamiliar   negative 
-##  6 pleasure     positive 
-##  7 led          positive 
-##  8 stresses     negative 
-##  9 hearten      positive 
-## 10 clunky       negative 
-## 11 hollow       negative 
-## 12 skeletons    negative 
-## 13 unproductive negative 
-## 14 catchy       positive 
-## 15 tremendously positive 
-## 16 navigable    positive 
-## 17 fulminate    negative 
-## 18 beg          negative 
-## 19 bravo        positive 
-## 20 meticulous   positive</code></pre>
+##  1 hogs         negative 
+##  2 brutalities  negative 
+##  3 coupists     negative 
+##  4 odor         negative 
+##  5 draining     negative 
+##  6 trustingly   positive 
+##  7 temerity     negative 
+##  8 skilled      positive 
+##  9 ruts         negative 
+## 10 delectable   positive 
+## 11 glitter      positive 
+## 12 coward       negative 
+## 13 waning       negative 
+## 14 balanced     positive 
+## 15 exasperate   negative 
+## 16 hollow       negative 
+## 17 tantalize    positive 
+## 18 emphatically negative 
+## 19 fine         positive 
+## 20 wonderfully  positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word           sentiment  
-##    &lt;chr&gt;          &lt;chr&gt;      
-##  1 misjudging     negative   
-##  2 abnormal       negative   
-##  3 restate        negative   
-##  4 dissenting     negative   
-##  5 prosecuted     litigious  
-##  6 risky          uncertainty
-##  7 inconveniences negative   
-##  8 deviate        uncertainty
-##  9 suspect        negative   
-## 10 derogating     litigious  
-## 11 controvert     litigious  
-## 12 misusing       negative   
-## 13 dissolution    negative   
-## 14 reassessment   uncertainty
-## 15 ineffective    negative   
-## 16 improves       positive   
-## 17 provisoes      litigious  
-## 18 disagreeing    negative   
-## 19 interrogators  litigious  
-## 20 outage         negative</code></pre>
+##    word         sentiment   
+##    &lt;chr&gt;        &lt;chr&gt;       
+##  1 likelihood   uncertainty 
+##  2 worthy       positive    
+##  3 punishment   negative    
+##  4 derogated    litigious   
+##  5 dependant    constraining
+##  6 codefendants litigious   
+##  7 novo         litigious   
+##  8 suspicions   negative    
+##  9 misstating   negative    
+## 10 directive    constraining
+## 11 beneficiated litigious   
+## 12 discredit    negative    
+## 13 imbalances   negative    
+## 14 coerce       negative    
+## 15 prevention   negative    
+## 16 variable     uncertainty 
+## 17 encumbered   constraining
+## 18 amorphous    superfluous 
+## 19 sentenced    negative    
+## 20 decline      negative</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
@@ -697,11 +693,8 @@ bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span cla
 ## 24 cost effectiveness        14
 ## 25 daily life                14
 ## # … with 1.182e+04 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)</code></pre></div>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.5.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bigram_counts <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)
+bigram_counts <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(word1, <span class="op">-</span>n), <span class="dt">y =</span> <span class="kw">reorder</span>(word2, <span class="op">-</span>n), <span class="dt">fill =</span> n)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_tile</span>(<span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
@@ -727,11 +720,13 @@ bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span cla
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({

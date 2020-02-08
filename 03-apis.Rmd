@@ -136,7 +136,11 @@ url <- "https://www.dailystrength.org/group/dialysis"
 
 # Open up a connection 
 
-rD <- rsDriver()
+# rD <- rsDriver()
+# So, you might have to specify the version of chrome you are using
+# For someone reason this seems now to be necessary (11/4/19)
+
+rD <- rsDriver(browser=c("chrome"),chromever="78.0.3904.70")
 remDr <- rD[["client"]]
 remDr$navigate(url)
 
