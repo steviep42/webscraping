@@ -142,7 +142,7 @@ Let's look at an XML file that has some basic content:
 
 ## Example: GeoCoding With Google 
 
-Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. Still, you have to sign up for an account and get an API key. You need to go to the Google Cloud Website and enable the Geocoding API service. Again, this is free but you must generate an API key that you can use to access the service. If you plan on doing thousands of gecoding requests per day then you will need to pay some money. But for learning and examples you can stick with the free version. 
+Let's run through an example of using the GeoCoding API with Google. They used to provide free access to this service but no more. You have to sign up for an account and get an API key. If you are currently taking one of my classes I probably have arranged for cloud credits that you can use to do Google Geocoding for free. 
 
 ![](./PICS/google_api2.png){}
 
@@ -172,7 +172,7 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
   
   # You will need to replace this with your OWN key !
-  key <- "AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw"
+  key <- "AIzaSyA3ereIVEjA0gPrxLupTPLO3GH_v98KpMA"
   
   address <- gsub(" ","+",address)
   
@@ -190,10 +190,15 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   
   return(c(lat=lat,lng=lon))  
 }
-
-myGeo()
+mylocs <- myGeo()
 ```
-\  
+
+```{r eval=FALSE}
+lat       lng 
+ 33.79667 -84.32319 
+```
+
+
 Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*
 
 
@@ -203,6 +208,9 @@ Now. We could have saved the report to a file on our local computer and open it 
 \  
 We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess. 
 
+```{r echo=FALSE}
+cities  <- readRDS(file="cities.rds")
+```
 
 ```{r geoapply, message=FALSE, eval=FALSE}
 namevec <- c("Atlanta GA", 
@@ -219,8 +227,12 @@ cityList <- lapply(namevec,myGeo,eval=FALSE)
 
 cities <- data.frame(city=namevec,do.call(rbind,cityList),
                      stringsAsFactors = FALSE)
-cities
+```
 
+
+
+```{r}
+cities
 
 # Let's create a Map
 
@@ -232,6 +244,7 @@ m <- addMarkers(m,popup=cities$city)
 # Put up the Map - click on the markers
 m
 ```
+
 
 ## Using JSON 
 
@@ -309,16 +322,25 @@ There is a function called fromJSON which will parse the JSON file and return a 
 
 So we parse lists instead of using XPath. Many people feel this to be easier than trying to construct XPath statments. You will have to decide for yourself.
 
+```{r echo=FALSE}
+geo <- readRDS(file="geo.rds")
+```
 
-```{r rjsonio}
+
+```{r eval=FALSE}
 library(RJSONIO)
 
 url <- "https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y"
 geo <- fromJSON(url)
-str(geo,3)
+
 ```
 
 Since what we get back is a list we can directly access whatever we want. We just index into the list. No need for complicated XPATHS.
+
+```{r}
+str(geo,3)
+```
+
 
 ```{r georesult}
 geo$results[[1]]$geometry$location
@@ -326,14 +348,14 @@ geo$results[[1]]$geometry$location
 
 Let's put this into a function that helps us get the information for a number of addresses
 
-```{r}
+```{r eval=FALSE}
 myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="json") {
   library(RJSONIO)
   
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
   
   # You will need to replace this with your OWN key !
-  key <- "AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y"
+  key <- "AIzaSyA3ereIVEjA0gPrxLupTWRPOLH_v89DpMA"
   
   address <- gsub(" ","+",address)
   
@@ -355,7 +377,7 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="json") {
 Consider the following:
 
 
-```{r geoapplyjson, message=FALSE}
+```{r geoapplyjson, message=FALSE, eval=FALSE}
 namevec <- c("Atlanta GA", 
              "Birmingham AL", 
              "Seattle WA", 
@@ -370,9 +392,18 @@ cityList <- lapply(namevec,myGeo)
 
 cities <- data.frame(city=namevec,do.call(rbind,cityList),
                      stringsAsFactors = FALSE)
+
+```
+
+Now we can check out the geocoding cities and then make a map
+
+```{r echo=FALSE}
+cities  <- readRDS(file="cities.rds")
+```
+
+
+```{r}
 cities
-
-
 # Let's create a Map
 
 library(leaflet)
@@ -383,3 +414,4 @@ m <- addMarkers(m,popup=cities$city)
 # Put up the Map - click on the markers
 m
 ```
+

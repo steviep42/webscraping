@@ -202,12 +202,12 @@ bc_table &lt;-<span class="st"> </span>bc <span class="op">%&gt;%</span><span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[,<span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>)]
  <span class="kw">head</span>(bc_table)</code></pre></div>
 <pre><code>##           Name Symbol     Price
-## 1      Bitcoin    BTC $9,840.11
-## 2     Ethereum    ETH   $223.89
-## 3          XRP    XRP $0.276507
-## 4 Bitcoin Cash    BCH   $444.19
-## 5   Bitcoin SV    BSV   $337.64
-## 6     Litecoin    LTC    $76.88</code></pre>
+## 1      Bitcoin    BTC $9,831.22
+## 2     Ethereum    ETH   $224.68
+## 3          XRP    XRP $0.277099
+## 4 Bitcoin Cash    BCH   $445.80
+## 5   Bitcoin SV    BSV   $337.48
+## 6     Litecoin    LTC    $77.16</code></pre>
 <p>Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Price=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))
@@ -221,16 +221,16 @@ bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><s
 top_<span class="dv">10</span> &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Price)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)
 top_<span class="dv">10</span></code></pre></div>
 <pre><code>##            Name Symbol   Price
-## 1       Bitcoin    BTC 9840.11
-## 2         Maker    MKR  579.43
-## 3  Bitcoin Cash    BCH  444.19
-## 4    Bitcoin SV    BSV  337.64
-## 5      Ethereum    ETH  223.89
-## 6          Dash   DASH  125.37
-## 7        Monero    XMR   80.01
-## 8      Litecoin    LTC   76.88
-## 9         Zcash    ZEC   69.71
-## 10     DigixDAO    DGD   41.18</code></pre>
+## 1       Bitcoin    BTC 9831.22
+## 2         Maker    MKR  583.28
+## 3  Bitcoin Cash    BCH  445.80
+## 4    Bitcoin SV    BSV  337.48
+## 5      Ethereum    ETH  224.68
+## 6          Dash   DASH  128.66
+## 7        Monero    XMR   81.20
+## 8      Litecoin    LTC   77.16
+## 9         Zcash    ZEC   70.75
+## 10     DigixDAO    DGD   41.17</code></pre>
 <p>Let’s make a barplot of the top 10 crypto currencies.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next we want to make a barplot of the Top 10</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(top_<span class="dv">10</span><span class="op">$</span>Price)<span class="op">+</span><span class="dv">10000</span>)

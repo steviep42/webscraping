@@ -339,7 +339,7 @@ ten_most_df</code></pre></div>
 </div>
 <div id="example-geocoding-with-google" class="section level2">
 <h2><span class="header-section-number">2.2</span> Example: GeoCoding With Google</h2>
-<p>Let’s run through an example of using the GeoCoding API with Google. They used to provide free access to this service and they still do although you are limited to a certain number. Still, you have to sign up for an account and get an API key. You need to go to the Google Cloud Website and enable the Geocoding API service. Again, this is free but you must generate an API key that you can use to access the service. If you plan on doing thousands of gecoding requests per day then you will need to pay some money. But for learning and examples you can stick with the free version.</p>
+<p>Let’s run through an example of using the GeoCoding API with Google. They used to provide free access to this service but no more. You have to sign up for an account and get an API key. If you are currently taking one of my classes I probably have arranged for cloud credits that you can use to do Google Geocoding for free.</p>
 <div class="figure">
 <img src="PICS/google_api2.png" />
 
@@ -364,7 +364,7 @@ myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class
   geourl &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span>
   
   <span class="co"># You will need to replace this with your OWN key !</span>
-  key &lt;-<span class="st"> &quot;AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw&quot;</span>
+  key &lt;-<span class="st"> &quot;AIzaSyA3ereIVEjA0gPrxLupTPLO3GH_v98KpMA&quot;</span>
   
   address &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)
   
@@ -382,9 +382,10 @@ myGeo &lt;-<span class="st"> </span><span class="cf">function</span>(<span class
   
   <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">lat=</span>lat,<span class="dt">lng=</span>lon))  
 }
-
-<span class="kw">myGeo</span>()</code></pre></div>
-<p>  Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*</p>
+mylocs &lt;-<span class="st"> </span><span class="kw">myGeo</span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lat       lng 
+ <span class="fl">33.79667</span> <span class="op">-</span><span class="fl">84.32319</span> </code></pre></div>
+<p>Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*</p>
 <div class="figure">
 <img src="PICS/oxygen2.png" width="650" />
 
@@ -403,19 +404,27 @@ cityList &lt;-<span class="st"> </span><span class="kw">lapply</span>(namevec,my
 <span class="co"># Or to get a data frame</span>
 
 cities &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">city=</span>namevec,<span class="kw">do.call</span>(rbind,cityList),
-                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-cities
-
-
-<span class="co"># Let&#39;s create a Map</span>
+                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cities</code></pre></div>
+<pre><code>##            city      lat        lng
+## 1    Atlanta GA 33.74900  -84.38798
+## 2 Birmingham AL 33.51859  -86.81036
+## 3    Seattle WA 47.60621 -122.33207
+## 4 Sacramento CA 38.58157 -121.49440
+## 5     Denver CO 39.73924 -104.99025
+## 6 LosAngeles CA 34.05223 -118.24368
+## 7  Rochester NY 43.15658  -77.60885</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s create a Map</span>
 
 <span class="kw">library</span>(leaflet)
 m &lt;-<span class="st"> </span><span class="kw">leaflet</span>(<span class="dt">data=</span>cities)
 m &lt;-<span class="st"> </span><span class="kw">addTiles</span>(m)
-m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class="dt">popup=</span>cities<span class="op">$</span>city)
-
-<span class="co"># Put up the Map - click on the markers</span>
+m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class="dt">popup=</span>cities<span class="op">$</span>city)</code></pre></div>
+<pre><code>## Assuming &quot;lng&quot; and &quot;lat&quot; are longitude and latitude, respectively</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
+<div id="htmlwidget-a5d9ddbda4eca766fd4a" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a5d9ddbda4eca766fd4a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>
@@ -474,8 +483,9 @@ m</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJSONIO)
 
 url &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span>
-geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
-<span class="kw">str</span>(geo,<span class="dv">3</span>)</code></pre></div>
+geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)</code></pre></div>
+<p>Since what we get back is a list we can directly access whatever we want. We just index into the list. No need for complicated XPATHS.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(geo,<span class="dv">3</span>)</code></pre></div>
 <pre><code>## List of 2
 ##  $ results:List of 1
 ##   ..$ :List of 6
@@ -487,7 +497,6 @@ geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
 ##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;compound_code&quot; &quot;global_code&quot;
 ##   .. ..$ types             : chr &quot;street_address&quot;
 ##  $ status : chr &quot;OK&quot;</code></pre>
-<p>Since what we get back is a list we can directly access whatever we want. We just index into the list. No need for complicated XPATHS.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">geo<span class="op">$</span>results[[<span class="dv">1</span>]]<span class="op">$</span>geometry<span class="op">$</span>location</code></pre></div>
 <pre><code>##       lat       lng 
 ##  33.79667 -84.32319</code></pre>
@@ -498,7 +507,7 @@ geo &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
   geourl &lt;-<span class="st"> &quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span>
   
   <span class="co"># You will need to replace this with your OWN key !</span>
-  key &lt;-<span class="st"> &quot;AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span>
+  key &lt;-<span class="st"> &quot;AIzaSyA3ereIVEjA0gPrxLupTWRPOLH_v89DpMA&quot;</span>
   
   address &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)
   
@@ -528,8 +537,9 @@ cityList &lt;-<span class="st"> </span><span class="kw">lapply</span>(namevec,my
 <span class="co"># Or to get a data frame</span>
 
 cities &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">city=</span>namevec,<span class="kw">do.call</span>(rbind,cityList),
-                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-cities</code></pre></div>
+                     <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Now we can check out the geocoding cities and then make a map</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cities</code></pre></div>
 <pre><code>##            city      lat        lng
 ## 1    Atlanta GA 33.74900  -84.38798
 ## 2 Birmingham AL 33.51859  -86.81036
@@ -543,12 +553,12 @@ cities</code></pre></div>
 <span class="kw">library</span>(leaflet)
 m &lt;-<span class="st"> </span><span class="kw">leaflet</span>(<span class="dt">data=</span>cities)
 m &lt;-<span class="st"> </span><span class="kw">addTiles</span>(m)
-m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class="dt">popup=</span>cities<span class="op">$</span>city)
-
-<span class="co"># Put up the Map - click on the markers</span>
+m &lt;-<span class="st"> </span><span class="kw">addMarkers</span>(m,<span class="dt">popup=</span>cities<span class="op">$</span>city)</code></pre></div>
+<pre><code>## Assuming &quot;lng&quot; and &quot;lat&quot; are longitude and latitude, respectively</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Put up the Map - click on the markers</span>
 m</code></pre></div>
-<div id="htmlwidget-2b6594d1a1234cbe965e" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2b6594d1a1234cbe965e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-19a24a02268b9fe6400a" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-19a24a02268b9fe6400a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
