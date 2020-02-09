@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-08" />
+<meta name="date" content="2020-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,13 +201,13 @@ bc_table &lt;-<span class="st"> </span>bc <span class="op">%&gt;%</span><span cl
 <pre><code>## &#39;data.frame&#39;:    200 obs. of  11 variables:</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[,<span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>)]
  <span class="kw">head</span>(bc_table)</code></pre></div>
-<pre><code>##           Name Symbol     Price
-## 1      Bitcoin    BTC $9,827.76
-## 2     Ethereum    ETH   $224.37
-## 3          XRP    XRP $0.277466
-## 4 Bitcoin Cash    BCH   $445.57
-## 5   Bitcoin SV    BSV   $337.31
-## 6     Litecoin    LTC    $77.32</code></pre>
+<pre><code>##           Name Symbol      Price
+## 1      Bitcoin    BTC $10,083.48
+## 2     Ethereum    ETH    $227.90
+## 3          XRP    XRP  $0.280563
+## 4 Bitcoin Cash    BCH    $447.43
+## 5   Bitcoin SV    BSV    $342.13
+## 6     Litecoin    LTC     $76.59</code></pre>
 <p>Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
 bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Price=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))
@@ -220,17 +220,17 @@ bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><s
 <span class="co"># Let&#39;s get the Crypto currencies with the Top 10 highest prices </span>
 top_<span class="dv">10</span> &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Price)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)
 top_<span class="dv">10</span></code></pre></div>
-<pre><code>##            Name Symbol   Price
-## 1       Bitcoin    BTC 9827.76
-## 2         Maker    MKR  583.17
-## 3  Bitcoin Cash    BCH  445.57
-## 4    Bitcoin SV    BSV  337.31
-## 5      Ethereum    ETH  224.37
-## 6          Dash   DASH  128.07
-## 7        Monero    XMR   80.75
-## 8      Litecoin    LTC   77.32
-## 9         Zcash    ZEC   70.19
-## 10     DigixDAO    DGD   41.18</code></pre>
+<pre><code>##            Name Symbol    Price
+## 1       Bitcoin    BTC 10083.48
+## 2         Maker    MKR   588.16
+## 3  Bitcoin Cash    BCH   447.43
+## 4    Bitcoin SV    BSV   342.13
+## 5      Ethereum    ETH   227.90
+## 6          Dash   DASH   127.00
+## 7        Monero    XMR    85.32
+## 8      Litecoin    LTC    76.59
+## 9         Zcash    ZEC    70.46
+## 10     DigixDAO    DGD    41.72</code></pre>
 <p>Let’s make a barplot of the top 10 crypto currencies.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next we want to make a barplot of the Top 10</span>
 ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(top_<span class="dv">10</span><span class="op">$</span>Price)<span class="op">+</span><span class="dv">10000</span>)

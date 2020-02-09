@@ -21,6 +21,8 @@ biblio-style: apalike
 
 The web hosts lots of interesting data that you can ”scrape”. Some of it is stashed in data bases, behind APIs, or in free form text. Lots of people want to grab information of of Twitter or from user forums to see what people are thinking. There is a lot of valuable information out there for the taking although some web sites have "caught on" and either block programmatic access or they setup "pay walls" that require you to subscribe to an API for access. The New York Times does this. But there are lots of opportunities to get data. 
 
+![](./PICS/ws.png)
+
  | 
 ------|--------------------------------
 tables|Fetch tables like from Wikipedia
@@ -31,10 +33,11 @@ Web Sites| User forums have lots of content
 Instagram| Yes you can "scrape" photos also
 
 
-
 ## Web Scraping Can Be Ugly
 
-Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a "key" to gain access. For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames. 
+Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a "key" to gain access. 
+
+For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames. 
 
 Here is a summary:
 

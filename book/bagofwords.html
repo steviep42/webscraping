@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-08" />
+<meta name="date" content="2020-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -324,18 +324,18 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 
 stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
 <pre><code>## # A tibble: 40 x 2
-##    word      lexicon 
-##    &lt;chr&gt;     &lt;chr&gt;   
-##  1 according SMART   
-##  2 goes      SMART   
-##  3 y         SMART   
-##  4 below     snowball
-##  5 mainly    SMART   
-##  6 aren&#39;t    SMART   
-##  7 still     SMART   
-##  8 truly     SMART   
-##  9 they      snowball
-## 10 else      SMART   
+##    word       lexicon 
+##    &lt;chr&gt;      &lt;chr&gt;   
+##  1 when&#39;s     snowball
+##  2 goes       SMART   
+##  3 being      snowball
+##  4 regarding  SMART   
+##  5 great      onix    
+##  6 new        onix    
+##  7 went       onix    
+##  8 et         SMART   
+##  9 interested onix    
+## 10 general    onix    
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -500,78 +500,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word            sentiment
-##    &lt;chr&gt;           &lt;chr&gt;    
-##  1 vindication     positive 
-##  2 endless         sadness  
-##  3 deal            trust    
-##  4 unintentionally surprise 
-##  5 apologize       positive 
-##  6 owing           trust    
-##  7 outrageous      surprise 
-##  8 system          trust    
-##  9 pry             negative 
-## 10 unsustainable   negative 
-## 11 perilous        negative 
-## 12 cheering        joy      
-## 13 nihilism        negative 
-## 14 bandit          negative 
-## 15 futility        negative 
-## 16 graduation      joy      
-## 17 interrupted     sadness  
-## 18 aggravation     disgust  
-## 19 resistant       negative 
-## 20 grounded        fear</code></pre>
+##    word       sentiment   
+##    &lt;chr&gt;      &lt;chr&gt;       
+##  1 adder      negative    
+##  2 confined   fear        
+##  3 exquisite  joy         
+##  4 frigate    fear        
+##  5 arid       negative    
+##  6 eviction   anger       
+##  7 exceed     joy         
+##  8 cutters    positive    
+##  9 motive     positive    
+## 10 countess   positive    
+## 11 mastery    positive    
+## 12 ambassador positive    
+## 13 sunny      anticipation
+## 14 irreverent negative    
+## 15 scapegoat  anger       
+## 16 barrier    negative    
+## 17 subjected  negative    
+## 18 bounty     joy         
+## 19 grope      disgust     
+## 20 partner    positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word            sentiment
-##    &lt;chr&gt;           &lt;chr&gt;    
-##  1 extraordinarily positive 
-##  2 stressful       negative 
-##  3 solace          positive 
-##  4 atrocity        negative 
-##  5 dullard         negative 
-##  6 keenly          positive 
-##  7 dinky           negative 
-##  8 satisfactory    positive 
-##  9 chatter         negative 
-## 10 dirtbag         negative 
-## 11 struggle        negative 
-## 12 momentous       positive 
-## 13 sadly           negative 
-## 14 backbite        negative 
-## 15 turmoil         negative 
-## 16 abusive         negative 
-## 17 honorable       positive 
-## 18 burns           negative 
-## 19 recover         positive 
-## 20 perfunctory     negative</code></pre>
+##    word                     sentiment
+##    &lt;chr&gt;                    &lt;chr&gt;    
+##  1 irreproachable           positive 
+##  2 gained                   positive 
+##  3 breakthroughs            positive 
+##  4 unleash                  negative 
+##  5 tempest                  negative 
+##  6 uglier                   negative 
+##  7 poison                   negative 
+##  8 failed                   negative 
+##  9 worth-while              positive 
+## 10 mishandle                negative 
+## 11 subversive               negative 
+## 12 contaminate              negative 
+## 13 beutifully               positive 
+## 14 insubordinate            negative 
+## 15 hilarious                positive 
+## 16 starkly                  negative 
+## 17 stranger                 negative 
+## 18 deference                positive 
+## 19 farcical-yet-provocative negative 
+## 20 fervidly                 positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word          sentiment  
-##    &lt;chr&gt;         &lt;chr&gt;      
-##  1 downsize      negative   
-##  2 promulgator   litigious  
-##  3 construes     litigious  
-##  4 howsoever     superfluous
-##  5 court         litigious  
-##  6 disavowing    negative   
-##  7 predicts      uncertainty
-##  8 contentions   negative   
-##  9 regain        positive   
-## 10 attains       positive   
-## 11 disqualify    negative   
-## 12 fraud         negative   
-## 13 predeceasing  litigious  
-## 14 enables       positive   
-## 15 assumable     litigious  
-## 16 indemnifiable litigious  
-## 17 derecognized  superfluous
-## 18 extant        superfluous
-## 19 litigant      negative   
-## 20 empower       positive</code></pre>
+##    word         sentiment   
+##    &lt;chr&gt;        &lt;chr&gt;       
+##  1 allege       negative    
+##  2 embezzling   negative    
+##  3 remediating  litigious   
+##  4 interfered   negative    
+##  5 coterminous  litigious   
+##  6 damaged      negative    
+##  7 hereunder    litigious   
+##  8 demurs       litigious   
+##  9 enhancing    positive    
+## 10 illegality   negative    
+## 11 worsen       negative    
+## 12 opposition   negative    
+## 13 sever        negative    
+## 14 forestall    negative    
+## 15 wherefore    litigious   
+## 16 advantaged   positive    
+## 17 obstructions negative    
+## 18 defer        negative    
+## 19 infraction   negative    
+## 20 bounded      constraining</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)

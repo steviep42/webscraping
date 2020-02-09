@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-08" />
+<meta name="date" content="2020-02-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -182,13 +182,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Web Scraping with R</h1>
 <p class="author"><em>Steve Pittard</em></p>
-<p class="date"><em>2020-02-08</em></p>
+<p class="date"><em>2020-02-09</em></p>
 </div>
 <div id="motivations" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Motivations</h1>
 <div id="lots-of-data-for-the-taking" class="section level2">
 <h2><span class="header-section-number">1.1</span> Lots of Data For The Taking ?</h2>
 <p>The web hosts lots of interesting data that you can ”scrape”. Some of it is stashed in data bases, behind APIs, or in free form text. Lots of people want to grab information of of Twitter or from user forums to see what people are thinking. There is a lot of valuable information out there for the taking although some web sites have “caught on” and either block programmatic access or they setup “pay walls” that require you to subscribe to an API for access. The New York Times does this. But there are lots of opportunities to get data.</p>
+<div class="figure">
+<img src="PICS/ws.png" />
+
+</div>
 <table>
 <tbody>
 <tr class="odd">
@@ -220,7 +224,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="web-scraping-can-be-ugly" class="section level2">
 <h2><span class="header-section-number">1.2</span> Web Scraping Can Be Ugly</h2>
-<p>Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a “key” to gain access. For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames.</p>
+<p>Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a “key” to gain access.</p>
+<p>For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames.</p>
 <p>Here is a summary:</p>
 <ul>
 <li><p>First. Always try to find an R package that will access a site (e.g. New York Times, Wunderground, PubMed). These packages (e.g. omdbapi, easyPubMed, RBitCoin, rtimes) provide a programmatic search interface and return data frames with little to no effort on your part.</p></li>
