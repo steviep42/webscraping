@@ -172,7 +172,7 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="xml") {
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
   
   # You will need to replace this with your OWN key !
-  key <- "AIzaSyA3ereIVEjA0gPrxLupTPLO3GH_v98KpMA"
+  key <- "AIzaSyA3ereIVEjA0gPrxLupPLOKFGH_v98KpMA"
   
   address <- gsub(" ","+",address)
   
@@ -355,7 +355,7 @@ myGeo <- function(address="1510 Clifton Rd Atlanta GA",form="json") {
   geourl <- "https://maps.googleapis.com/maps/api/geocode/"
   
   # You will need to replace this with your OWN key !
-  key <- "AIzaSyA3ereIVEjA0gPrxLupTWRPOLH_v89DpMA"
+  key <- "AIzaSyA3ereIVEjA0gPrxLiopLKJRPOLH_v89DpMA"
   
   address <- gsub(" ","+",address)
   
