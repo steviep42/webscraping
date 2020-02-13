@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-09" />
+<meta name="date" content="2020-02-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -289,9 +289,10 @@ word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</sp
 <p>So the tidytext package provides some accomodations to convert your body of text into individual <strong>tokens</strong> which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
 <span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)
-
-text_df</code></pre></div>
+text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
+<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
+## This warning is displayed once per session.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text_df</code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##    line text                                                               
 ##   &lt;int&gt; &lt;chr&gt;                                                              
@@ -324,18 +325,18 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 
 stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
 <pre><code>## # A tibble: 40 x 2
-##    word       lexicon 
-##    &lt;chr&gt;      &lt;chr&gt;   
-##  1 when&#39;s     snowball
-##  2 goes       SMART   
-##  3 being      snowball
-##  4 regarding  SMART   
-##  5 great      onix    
-##  6 new        onix    
-##  7 went       onix    
-##  8 et         SMART   
-##  9 interested onix    
-## 10 general    onix    
+##    word     lexicon
+##    &lt;chr&gt;    &lt;chr&gt;  
+##  1 looking  SMART  
+##  2 may      SMART  
+##  3 anyone   SMART  
+##  4 changes  SMART  
+##  5 most     onix   
+##  6 greater  onix   
+##  7 latterly SMART  
+##  8 were     SMART  
+##  9 too      SMART  
+## 10 thinks   onix   
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
 
@@ -500,78 +501,78 @@ tidy_text <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word       sentiment   
-##    &lt;chr&gt;      &lt;chr&gt;       
-##  1 adder      negative    
-##  2 confined   fear        
-##  3 exquisite  joy         
-##  4 frigate    fear        
-##  5 arid       negative    
-##  6 eviction   anger       
-##  7 exceed     joy         
-##  8 cutters    positive    
-##  9 motive     positive    
-## 10 countess   positive    
-## 11 mastery    positive    
-## 12 ambassador positive    
-## 13 sunny      anticipation
-## 14 irreverent negative    
-## 15 scapegoat  anger       
-## 16 barrier    negative    
-## 17 subjected  negative    
-## 18 bounty     joy         
-## 19 grope      disgust     
-## 20 partner    positive</code></pre>
+##    word          sentiment   
+##    &lt;chr&gt;         &lt;chr&gt;       
+##  1 aspire        joy         
+##  2 speck         negative    
+##  3 superfluous   negative    
+##  4 enlightenment positive    
+##  5 lamenting     sadness     
+##  6 ruined        anger       
+##  7 suffocating   negative    
+##  8 instability   fear        
+##  9 enemy         anger       
+## 10 received      positive    
+## 11 relegation    negative    
+## 12 neighbor      trust       
+## 13 demonstrative sadness     
+## 14 hesitation    negative    
+## 15 extricate     positive    
+## 16 surly         disgust     
+## 17 gift          anticipation
+## 18 abominable    disgust     
+## 19 admirable     joy         
+## 20 betterment    positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word                     sentiment
-##    &lt;chr&gt;                    &lt;chr&gt;    
-##  1 irreproachable           positive 
-##  2 gained                   positive 
-##  3 breakthroughs            positive 
-##  4 unleash                  negative 
-##  5 tempest                  negative 
-##  6 uglier                   negative 
-##  7 poison                   negative 
-##  8 failed                   negative 
-##  9 worth-while              positive 
-## 10 mishandle                negative 
-## 11 subversive               negative 
-## 12 contaminate              negative 
-## 13 beutifully               positive 
-## 14 insubordinate            negative 
-## 15 hilarious                positive 
-## 16 starkly                  negative 
-## 17 stranger                 negative 
-## 18 deference                positive 
-## 19 farcical-yet-provocative negative 
-## 20 fervidly                 positive</code></pre>
+##    word         sentiment
+##    &lt;chr&gt;        &lt;chr&gt;    
+##  1 deterrent    negative 
+##  2 misfortune   negative 
+##  3 alarm        negative 
+##  4 enflame      negative 
+##  5 unaffordable negative 
+##  6 annoyed      negative 
+##  7 defeat       positive 
+##  8 tetchily     negative 
+##  9 ignominy     negative 
+## 10 fuck         negative 
+## 11 ghastly      negative 
+## 12 anti-semites negative 
+## 13 naughty      negative 
+## 14 stunningly   positive 
+## 15 vibrate      negative 
+## 16 intrusion    negative 
+## 17 subordinate  negative 
+## 18 cheaper      positive 
+## 19 testily      negative 
+## 20 thank        positive</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
 <span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
 <pre><code>## # A tibble: 20 x 2
-##    word         sentiment   
-##    &lt;chr&gt;        &lt;chr&gt;       
-##  1 allege       negative    
-##  2 embezzling   negative    
-##  3 remediating  litigious   
-##  4 interfered   negative    
-##  5 coterminous  litigious   
-##  6 damaged      negative    
-##  7 hereunder    litigious   
-##  8 demurs       litigious   
-##  9 enhancing    positive    
-## 10 illegality   negative    
-## 11 worsen       negative    
-## 12 opposition   negative    
-## 13 sever        negative    
-## 14 forestall    negative    
-## 15 wherefore    litigious   
-## 16 advantaged   positive    
-## 17 obstructions negative    
-## 18 defer        negative    
-## 19 infraction   negative    
-## 20 bounded      constraining</code></pre>
+##    word           sentiment   
+##    &lt;chr&gt;          &lt;chr&gt;       
+##  1 revised        uncertainty 
+##  2 constraint     constraining
+##  3 scrutiny       negative    
+##  4 nonattainment  negative    
+##  5 curtailments   negative    
+##  6 cancel         negative    
+##  7 discredited    negative    
+##  8 irreconcilable negative    
+##  9 restraint      constraining
+## 10 mediators      litigious   
+## 11 mediator       litigious   
+## 12 severely       negative    
+## 13 unfortunately  negative    
+## 14 prohibitive    constraining
+## 15 contravene     litigious   
+## 16 calamitous     negative    
+## 17 unnecessary    negative    
+## 18 breaching      litigious   
+## 19 summoned       litigious   
+## 20 impairment     constraining</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
 nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
