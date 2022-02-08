@@ -222,69 +222,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 2</span> XML and JSON</h1>
 <p>This is where things get a little dicey because some web pages will return XML and JSON in response to inquiries and while these formats seem complicated they are actually doing you a really big favor by doing this since these formats can ususally be easily parsed using various packges. XML is a bit hard to get your head around and JSON is the new kid on the block which is easier to use.</p>
 <p>Since this isn’t a full-on course lecture I’ll keep it short as to how and why you would want to use these but any time you spend trying to better understand JSON (and XML) the better of you will be when parsing web pages. It’s not such a big deal if all you are going to be parsing is raw text since the mthods we use to do that avoid XML and JSON although cleaning up raw text has its own problems. Let’s revisit the Wikipedia example from the previous section.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="xml.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb28-2"><a href="xml.html#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="xml.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use read_html to fetch the webpage</span></span>
-<span id="cb28-4"><a href="xml.html#cb28-4" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
-<span id="cb28-5"><a href="xml.html#cb28-5" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
-<span id="cb28-6"><a href="xml.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb28-7"><a href="xml.html#cb28-7" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_df <span class="sc">%&gt;%</span> </span>
-<span id="cb28-8"><a href="xml.html#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="xml.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb1-2"><a href="xml.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="xml.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use read_html to fetch the webpage</span></span>
+<span id="cb1-4"><a href="xml.html#cb1-4" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb1-5"><a href="xml.html#cb1-5" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
+<span id="cb1-6"><a href="xml.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-7"><a href="xml.html#cb1-7" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_df <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="xml.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span></code></pre></div>
 <p><img src="PICS/xml.png" width="650" /></p>
 <p><img src="PICS/xmls.png" width="450" /></p>
 <p>Let’s look at an XML file that has some basic content:
  </p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="xml.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>?xml version<span class="ot">=</span><span class="st">&quot;1.0&quot;</span> encoding<span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span>?<span class="sc">&gt;</span></span>
-<span id="cb29-2"><a href="xml.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span>bookstore<span class="sc">&gt;</span></span>
-<span id="cb29-3"><a href="xml.html#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;COOKING&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb29-4"><a href="xml.html#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Everyday Italian<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb29-5"><a href="xml.html#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Giada De Laurentiis<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb29-6"><a href="xml.html#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb29-7"><a href="xml.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">30.00</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb29-8"><a href="xml.html#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb29-9"><a href="xml.html#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;CHILDREN&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb29-10"><a href="xml.html#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Harry Potter<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb29-11"><a href="xml.html#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>J K. Rowling<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb29-12"><a href="xml.html#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb29-13"><a href="xml.html#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">29.99</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb29-14"><a href="xml.html#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb29-15"><a href="xml.html#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;WEB&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb29-16"><a href="xml.html#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Learning XML<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb29-17"><a href="xml.html#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Erik T. Ray<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb29-18"><a href="xml.html#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2003</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb29-19"><a href="xml.html#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">39.95</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb29-20"><a href="xml.html#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb29-21"><a href="xml.html#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;/</span>bookstore<span class="sc">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="xml.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>?xml version<span class="ot">=</span><span class="st">&quot;1.0&quot;</span> encoding<span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span>?<span class="sc">&gt;</span></span>
+<span id="cb2-2"><a href="xml.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span>bookstore<span class="sc">&gt;</span></span>
+<span id="cb2-3"><a href="xml.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;COOKING&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb2-4"><a href="xml.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Everyday Italian<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb2-5"><a href="xml.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Giada De Laurentiis<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb2-6"><a href="xml.html#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb2-7"><a href="xml.html#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">30.00</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb2-8"><a href="xml.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb2-9"><a href="xml.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;CHILDREN&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb2-10"><a href="xml.html#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Harry Potter<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb2-11"><a href="xml.html#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>J K. Rowling<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb2-12"><a href="xml.html#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb2-13"><a href="xml.html#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">29.99</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb2-14"><a href="xml.html#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb2-15"><a href="xml.html#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;WEB&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb2-16"><a href="xml.html#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Learning XML<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb2-17"><a href="xml.html#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Erik T. Ray<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb2-18"><a href="xml.html#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2003</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb2-19"><a href="xml.html#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">39.95</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb2-20"><a href="xml.html#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb2-21"><a href="xml.html#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;/</span>bookstore<span class="sc">&gt;</span></span></code></pre></div>
 <p>Well we pulled out all tables and then, by experimentation, we isolated table 6 and got the content corresponding to that. But. Is there a more direct way to find the content ? There is. It requires us to install some helper plugins such as the xPath Finder for Firefox and Chrome. In reality there are a number of ways to find the XML Path or CSS Path for an element within a web page but this is a good one to start.</p>
 <p><img src="PICS/xpath_finder.png" width="350" /></p>
 <p>Remeber that we want to find the table corresponding to the “10 Most Populous Countries.” So we activate the <em>xPath</em> finder plugin and the highlight the element of interest. This takes some practice to get it right. Once you highlight the desired elment you will see the corresponding XPATH. Here is a screenshot of what I did. We can use the resulting path to directly access the table without first having to first pull out all tables and then trying to find the right one</p>
 <p><img src="PICS/xpath_pop.png" width="350" /></p>
 <p> </p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="xml.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use read_html to fetch the webpage</span></span>
-<span id="cb30-2"><a href="xml.html#cb30-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
-<span id="cb30-3"><a href="xml.html#cb30-3" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
-<span id="cb30-4"><a href="xml.html#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="xml.html#cb30-5" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> ten_most_populous <span class="sc">%&gt;%</span> </span>
-<span id="cb30-6"><a href="xml.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath=</span><span class="st">&#39;/html/body/div[3]/div[3]/div[5]/div[1]/table[4]&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-7"><a href="xml.html#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>() </span>
-<span id="cb30-8"><a href="xml.html#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-9"><a href="xml.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We have to get the first element of the list. </span></span>
-<span id="cb30-10"><a href="xml.html#cb30-10" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> ten_most_df[[<span class="dv">1</span>]]</span>
-<span id="cb30-11"><a href="xml.html#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-12"><a href="xml.html#cb30-12" aria-hidden="true" tabindex="-1"></a>ten_most_df</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="xml.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use read_html to fetch the webpage</span></span>
+<span id="cb3-2"><a href="xml.html#cb3-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb3-3"><a href="xml.html#cb3-3" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
+<span id="cb3-4"><a href="xml.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="xml.html#cb3-5" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> ten_most_populous <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="xml.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath=</span><span class="st">&#39;/html/body/div[3]/div[3]/div[5]/div[1]/table[4]&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="xml.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>() </span>
+<span id="cb3-8"><a href="xml.html#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="xml.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We have to get the first element of the list. </span></span>
+<span id="cb3-10"><a href="xml.html#cb3-10" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> ten_most_df[[<span class="dv">1</span>]]</span>
+<span id="cb3-11"><a href="xml.html#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="xml.html#cb3-12" aria-hidden="true" tabindex="-1"></a>ten_most_df</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 6
-##     Rank Country       Population    `% of world` Date       `Source(official or UN)`      
-##    &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;                         
-##  1     1 China         1,411,845,680 17.8%        7 Feb 2022 National population clock[90] 
-##  2     2 India         1,387,752,092 17.5%        7 Feb 2022 National population clock[91] 
-##  3     3 United States 333,186,076   4.20%        7 Feb 2022 National population clock[92] 
-##  4     4 Indonesia     269,603,400   3.40%        1 Jul 2020 National annual projection[93]
-##  5     5 Pakistan      220,892,331   2.79%        1 Jul 2020 UN Projection[94]             
-##  6     6 Brazil        214,319,901   2.70%        7 Feb 2022 National population clock[95] 
-##  7     7 Nigeria       206,139,587   2.60%        1 Jul 2020 UN Projection[94]             
-##  8     8 Bangladesh    172,175,096   2.17%        7 Feb 2022 National population clock[96] 
-##  9     9 Russia        146,748,590   1.85%        1 Jan 2020 National annual estimate[97]  
-## 10    10 Mexico        127,792,286   1.61%        1 Jul 2020 National annual projection[98]</code></pre>
+##     Rank Country       Population    `% of world` Date       `Source(official o…
+##    &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;              
+##  1     1 China         1,411,845,680 17.8%        7 Feb 2022 National populatio…
+##  2     2 India         1,387,752,092 17.5%        7 Feb 2022 National populatio…
+##  3     3 United States 333,186,076   4.20%        7 Feb 2022 National populatio…
+##  4     4 Indonesia     269,603,400   3.40%        1 Jul 2020 National annual pr…
+##  5     5 Pakistan      220,892,331   2.79%        1 Jul 2020 UN Projection[94]  
+##  6     6 Brazil        214,319,901   2.70%        7 Feb 2022 National populatio…
+##  7     7 Nigeria       206,139,587   2.60%        1 Jul 2020 UN Projection[94]  
+##  8     8 Bangladesh    172,175,096   2.17%        7 Feb 2022 National populatio…
+##  9     9 Russia        146,748,590   1.85%        1 Jan 2020 National annual es…
+## 10    10 Mexico        127,792,286   1.61%        1 Jul 2020 National annual pr…</code></pre>
 <div id="finding-xpaths" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Finding XPaths</h2>
 <p><img src="PICS/xml_path_1.png" width="650" /></p>
@@ -293,27 +293,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="PICS/xml_path_10.png" width="350" /></p>
 <p>Let’s look at an XML file that has some basic content:
  </p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="xml.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>?xml version<span class="ot">=</span><span class="st">&quot;1.0&quot;</span> encoding<span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span>?<span class="sc">&gt;</span></span>
-<span id="cb32-2"><a href="xml.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span>bookstore<span class="sc">&gt;</span></span>
-<span id="cb32-3"><a href="xml.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;COOKING&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb32-4"><a href="xml.html#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Everyday Italian<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb32-5"><a href="xml.html#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Giada De Laurentiis<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb32-6"><a href="xml.html#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb32-7"><a href="xml.html#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">30.00</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb32-8"><a href="xml.html#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb32-9"><a href="xml.html#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;CHILDREN&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb32-10"><a href="xml.html#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Harry Potter<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb32-11"><a href="xml.html#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>J K. Rowling<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb32-12"><a href="xml.html#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb32-13"><a href="xml.html#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">29.99</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb32-14"><a href="xml.html#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb32-15"><a href="xml.html#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;WEB&quot;</span><span class="sc">&gt;</span></span>
-<span id="cb32-16"><a href="xml.html#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Learning XML<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
-<span id="cb32-17"><a href="xml.html#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Erik T. Ray<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
-<span id="cb32-18"><a href="xml.html#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2003</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
-<span id="cb32-19"><a href="xml.html#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">39.95</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
-<span id="cb32-20"><a href="xml.html#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
-<span id="cb32-21"><a href="xml.html#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;/</span>bookstore<span class="sc">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="xml.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>?xml version<span class="ot">=</span><span class="st">&quot;1.0&quot;</span> encoding<span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span>?<span class="sc">&gt;</span></span>
+<span id="cb5-2"><a href="xml.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span>bookstore<span class="sc">&gt;</span></span>
+<span id="cb5-3"><a href="xml.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;COOKING&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb5-4"><a href="xml.html#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Everyday Italian<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb5-5"><a href="xml.html#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Giada De Laurentiis<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb5-6"><a href="xml.html#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb5-7"><a href="xml.html#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">30.00</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb5-8"><a href="xml.html#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb5-9"><a href="xml.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;CHILDREN&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb5-10"><a href="xml.html#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Harry Potter<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb5-11"><a href="xml.html#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>J K. Rowling<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb5-12"><a href="xml.html#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2005</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb5-13"><a href="xml.html#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">29.99</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb5-14"><a href="xml.html#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb5-15"><a href="xml.html#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>book category<span class="ot">=</span><span class="st">&quot;WEB&quot;</span><span class="sc">&gt;</span></span>
+<span id="cb5-16"><a href="xml.html#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>title lang<span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="sc">&gt;</span>Learning XML<span class="sc">&lt;</span><span class="er">/</span>title<span class="sc">&gt;</span></span>
+<span id="cb5-17"><a href="xml.html#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>author<span class="sc">&gt;</span>Erik T. Ray<span class="sc">&lt;</span><span class="er">/</span>author<span class="sc">&gt;</span></span>
+<span id="cb5-18"><a href="xml.html#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>year<span class="sc">&gt;</span><span class="dv">2003</span><span class="sc">&lt;</span><span class="er">/</span>year<span class="sc">&gt;</span></span>
+<span id="cb5-19"><a href="xml.html#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>price<span class="sc">&gt;</span><span class="fl">39.95</span><span class="sc">&lt;</span><span class="er">/</span>price<span class="sc">&gt;</span></span>
+<span id="cb5-20"><a href="xml.html#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;/</span>book<span class="sc">&gt;</span></span>
+<span id="cb5-21"><a href="xml.html#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;/</span>bookstore<span class="sc">&gt;</span></span></code></pre></div>
 <p><img src="PICS/xml_path_2.png" width="650" /></p>
 <p> </p>
 <p><img src="PICS/xml_path_3.png" width="550" /></p>
@@ -337,57 +337,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="PICS/geocode1.png" /></p>
 <p>So I could create an R function to take care of this kind of thing so I could maybe pass in arbitrary addressess to be geocided. Let’s run through this example and then look at how I parsed the XML file that is returned by the Google GeoCoding API. We will stick with the <em>1510 Clifton Rd, Atlanta, GA</em> address which corresponds to the Rollins Research Building.</p>
 <p>First we will see an example of what Google returns in terms of XML. We can use some tools like Oxygen Editor (available free via Emory Software Express) to develop an appropriate XPATH expression to parse out the latitude and longitude information.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="xml.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span></span>
-<span id="cb33-2"><a href="xml.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="xml.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span></span>
-<span id="cb33-4"><a href="xml.html#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="xml.html#cb33-5" aria-hidden="true" tabindex="-1"></a>myGeo <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="at">form=</span><span class="st">&quot;xml&quot;</span>) {</span>
-<span id="cb33-6"><a href="xml.html#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(XML)</span>
-<span id="cb33-7"><a href="xml.html#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RCurl)</span>
-<span id="cb33-8"><a href="xml.html#cb33-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-9"><a href="xml.html#cb33-9" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span></span>
-<span id="cb33-10"><a href="xml.html#cb33-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-11"><a href="xml.html#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You will need to replace this with your OWN key !</span></span>
-<span id="cb33-12"><a href="xml.html#cb33-12" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="st">&quot;AIzaSyA3ereIVEjA0gPrxLupPLOKFGH_v98KpMA&quot;</span></span>
-<span id="cb33-13"><a href="xml.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-14"><a href="xml.html#cb33-14" aria-hidden="true" tabindex="-1"></a>  address <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)</span>
-<span id="cb33-15"><a href="xml.html#cb33-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-16"><a href="xml.html#cb33-16" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(geourl,form,<span class="at">sep=</span><span class="st">&quot;?address=&quot;</span>)</span>
-<span id="cb33-17"><a href="xml.html#cb33-17" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,address,<span class="st">&quot;&amp;key=&quot;</span>)</span>
-<span id="cb33-18"><a href="xml.html#cb33-18" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,key)</span>
-<span id="cb33-19"><a href="xml.html#cb33-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-20"><a href="xml.html#cb33-20" aria-hidden="true" tabindex="-1"></a>  locale <span class="ot">&lt;-</span> <span class="fu">getURL</span>(geourl)</span>
-<span id="cb33-21"><a href="xml.html#cb33-21" aria-hidden="true" tabindex="-1"></a>  plocal <span class="ot">&lt;-</span> <span class="fu">xmlParse</span>(locale,<span class="at">useInternalNodes=</span><span class="cn">TRUE</span>)</span>
-<span id="cb33-22"><a href="xml.html#cb33-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-23"><a href="xml.html#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Okay let&#39;s extract the lat and lon</span></span>
-<span id="cb33-24"><a href="xml.html#cb33-24" aria-hidden="true" tabindex="-1"></a>  latlon <span class="ot">&lt;-</span> <span class="fu">getNodeSet</span>(plocal,<span class="st">&quot;/GeocodeResponse/result/geometry/location/descendant::*&quot;</span>)</span>
-<span id="cb33-25"><a href="xml.html#cb33-25" aria-hidden="true" tabindex="-1"></a>  lat  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">xmlSApply</span>(latlon,xmlValue))[<span class="dv">1</span>]</span>
-<span id="cb33-26"><a href="xml.html#cb33-26" aria-hidden="true" tabindex="-1"></a>  lon  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">xmlSApply</span>(latlon,xmlValue))[<span class="dv">2</span>]</span>
-<span id="cb33-27"><a href="xml.html#cb33-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-28"><a href="xml.html#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">lat=</span>lat,<span class="at">lng=</span>lon))  </span>
-<span id="cb33-29"><a href="xml.html#cb33-29" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb33-30"><a href="xml.html#cb33-30" aria-hidden="true" tabindex="-1"></a>mylocs <span class="ot">&lt;-</span> <span class="fu">myGeo</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="xml.html#cb34-1" aria-hidden="true" tabindex="-1"></a>lat       lng </span>
-<span id="cb34-2"><a href="xml.html#cb34-2" aria-hidden="true" tabindex="-1"></a> <span class="fl">33.79667</span> <span class="sc">-</span><span class="fl">84.32319</span> </span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="xml.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://maps.googleapis.com/maps/api/geocode/xml?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span></span>
+<span id="cb6-2"><a href="xml.html#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="xml.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyDPwt1Ya79b7lhsZkh75BjCz-GpMKC9ZYw</span></span>
+<span id="cb6-4"><a href="xml.html#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="xml.html#cb6-5" aria-hidden="true" tabindex="-1"></a>myGeo <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="at">form=</span><span class="st">&quot;xml&quot;</span>) {</span>
+<span id="cb6-6"><a href="xml.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(XML)</span>
+<span id="cb6-7"><a href="xml.html#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RCurl)</span>
+<span id="cb6-8"><a href="xml.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-9"><a href="xml.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span></span>
+<span id="cb6-10"><a href="xml.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-11"><a href="xml.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You will need to replace this with your OWN key !</span></span>
+<span id="cb6-12"><a href="xml.html#cb6-12" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="st">&quot;AIzaSyA3ereIVEjA0gPrxLupPLOKFGH_v98KpMA&quot;</span></span>
+<span id="cb6-13"><a href="xml.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-14"><a href="xml.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  address <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)</span>
+<span id="cb6-15"><a href="xml.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-16"><a href="xml.html#cb6-16" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(geourl,form,<span class="at">sep=</span><span class="st">&quot;?address=&quot;</span>)</span>
+<span id="cb6-17"><a href="xml.html#cb6-17" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,address,<span class="st">&quot;&amp;key=&quot;</span>)</span>
+<span id="cb6-18"><a href="xml.html#cb6-18" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,key)</span>
+<span id="cb6-19"><a href="xml.html#cb6-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-20"><a href="xml.html#cb6-20" aria-hidden="true" tabindex="-1"></a>  locale <span class="ot">&lt;-</span> <span class="fu">getURL</span>(geourl)</span>
+<span id="cb6-21"><a href="xml.html#cb6-21" aria-hidden="true" tabindex="-1"></a>  plocal <span class="ot">&lt;-</span> <span class="fu">xmlParse</span>(locale,<span class="at">useInternalNodes=</span><span class="cn">TRUE</span>)</span>
+<span id="cb6-22"><a href="xml.html#cb6-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-23"><a href="xml.html#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Okay let&#39;s extract the lat and lon</span></span>
+<span id="cb6-24"><a href="xml.html#cb6-24" aria-hidden="true" tabindex="-1"></a>  latlon <span class="ot">&lt;-</span> <span class="fu">getNodeSet</span>(plocal,<span class="st">&quot;/GeocodeResponse/result/geometry/location/descendant::*&quot;</span>)</span>
+<span id="cb6-25"><a href="xml.html#cb6-25" aria-hidden="true" tabindex="-1"></a>  lat  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">xmlSApply</span>(latlon,xmlValue))[<span class="dv">1</span>]</span>
+<span id="cb6-26"><a href="xml.html#cb6-26" aria-hidden="true" tabindex="-1"></a>  lon  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">xmlSApply</span>(latlon,xmlValue))[<span class="dv">2</span>]</span>
+<span id="cb6-27"><a href="xml.html#cb6-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-28"><a href="xml.html#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(<span class="at">lat=</span>lat,<span class="at">lng=</span>lon))  </span>
+<span id="cb6-29"><a href="xml.html#cb6-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-30"><a href="xml.html#cb6-30" aria-hidden="true" tabindex="-1"></a>mylocs <span class="ot">&lt;-</span> <span class="fu">myGeo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="xml.html#cb7-1" aria-hidden="true" tabindex="-1"></a>lat       lng </span>
+<span id="cb7-2"><a href="xml.html#cb7-2" aria-hidden="true" tabindex="-1"></a> <span class="fl">33.79667</span> <span class="sc">-</span><span class="fl">84.32319</span> </span></code></pre></div>
 <p>Now. We could have saved the report to a file on our local computer and open it up with Oxygen editor and figure out what the approproate XPATH would be. This is basically what I did. Here is a screenshot of the session. I picked an XPATH expression of //location/descendant::*</p>
 <p><img src="PICS/oxygen2.png" width="650" /></p>
 <p> 
 We could expand this considerable to process a number of addresses. This is a great example of how once you get a single example working then you can generalize this into a function that will allow you to do the same thing for a much larger numnber of addressess.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="xml.html#cb35-1" aria-hidden="true" tabindex="-1"></a>namevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, </span>
-<span id="cb35-2"><a href="xml.html#cb35-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Birmingham AL&quot;</span>, </span>
-<span id="cb35-3"><a href="xml.html#cb35-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Seattle WA&quot;</span>, </span>
-<span id="cb35-4"><a href="xml.html#cb35-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Sacramento CA&quot;</span>,</span>
-<span id="cb35-5"><a href="xml.html#cb35-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Denver CO&quot;</span>, </span>
-<span id="cb35-6"><a href="xml.html#cb35-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;LosAngeles CA&quot;</span>, </span>
-<span id="cb35-7"><a href="xml.html#cb35-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Rochester NY&quot;</span>)</span>
-<span id="cb35-8"><a href="xml.html#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-9"><a href="xml.html#cb35-9" aria-hidden="true" tabindex="-1"></a>cityList <span class="ot">&lt;-</span> <span class="fu">lapply</span>(namevec,myGeo,<span class="at">eval=</span><span class="cn">FALSE</span>)</span>
-<span id="cb35-10"><a href="xml.html#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-11"><a href="xml.html#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Or to get a data frame</span></span>
-<span id="cb35-12"><a href="xml.html#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-13"><a href="xml.html#cb35-13" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">city=</span>namevec,<span class="fu">do.call</span>(rbind,cityList),</span>
-<span id="cb35-14"><a href="xml.html#cb35-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="xml.html#cb36-1" aria-hidden="true" tabindex="-1"></a>cities</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="xml.html#cb8-1" aria-hidden="true" tabindex="-1"></a>namevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, </span>
+<span id="cb8-2"><a href="xml.html#cb8-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Birmingham AL&quot;</span>, </span>
+<span id="cb8-3"><a href="xml.html#cb8-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Seattle WA&quot;</span>, </span>
+<span id="cb8-4"><a href="xml.html#cb8-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Sacramento CA&quot;</span>,</span>
+<span id="cb8-5"><a href="xml.html#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Denver CO&quot;</span>, </span>
+<span id="cb8-6"><a href="xml.html#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;LosAngeles CA&quot;</span>, </span>
+<span id="cb8-7"><a href="xml.html#cb8-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Rochester NY&quot;</span>)</span>
+<span id="cb8-8"><a href="xml.html#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="xml.html#cb8-9" aria-hidden="true" tabindex="-1"></a>cityList <span class="ot">&lt;-</span> <span class="fu">lapply</span>(namevec,myGeo,<span class="at">eval=</span><span class="cn">FALSE</span>)</span>
+<span id="cb8-10"><a href="xml.html#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="xml.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Or to get a data frame</span></span>
+<span id="cb8-12"><a href="xml.html#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="xml.html#cb8-13" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">city=</span>namevec,<span class="fu">do.call</span>(rbind,cityList),</span>
+<span id="cb8-14"><a href="xml.html#cb8-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="xml.html#cb9-1" aria-hidden="true" tabindex="-1"></a>cities</span></code></pre></div>
 <pre><code>##            city      lat        lng
 ## 1    Atlanta GA 33.74900  -84.38798
 ## 2 Birmingham AL 33.51859  -86.81036
@@ -396,44 +396,44 @@ We could expand this considerable to process a number of addresses. This is a gr
 ## 5     Denver CO 39.73924 -104.99025
 ## 6 LosAngeles CA 34.05223 -118.24368
 ## 7  Rochester NY 43.15658  -77.60885</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="xml.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a Map</span></span>
-<span id="cb38-2"><a href="xml.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="xml.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb38-4"><a href="xml.html#cb38-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">data=</span>cities)</span>
-<span id="cb38-5"><a href="xml.html#cb38-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addTiles</span>(m)</span>
-<span id="cb38-6"><a href="xml.html#cb38-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addMarkers</span>(m,<span class="at">popup=</span>cities<span class="sc">$</span>city)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="xml.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a Map</span></span>
+<span id="cb11-2"><a href="xml.html#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="xml.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb11-4"><a href="xml.html#cb11-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">data=</span>cities)</span>
+<span id="cb11-5"><a href="xml.html#cb11-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addTiles</span>(m)</span>
+<span id="cb11-6"><a href="xml.html#cb11-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addMarkers</span>(m,<span class="at">popup=</span>cities<span class="sc">$</span>city)</span></code></pre></div>
 <pre><code>## Assuming &quot;lng&quot; and &quot;lat&quot; are longitude and latitude, respectively</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="xml.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put up the Map - click on the markers</span></span>
-<span id="cb40-2"><a href="xml.html#cb40-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
-<div id="htmlwidget-835ee4b4da82a78c541f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-835ee4b4da82a78c541f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="xml.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put up the Map - click on the markers</span></span>
+<span id="cb13-2"><a href="xml.html#cb13-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
+<div id="htmlwidget-8ee542bdfd24b44b91bf" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8ee542bdfd24b44b91bf">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="using-json" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Using JSON</h2>
 <p>JSON is fast becoming the primary interchange format over XML although XML is still well supported. R has a number of packages to ease the parsing of JSON/ documents returned by web pages. Ususally you get back a <em>list</em> which is a native data type in R that can easily be manipulated into a data frame. Most web APIs provide an option for JSON or XML although some only provide JSON.</p>
 <p><img src="PICS/json.png" width="650" /></p>
 <p>There are rules and regulations about how JSON is formed and we will learn them by example but you can look at the numerous tutotorials on the web to locate definitive references. See <a href="http://www.w3schools.com/json/" class="uri">http://www.w3schools.com/json/</a> Here is an XML file that describes some employees.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="xml.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>employees<span class="sc">&gt;</span></span>
-<span id="cb41-2"><a href="xml.html#cb41-2" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-3"><a href="xml.html#cb41-3" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>John<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
-<span id="cb41-4"><a href="xml.html#cb41-4" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Doe<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
-<span id="cb41-5"><a href="xml.html#cb41-5" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-6"><a href="xml.html#cb41-6" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-7"><a href="xml.html#cb41-7" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>Anna<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
-<span id="cb41-8"><a href="xml.html#cb41-8" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Smith<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
-<span id="cb41-9"><a href="xml.html#cb41-9" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-10"><a href="xml.html#cb41-10" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-11"><a href="xml.html#cb41-11" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>Peter<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
-<span id="cb41-12"><a href="xml.html#cb41-12" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Jones<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
-<span id="cb41-13"><a href="xml.html#cb41-13" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
-<span id="cb41-14"><a href="xml.html#cb41-14" aria-hidden="true" tabindex="-1"></a> <span class="er">&lt;/</span>employees<span class="sc">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="xml.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>employees<span class="sc">&gt;</span></span>
+<span id="cb14-2"><a href="xml.html#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-3"><a href="xml.html#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>John<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
+<span id="cb14-4"><a href="xml.html#cb14-4" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Doe<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
+<span id="cb14-5"><a href="xml.html#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-6"><a href="xml.html#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-7"><a href="xml.html#cb14-7" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>Anna<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
+<span id="cb14-8"><a href="xml.html#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Smith<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
+<span id="cb14-9"><a href="xml.html#cb14-9" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-10"><a href="xml.html#cb14-10" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-11"><a href="xml.html#cb14-11" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>firstName<span class="sc">&gt;</span>Peter<span class="sc">&lt;</span><span class="er">/</span>firstName<span class="sc">&gt;</span></span>
+<span id="cb14-12"><a href="xml.html#cb14-12" aria-hidden="true" tabindex="-1"></a>         <span class="er">&lt;</span>lastName<span class="sc">&gt;</span>Jones<span class="sc">&lt;</span><span class="er">/</span>lastName<span class="sc">&gt;</span></span>
+<span id="cb14-13"><a href="xml.html#cb14-13" aria-hidden="true" tabindex="-1"></a>     <span class="er">&lt;/</span>employee<span class="sc">&gt;</span></span>
+<span id="cb14-14"><a href="xml.html#cb14-14" aria-hidden="true" tabindex="-1"></a> <span class="er">&lt;/</span>employees<span class="sc">&gt;</span></span></code></pre></div>
 <p>And here is the corresposning JSON file:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="xml.html#cb42-1" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb42-2"><a href="xml.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;employees&quot;</span><span class="sc">:</span>[</span>
-<span id="cb42-3"><a href="xml.html#cb42-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;John&quot;</span>, <span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Doe&quot;</span>},</span>
-<span id="cb42-4"><a href="xml.html#cb42-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Smith&quot;</span>},</span>
-<span id="cb42-5"><a href="xml.html#cb42-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;Peter&quot;</span>,<span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Jones&quot;</span>}</span>
-<span id="cb42-6"><a href="xml.html#cb42-6" aria-hidden="true" tabindex="-1"></a>] }</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="xml.html#cb15-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb15-2"><a href="xml.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;employees&quot;</span><span class="sc">:</span>[</span>
+<span id="cb15-3"><a href="xml.html#cb15-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;John&quot;</span>, <span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Doe&quot;</span>},</span>
+<span id="cb15-4"><a href="xml.html#cb15-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;Anna&quot;</span>, <span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Smith&quot;</span>},</span>
+<span id="cb15-5"><a href="xml.html#cb15-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;firstName&quot;</span><span class="sc">:</span><span class="st">&quot;Peter&quot;</span>,<span class="st">&quot;lastName&quot;</span><span class="sc">:</span><span class="st">&quot;Jones&quot;</span>}</span>
+<span id="cb15-6"><a href="xml.html#cb15-6" aria-hidden="true" tabindex="-1"></a>] }</span></code></pre></div>
 <ul>
 <li><p>It is important to note that the actual information in the document, things like city name, county name, latitude, and longitude are the same as they would be in the comparable XML document.</p></li>
 <li><p>JSON documents are at the heart of the NoSQL“database”called MongoDB</p></li>
@@ -448,7 +448,7 @@ We could expand this considerable to process a number of addresses. This is a gr
 <li><p>A string is a sequence of zero or more Unicode characters, wrapped in double quotes, using backslash escapes. A character is represented as a single character string.</p></li>
 </ul>
 <p>Do you remember the Google Geocoding example from before ? We can tell Google to send us back JSON instead of XML just by adjusting the URL accordingly:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="xml.html#cb43-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="xml.html#cb16-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Rd+Atlanta+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span></span></code></pre></div>
 <p><img src="PICS/json_google.png" width="650" /></p>
 </div>
 <div id="using-the-rjsonio-package" class="section level2" number="2.4">
@@ -456,12 +456,12 @@ We could expand this considerable to process a number of addresses. This is a gr
 <p>To read/parse this in R we use a package called RJSONIO. There are other packages but this is the one we will be using. Download and install it.</p>
 <p>There is a function called fromJSON which will parse the JSON file and return a list to contain the data.</p>
 <p>So we parse lists instead of using XPath. Many people feel this to be easier than trying to construct XPath statments. You will have to decide for yourself.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="xml.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RJSONIO)</span>
-<span id="cb44-2"><a href="xml.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="xml.html#cb44-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span></span>
-<span id="cb44-4"><a href="xml.html#cb44-4" aria-hidden="true" tabindex="-1"></a>geo <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(url)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="xml.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RJSONIO)</span>
+<span id="cb17-2"><a href="xml.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="xml.html#cb17-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/json?address=1510+Clifton+Road,+Atlanta,+GA&amp;key=AIzaSyD0zIyn2ijIqb7OKYTGnAnchXY7zt3VB9Y&quot;</span></span>
+<span id="cb17-4"><a href="xml.html#cb17-4" aria-hidden="true" tabindex="-1"></a>geo <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(url)</span></code></pre></div>
 <p>Since what we get back is a list we can directly access whatever we want. We just index into the list. No need for complicated XPATHS.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="xml.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(geo,<span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="xml.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(geo,<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## List of 2
 ##  $ results:List of 1
 ##   ..$ :List of 6
@@ -473,49 +473,49 @@ We could expand this considerable to process a number of addresses. This is a gr
 ##   .. .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;compound_code&quot; &quot;global_code&quot;
 ##   .. ..$ types             : chr &quot;street_address&quot;
 ##  $ status : chr &quot;OK&quot;</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="xml.html#cb47-1" aria-hidden="true" tabindex="-1"></a>geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="xml.html#cb20-1" aria-hidden="true" tabindex="-1"></a>geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location</span></code></pre></div>
 <pre><code>##       lat       lng 
 ##  33.79667 -84.32319</code></pre>
 <p>Let’s put this into a function that helps us get the information for a number of addresses</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="xml.html#cb49-1" aria-hidden="true" tabindex="-1"></a>myGeo <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="at">form=</span><span class="st">&quot;json&quot;</span>) {</span>
-<span id="cb49-2"><a href="xml.html#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RJSONIO)</span>
-<span id="cb49-3"><a href="xml.html#cb49-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-4"><a href="xml.html#cb49-4" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span></span>
-<span id="cb49-5"><a href="xml.html#cb49-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-6"><a href="xml.html#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You will need to replace this with your OWN key !</span></span>
-<span id="cb49-7"><a href="xml.html#cb49-7" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="st">&quot;AIzaSyA3ereIVEjA0gPrxLiopLKJRPOLH_v89DpMA&quot;</span></span>
-<span id="cb49-8"><a href="xml.html#cb49-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-9"><a href="xml.html#cb49-9" aria-hidden="true" tabindex="-1"></a>  address <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)</span>
-<span id="cb49-10"><a href="xml.html#cb49-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-11"><a href="xml.html#cb49-11" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(geourl,form,<span class="at">sep=</span><span class="st">&quot;?address=&quot;</span>)</span>
-<span id="cb49-12"><a href="xml.html#cb49-12" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,address,<span class="st">&quot;&amp;key=&quot;</span>)</span>
-<span id="cb49-13"><a href="xml.html#cb49-13" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,key)</span>
-<span id="cb49-14"><a href="xml.html#cb49-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-15"><a href="xml.html#cb49-15" aria-hidden="true" tabindex="-1"></a>  geo <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(geourl)</span>
-<span id="cb49-16"><a href="xml.html#cb49-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-17"><a href="xml.html#cb49-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-18"><a href="xml.html#cb49-18" aria-hidden="true" tabindex="-1"></a>  lat  <span class="ot">&lt;-</span> geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location[<span class="dv">1</span>]</span>
-<span id="cb49-19"><a href="xml.html#cb49-19" aria-hidden="true" tabindex="-1"></a>  lng  <span class="ot">&lt;-</span> geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location[<span class="dv">2</span>]</span>
-<span id="cb49-20"><a href="xml.html#cb49-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb49-21"><a href="xml.html#cb49-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(lat,lng))  </span>
-<span id="cb49-22"><a href="xml.html#cb49-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="xml.html#cb22-1" aria-hidden="true" tabindex="-1"></a>myGeo <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">address=</span><span class="st">&quot;1510 Clifton Rd Atlanta GA&quot;</span>,<span class="at">form=</span><span class="st">&quot;json&quot;</span>) {</span>
+<span id="cb22-2"><a href="xml.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(RJSONIO)</span>
+<span id="cb22-3"><a href="xml.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-4"><a href="xml.html#cb22-4" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="st">&quot;https://maps.googleapis.com/maps/api/geocode/&quot;</span></span>
+<span id="cb22-5"><a href="xml.html#cb22-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-6"><a href="xml.html#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You will need to replace this with your OWN key !</span></span>
+<span id="cb22-7"><a href="xml.html#cb22-7" aria-hidden="true" tabindex="-1"></a>  key <span class="ot">&lt;-</span> <span class="st">&quot;AIzaSyA3ereIVEjA0gPrxLiopLKJRPOLH_v89DpMA&quot;</span></span>
+<span id="cb22-8"><a href="xml.html#cb22-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-9"><a href="xml.html#cb22-9" aria-hidden="true" tabindex="-1"></a>  address <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>,<span class="st">&quot;+&quot;</span>,address)</span>
+<span id="cb22-10"><a href="xml.html#cb22-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-11"><a href="xml.html#cb22-11" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(geourl,form,<span class="at">sep=</span><span class="st">&quot;?address=&quot;</span>)</span>
+<span id="cb22-12"><a href="xml.html#cb22-12" aria-hidden="true" tabindex="-1"></a>  add <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,address,<span class="st">&quot;&amp;key=&quot;</span>)</span>
+<span id="cb22-13"><a href="xml.html#cb22-13" aria-hidden="true" tabindex="-1"></a>  geourl <span class="ot">&lt;-</span> <span class="fu">paste0</span>(add,key)</span>
+<span id="cb22-14"><a href="xml.html#cb22-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-15"><a href="xml.html#cb22-15" aria-hidden="true" tabindex="-1"></a>  geo <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(geourl)</span>
+<span id="cb22-16"><a href="xml.html#cb22-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-17"><a href="xml.html#cb22-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-18"><a href="xml.html#cb22-18" aria-hidden="true" tabindex="-1"></a>  lat  <span class="ot">&lt;-</span> geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location[<span class="dv">1</span>]</span>
+<span id="cb22-19"><a href="xml.html#cb22-19" aria-hidden="true" tabindex="-1"></a>  lng  <span class="ot">&lt;-</span> geo<span class="sc">$</span>results[[<span class="dv">1</span>]]<span class="sc">$</span>geometry<span class="sc">$</span>location[<span class="dv">2</span>]</span>
+<span id="cb22-20"><a href="xml.html#cb22-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-21"><a href="xml.html#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(lat,lng))  </span>
+<span id="cb22-22"><a href="xml.html#cb22-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Consider the following:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="xml.html#cb50-1" aria-hidden="true" tabindex="-1"></a>namevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, </span>
-<span id="cb50-2"><a href="xml.html#cb50-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Birmingham AL&quot;</span>, </span>
-<span id="cb50-3"><a href="xml.html#cb50-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Seattle WA&quot;</span>, </span>
-<span id="cb50-4"><a href="xml.html#cb50-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Sacramento CA&quot;</span>,</span>
-<span id="cb50-5"><a href="xml.html#cb50-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Denver CO&quot;</span>, </span>
-<span id="cb50-6"><a href="xml.html#cb50-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;LosAngeles CA&quot;</span>, </span>
-<span id="cb50-7"><a href="xml.html#cb50-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Rochester NY&quot;</span>)</span>
-<span id="cb50-8"><a href="xml.html#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-9"><a href="xml.html#cb50-9" aria-hidden="true" tabindex="-1"></a>cityList <span class="ot">&lt;-</span> <span class="fu">lapply</span>(namevec,myGeo)</span>
-<span id="cb50-10"><a href="xml.html#cb50-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-11"><a href="xml.html#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Or to get a data frame</span></span>
-<span id="cb50-12"><a href="xml.html#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-13"><a href="xml.html#cb50-13" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">city=</span>namevec,<span class="fu">do.call</span>(rbind,cityList),</span>
-<span id="cb50-14"><a href="xml.html#cb50-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="xml.html#cb23-1" aria-hidden="true" tabindex="-1"></a>namevec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Atlanta GA&quot;</span>, </span>
+<span id="cb23-2"><a href="xml.html#cb23-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Birmingham AL&quot;</span>, </span>
+<span id="cb23-3"><a href="xml.html#cb23-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Seattle WA&quot;</span>, </span>
+<span id="cb23-4"><a href="xml.html#cb23-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Sacramento CA&quot;</span>,</span>
+<span id="cb23-5"><a href="xml.html#cb23-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Denver CO&quot;</span>, </span>
+<span id="cb23-6"><a href="xml.html#cb23-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;LosAngeles CA&quot;</span>, </span>
+<span id="cb23-7"><a href="xml.html#cb23-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Rochester NY&quot;</span>)</span>
+<span id="cb23-8"><a href="xml.html#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="xml.html#cb23-9" aria-hidden="true" tabindex="-1"></a>cityList <span class="ot">&lt;-</span> <span class="fu">lapply</span>(namevec,myGeo)</span>
+<span id="cb23-10"><a href="xml.html#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="xml.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Or to get a data frame</span></span>
+<span id="cb23-12"><a href="xml.html#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="xml.html#cb23-13" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">city=</span>namevec,<span class="fu">do.call</span>(rbind,cityList),</span>
+<span id="cb23-14"><a href="xml.html#cb23-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>Now we can check out the geocoding cities and then make a map</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="xml.html#cb51-1" aria-hidden="true" tabindex="-1"></a>cities</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="xml.html#cb24-1" aria-hidden="true" tabindex="-1"></a>cities</span></code></pre></div>
 <pre><code>##            city      lat        lng
 ## 1    Atlanta GA 33.74900  -84.38798
 ## 2 Birmingham AL 33.51859  -86.81036
@@ -524,17 +524,17 @@ We could expand this considerable to process a number of addresses. This is a gr
 ## 5     Denver CO 39.73924 -104.99025
 ## 6 LosAngeles CA 34.05223 -118.24368
 ## 7  Rochester NY 43.15658  -77.60885</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="xml.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a Map</span></span>
-<span id="cb53-2"><a href="xml.html#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="xml.html#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb53-4"><a href="xml.html#cb53-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">data=</span>cities)</span>
-<span id="cb53-5"><a href="xml.html#cb53-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addTiles</span>(m)</span>
-<span id="cb53-6"><a href="xml.html#cb53-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addMarkers</span>(m,<span class="at">popup=</span>cities<span class="sc">$</span>city)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="xml.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s create a Map</span></span>
+<span id="cb26-2"><a href="xml.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="xml.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb26-4"><a href="xml.html#cb26-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">data=</span>cities)</span>
+<span id="cb26-5"><a href="xml.html#cb26-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addTiles</span>(m)</span>
+<span id="cb26-6"><a href="xml.html#cb26-6" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">addMarkers</span>(m,<span class="at">popup=</span>cities<span class="sc">$</span>city)</span></code></pre></div>
 <pre><code>## Assuming &quot;lng&quot; and &quot;lat&quot; are longitude and latitude, respectively</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="xml.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put up the Map - click on the markers</span></span>
-<span id="cb55-2"><a href="xml.html#cb55-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
-<div id="htmlwidget-be934bc445702fb9eb75" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-be934bc445702fb9eb75">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="xml.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put up the Map - click on the markers</span></span>
+<span id="cb28-2"><a href="xml.html#cb28-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
+<div id="htmlwidget-6dc32393ba210d24e1ce" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6dc32393ba210d24e1ce">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[33.7489954,33.5185892,47.6062095,38.5815719,39.7392358,34.0522342,43.1565779],[-84.3879824,-86.8103567,-122.3320708,-121.4943996,-104.990251,-118.2436849,-77.6088465],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Atlanta GA","Birmingham AL","Seattle WA","Sacramento CA","Denver CO","LosAngeles CA","Rochester NY"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[33.5185892,47.6062095],"lng":[-122.3320708,-77.6088465]}},"evals":[],"jsHooks":[]}</script>
 
 </div>
 </div>
