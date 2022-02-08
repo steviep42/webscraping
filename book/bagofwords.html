@@ -360,18 +360,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb116-4"><a href="bagofwords.html#cb116-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-5"><a href="bagofwords.html#cb116-5" aria-hidden="true" tabindex="-1"></a>stop_words <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">40</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 40 × 2
-##    word     lexicon 
-##    &lt;chr&gt;    &lt;chr&gt;   
-##  1 go       SMART   
-##  2 we       SMART   
-##  3 up       snowball
-##  4 great    onix    
-##  5 anyone   onix    
-##  6 we&#39;ll    snowball
-##  7 smallest onix    
-##  8 changes  SMART   
-##  9 various  SMART   
-## 10 possible onix    
+##    word   lexicon
+##    &lt;chr&gt;  &lt;chr&gt;  
+##  1 seemed onix   
+##  2 who    SMART  
+##  3 sure   SMART  
+##  4 to     onix   
+##  5 around onix   
+##  6 across onix   
+##  7 myself SMART  
+##  8 clear  onix   
+##  9 other  onix   
+## 10 having onix   
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="bagofwords.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now remove stop words from the document</span></span>
 <span id="cb118-2"><a href="bagofwords.html#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -535,78 +535,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="bagofwords.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span></span>
 <span id="cb136-2"><a href="bagofwords.html#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
-##    word          sentiment   
-##    &lt;chr&gt;         &lt;chr&gt;       
-##  1 dictionary    positive    
-##  2 defy          negative    
-##  3 banshee       sadness     
-##  4 foreboding    anticipation
-##  5 rollicking    joy         
-##  6 bereavement   sadness     
-##  7 elated        positive    
-##  8 symphony      anticipation
-##  9 scoff         negative    
-## 10 circumvention negative    
-## 11 aggressive    negative    
-## 12 jab           anger       
-## 13 sweet         positive    
-## 14 abuse         fear        
-## 15 pernicious    fear        
-## 16 consecration  positive    
-## 17 ken           positive    
-## 18 excuse        negative    
-## 19 killing       anger       
-## 20 shiver        anticipation</code></pre>
+##    word            sentiment   
+##    &lt;chr&gt;           &lt;chr&gt;       
+##  1 gentleman       trust       
+##  2 indefensible    fear        
+##  3 cringe          fear        
+##  4 atherosclerosis fear        
+##  5 annihilation    anger       
+##  6 repelling       disgust     
+##  7 inter           negative    
+##  8 mate            positive    
+##  9 airport         anticipation
+## 10 malady          negative    
+## 11 falling         sadness     
+## 12 filthy          disgust     
+## 13 fabrication     trust       
+## 14 orchestra       positive    
+## 15 easygoing       positive    
+## 16 ravine          fear        
+## 17 gory            sadness     
+## 18 vote            anger       
+## 19 kidnap          surprise    
+## 20 disastrous      negative</code></pre>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="bagofwords.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span></span>
 <span id="cb138-2"><a href="bagofwords.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
 ##    word         sentiment
 ##    &lt;chr&gt;        &lt;chr&gt;    
-##  1 cruelties    negative 
-##  2 concerns     negative 
-##  3 defiantly    negative 
-##  4 snazzy       positive 
-##  5 nobly        positive 
-##  6 paradise     positive 
-##  7 liberation   positive 
-##  8 sued         negative 
-##  9 tangled      negative 
-## 10 lawless      negative 
-## 11 fastest      positive 
-## 12 unraveled    negative 
-## 13 desperately  negative 
-## 14 crowded      negative 
-## 15 fortuitously positive 
-## 16 get-rich     negative 
-## 17 believable   positive 
-## 18 dripped      negative 
-## 19 smoother     positive 
-## 20 auspicious   positive</code></pre>
+##  1 pre-eminent  positive 
+##  2 unfortunate  negative 
+##  3 surreal      positive 
+##  4 crashes      negative 
+##  5 dispirited   negative 
+##  6 inspiring    positive 
+##  7 degradingly  negative 
+##  8 glare        negative 
+##  9 parody       negative 
+## 10 irk          negative 
+## 11 geeky        positive 
+## 12 disgustedly  negative 
+## 13 creepy       negative 
+## 14 dumps        negative 
+## 15 gaffe        negative 
+## 16 madman       negative 
+## 17 layoff-happy negative 
+## 18 maltreatment negative 
+## 19 belated      negative 
+## 20 ominous      negative</code></pre>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="bagofwords.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tim Loughran and Bill McDonald</span></span>
 <span id="cb140-2"><a href="bagofwords.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
-##    word           sentiment   
-##    &lt;chr&gt;          &lt;chr&gt;       
-##  1 probationary   litigious   
-##  2 recuses        litigious   
-##  3 accomplishment positive    
-##  4 boosted        positive    
-##  5 covenanting    constraining
-##  6 delinquencies  negative    
-##  7 arrearage      negative    
-##  8 suspension     negative    
-##  9 adjourns       litigious   
-## 10 renegotiated   negative    
-## 11 recalling      negative    
-## 12 mistakenly     negative    
-## 13 endorsee       litigious   
-## 14 prejudices     litigious   
-## 15 improving      positive    
-## 16 disinterested  negative    
-## 17 problems       negative    
-## 18 wilful         litigious   
-## 19 delists        negative    
-## 20 adversaries    negative</code></pre>
+##    word              sentiment  
+##    &lt;chr&gt;             &lt;chr&gt;      
+##  1 misstate          negative   
+##  2 devastation       negative   
+##  3 absolved          litigious  
+##  4 opportunistically negative   
+##  5 petition          litigious  
+##  6 abrogated         negative   
+##  7 codifications     litigious  
+##  8 adjudicated       litigious  
+##  9 redetermined      superfluous
+## 10 overshadowed      negative   
+## 11 unguaranteed      uncertainty
+## 12 alleged           negative   
+## 13 predictive        uncertainty
+## 14 unpredictability  negative   
+## 15 impracticable     negative   
+## 16 deterioration     negative   
+## 17 undetermined      uncertainty
+## 18 uncertainly       uncertainty
+## 19 unoccupied        negative   
+## 20 deceptive         negative</code></pre>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="bagofwords.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull out words that correspond to joy</span></span>
 <span id="cb142-2"><a href="bagofwords.html#cb142-2" aria-hidden="true" tabindex="-1"></a>nrc_joy <span class="ot">&lt;-</span> <span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb142-3"><a href="bagofwords.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sentiment <span class="sc">==</span> <span class="st">&quot;joy&quot;</span>)</span>
