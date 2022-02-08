@@ -272,15 +272,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There are probably lots of words that don’t really “matter” or contribute to the “real” meaning of the speech.</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="bagofwords.html#cb104-1" aria-hidden="true" tabindex="-1"></a>word_vec <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(lincoln_doc,<span class="st">&quot; &quot;</span>))</span>
 <span id="cb104-2"><a href="bagofwords.html#cb104-2" aria-hidden="true" tabindex="-1"></a>word_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code></pre></div>
-<pre><code>##  [1] &quot;TranscriptTranscriptFellow-Countrymen:&quot; &quot;&quot;                                      
-##  [3] &quot;At&quot;                                     &quot;this&quot;                                  
-##  [5] &quot;second&quot;                                 &quot;appearing&quot;                             
-##  [7] &quot;to&quot;                                     &quot;take&quot;                                  
-##  [9] &quot;the&quot;                                    &quot;oath&quot;                                  
-## [11] &quot;of&quot;                                     &quot;the&quot;                                   
-## [13] &quot;Presidential&quot;                           &quot;office&quot;                                
-## [15] &quot;there&quot;                                  &quot;is&quot;                                    
-## [17] &quot;less&quot;                                   &quot;occasion&quot;                              
+<pre><code>##  [1] &quot;TranscriptTranscriptFellow-Countrymen:&quot; &quot;&quot;                                       &quot;At&quot;                                    
+##  [4] &quot;this&quot;                                   &quot;second&quot;                                 &quot;appearing&quot;                             
+##  [7] &quot;to&quot;                                     &quot;take&quot;                                   &quot;the&quot;                                   
+## [10] &quot;oath&quot;                                   &quot;of&quot;                                     &quot;the&quot;                                   
+## [13] &quot;Presidential&quot;                           &quot;office&quot;                                 &quot;there&quot;                                 
+## [16] &quot;is&quot;                                     &quot;less&quot;                                   &quot;occasion&quot;                              
 ## [19] &quot;for&quot;                                    &quot;an&quot;</code></pre>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="bagofwords.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">table</span>(word_vec),<span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
 <pre><code>## word_vec
@@ -304,21 +301,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   war   all    be    we   but   God shall   was    do   let 
 ##    11     8     8     6     5     5     5     5     4     4</code></pre>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="bagofwords.html#cb110-1" aria-hidden="true" tabindex="-1"></a>word_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code></pre></div>
-<pre><code>##  [1] &quot;TranscriptTranscriptFellowCountrymen&quot; &quot;At&quot;                                  
-##  [3] &quot;second&quot;                               &quot;appearing&quot;                           
-##  [5] &quot;take&quot;                                 &quot;oath&quot;                                
-##  [7] &quot;Presidential&quot;                         &quot;office&quot;                              
-##  [9] &quot;there&quot;                                &quot;less&quot;                                
-## [11] &quot;occasion&quot;                             &quot;extended&quot;                            
-## [13] &quot;address&quot;                              &quot;than&quot;                                
-## [15] &quot;there&quot;                                &quot;was&quot;                                 
-## [17] &quot;at&quot;                                   &quot;first&quot;                               
-## [19] &quot;Then&quot;                                 &quot;statement&quot;                           
-## [21] &quot;somewhat&quot;                             &quot;detail&quot;                              
-## [23] &quot;course&quot;                               &quot;be&quot;                                  
-## [25] &quot;pursued&quot;                              &quot;seemed&quot;                              
-## [27] &quot;fitting&quot;                              &quot;proper&quot;                              
-## [29] &quot;Now&quot;                                  &quot;at&quot;</code></pre>
+<pre><code>##  [1] &quot;TranscriptTranscriptFellowCountrymen&quot; &quot;At&quot;                                   &quot;second&quot;                              
+##  [4] &quot;appearing&quot;                            &quot;take&quot;                                 &quot;oath&quot;                                
+##  [7] &quot;Presidential&quot;                         &quot;office&quot;                               &quot;there&quot;                               
+## [10] &quot;less&quot;                                 &quot;occasion&quot;                             &quot;extended&quot;                            
+## [13] &quot;address&quot;                              &quot;than&quot;                                 &quot;there&quot;                               
+## [16] &quot;was&quot;                                  &quot;at&quot;                                   &quot;first&quot;                               
+## [19] &quot;Then&quot;                                 &quot;statement&quot;                            &quot;somewhat&quot;                            
+## [22] &quot;detail&quot;                               &quot;course&quot;                               &quot;be&quot;                                  
+## [25] &quot;pursued&quot;                              &quot;seemed&quot;                               &quot;fitting&quot;                             
+## [28] &quot;proper&quot;                               &quot;Now&quot;                                  &quot;at&quot;</code></pre>
 </div>
 <div id="tidytext" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
@@ -329,9 +321,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb112-4"><a href="bagofwords.html#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb112-5"><a href="bagofwords.html#cb112-5" aria-hidden="true" tabindex="-1"></a>text_df</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 2
-##    line text                                                                                     
-##   &lt;int&gt; &lt;chr&gt;                                                                                    
-## 1     1 &quot;TranscriptTranscriptFellow-Countrymen:  At this second appearing to take the oath of th…</code></pre>
+##    line text                                                                                                                         
+##   &lt;int&gt; &lt;chr&gt;                                                                                                                        
+## 1     1 &quot;TranscriptTranscriptFellow-Countrymen:  At this second appearing to take the oath of the Presidential office there is less …</code></pre>
 <p>The next step is to breakup each of text lines (we have only 1) into invdividual rows, each with it’s own line. We also want to count the number of times that each word appears. This is known as <strong>tokenizing</strong> the data frame.</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="bagofwords.html#cb114-1" aria-hidden="true" tabindex="-1"></a>token_text <span class="ot">&lt;-</span> text_df <span class="sc">%&gt;%</span></span>
 <span id="cb114-2"><a href="bagofwords.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span>
@@ -360,18 +352,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb116-4"><a href="bagofwords.html#cb116-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb116-5"><a href="bagofwords.html#cb116-5" aria-hidden="true" tabindex="-1"></a>stop_words <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">40</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 40 × 2
-##    word   lexicon
-##    &lt;chr&gt;  &lt;chr&gt;  
-##  1 seemed onix   
-##  2 who    SMART  
-##  3 sure   SMART  
-##  4 to     onix   
-##  5 around onix   
-##  6 across onix   
-##  7 myself SMART  
-##  8 clear  onix   
-##  9 other  onix   
-## 10 having onix   
+##    word     lexicon 
+##    &lt;chr&gt;    &lt;chr&gt;   
+##  1 sub      SMART   
+##  2 yourself snowball
+##  3 took     onix    
+##  4 old      onix    
+##  5 this     onix    
+##  6 above    SMART   
+##  7 about    SMART   
+##  8 four     onix    
+##  9 others   SMART   
+## 10 come     onix    
 ## # … with 30 more rows</code></pre>
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="bagofwords.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now remove stop words from the document</span></span>
 <span id="cb118-2"><a href="bagofwords.html#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -535,78 +527,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="bagofwords.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span></span>
 <span id="cb136-2"><a href="bagofwords.html#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
-##    word            sentiment   
-##    &lt;chr&gt;           &lt;chr&gt;       
-##  1 gentleman       trust       
-##  2 indefensible    fear        
-##  3 cringe          fear        
-##  4 atherosclerosis fear        
-##  5 annihilation    anger       
-##  6 repelling       disgust     
-##  7 inter           negative    
-##  8 mate            positive    
-##  9 airport         anticipation
-## 10 malady          negative    
-## 11 falling         sadness     
-## 12 filthy          disgust     
-## 13 fabrication     trust       
-## 14 orchestra       positive    
-## 15 easygoing       positive    
-## 16 ravine          fear        
-## 17 gory            sadness     
-## 18 vote            anger       
-## 19 kidnap          surprise    
-## 20 disastrous      negative</code></pre>
+##    word        sentiment
+##    &lt;chr&gt;       &lt;chr&gt;    
+##  1 stint       negative 
+##  2 sneaking    negative 
+##  3 pastry      joy      
+##  4 blemish     anger    
+##  5 rue         sadness  
+##  6 lover       trust    
+##  7 smack       anger    
+##  8 enable      trust    
+##  9 refused     sadness  
+## 10 unity       trust    
+## 11 infamous    anger    
+## 12 patronage   positive 
+## 13 distortion  negative 
+## 14 antichrist  negative 
+## 15 counsellor  anger    
+## 16 divorce     trust    
+## 17 probation   sadness  
+## 18 creep       negative 
+## 19 expectation positive 
+## 20 commute     positive</code></pre>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="bagofwords.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span></span>
 <span id="cb138-2"><a href="bagofwords.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
-##    word         sentiment
-##    &lt;chr&gt;        &lt;chr&gt;    
-##  1 pre-eminent  positive 
-##  2 unfortunate  negative 
-##  3 surreal      positive 
-##  4 crashes      negative 
-##  5 dispirited   negative 
-##  6 inspiring    positive 
-##  7 degradingly  negative 
-##  8 glare        negative 
-##  9 parody       negative 
-## 10 irk          negative 
-## 11 geeky        positive 
-## 12 disgustedly  negative 
-## 13 creepy       negative 
-## 14 dumps        negative 
-## 15 gaffe        negative 
-## 16 madman       negative 
-## 17 layoff-happy negative 
-## 18 maltreatment negative 
-## 19 belated      negative 
-## 20 ominous      negative</code></pre>
+##    word           sentiment
+##    &lt;chr&gt;          &lt;chr&gt;    
+##  1 irritably      negative 
+##  2 shrouded       negative 
+##  3 retardedness   negative 
+##  4 unorthodox     negative 
+##  5 rhetorical     negative 
+##  6 mystery        negative 
+##  7 righteously    positive 
+##  8 shoddy         negative 
+##  9 droop          negative 
+## 10 trick          negative 
+## 11 trouble-free   positive 
+## 12 unconvincingly negative 
+## 13 efficient      positive 
+## 14 despotic       negative 
+## 15 magnificently  positive 
+## 16 renounce       negative 
+## 17 mordant        negative 
+## 18 extravagant    negative 
+## 19 loose          negative 
+## 20 courageous     positive</code></pre>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="bagofwords.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tim Loughran and Bill McDonald</span></span>
 <span id="cb140-2"><a href="bagofwords.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
-##    word              sentiment  
-##    &lt;chr&gt;             &lt;chr&gt;      
-##  1 misstate          negative   
-##  2 devastation       negative   
-##  3 absolved          litigious  
-##  4 opportunistically negative   
-##  5 petition          litigious  
-##  6 abrogated         negative   
-##  7 codifications     litigious  
-##  8 adjudicated       litigious  
-##  9 redetermined      superfluous
-## 10 overshadowed      negative   
-## 11 unguaranteed      uncertainty
-## 12 alleged           negative   
-## 13 predictive        uncertainty
-## 14 unpredictability  negative   
-## 15 impracticable     negative   
-## 16 deterioration     negative   
-## 17 undetermined      uncertainty
-## 18 uncertainly       uncertainty
-## 19 unoccupied        negative   
-## 20 deceptive         negative</code></pre>
+##    word        sentiment  
+##    &lt;chr&gt;       &lt;chr&gt;      
+##  1 devalues    negative   
+##  2 contend     negative   
+##  3 doubted     negative   
+##  4 uncollected negative   
+##  5 distort     negative   
+##  6 illegible   negative   
+##  7 inaccurate  negative   
+##  8 liquidation negative   
+##  9 overstates  negative   
+## 10 mismanages  negative   
+## 11 protest     negative   
+## 12 whereon     litigious  
+## 13 riskier     uncertainty
+## 14 briberies   negative   
+## 15 punishes    negative   
+## 16 weakness    negative   
+## 17 disrupting  negative   
+## 18 depleting   negative   
+## 19 amorphous   superfluous
+## 20 juris       litigious</code></pre>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="bagofwords.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull out words that correspond to joy</span></span>
 <span id="cb142-2"><a href="bagofwords.html#cb142-2" aria-hidden="true" tabindex="-1"></a>nrc_joy <span class="ot">&lt;-</span> <span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb142-3"><a href="bagofwords.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sentiment <span class="sc">==</span> <span class="st">&quot;joy&quot;</span>)</span>

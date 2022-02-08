@@ -240,12 +240,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## # A tibble: 6 × 3
 ##   Name         Symbol Price     
 ##   &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;     
-## 1 BTCBitcoin   BTC    $43,070.50
-## 2 ETHEthereum  ETH    $3,056.32 
+## 1 BTCBitcoin   BTC    $43,153.72
+## 2 ETHEthereum  ETH    $3,062.44 
 ## 3 USDTTether   USDT   $1.00     
-## 4 BNBBNB       BNB    $416.09   
-## 5 USDCUSD Coin USDC   $0.9997   
-## 6 XRPXRP       XRP    $0.8158</code></pre>
+## 4 BNBBNB       BNB    $415.98   
+## 5 USDCUSD Coin USDC   $0.9996   
+## 6 XRPXRP       XRP    $0.8176</code></pre>
 <p>Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="Moreexamples.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span></span>
 <span id="cb60-2"><a href="Moreexamples.html#cb60-2" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Price=</span><span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))</span>
@@ -261,14 +261,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## # A tibble: 10 × 3
 ##    Name                Symbol   Price
 ##    &lt;chr&gt;               &lt;chr&gt;    &lt;dbl&gt;
-##  1 BTCBitcoin          BTC    43070. 
-##  2 WBTCWrapped Bitcoin WBTC   43065. 
-##  3 ETHEthereum         ETH     3056. 
+##  1 BTCBitcoin          BTC    43154. 
+##  2 WBTCWrapped Bitcoin WBTC   43133. 
+##  3 ETHEthereum         ETH     3062. 
 ##  4 BNBBNB              BNB      416. 
 ##  5 LTCLitecoin         LTC      132. 
 ##  6 SOLSolana           SOL      112. 
-##  7 AVAXAvalanche       AVAX      84.4
-##  8 LUNATerra           LUNA      56.4
+##  7 AVAXAvalanche       AVAX      85.1
+##  8 LUNATerra           LUNA      56.5
 ##  9 DOTPolkadot         DOT       21.3
 ## 10 MATICPolygon        MATIC      1.9</code></pre>
 <p>Let’s make a barplot of the top 10 crypto currencies.</p>
@@ -346,19 +346,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb71-4"><a href="Moreexamples.html#cb71-4" aria-hidden="true" tabindex="-1"></a>salary <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(InstitutionCategoryState,<span class="at">into=</span>intost,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) </span>
 <span id="cb71-5"><a href="Moreexamples.html#cb71-5" aria-hidden="true" tabindex="-1"></a>salary</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 8
-##    Institution Category State `Avg. SalaryFul… `Avg. ChangeCon… `CountFull Prof… `Avg. Total Com…
-##    &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;           
-##  1 Auburn Uni… Doctoral ALAB… $132,600         4.4%                          407 $170,300        
-##  2 Birmingham… Baccala… ALAB… $81,000          0.0%                           39 $100,000        
-##  3 Huntingdon… Baccala… ALAB… $76,700          0.0%                           13 $89,500         
-##  4 Jacksonvil… Master’s ALAB… $77,300          N/A                            78 $104,100        
-##  5 Samford Un… Master   ALAB… $105,200         3.2%                          130 $133,300        
-##  6 Troy Unive… Masters  ALAB… $84,500          1.6%                           30 $88,500         
-##  7 The Univer… Doctoral ALAB… $151,600         2.0%                          300 $205,100        
-##  8 University… Doctoral ALAB… $139,100         2.8%                          191 $164,800        
-##  9 University… Doctoral ALAB… $126,400         2.0%                           64 $169,200        
-## 10 University… Master   ALAB… $80,700          2.1%                           47 $106,100        
-## # … with 1 more variable: Salary EquityFull Professors &lt;dbl&gt;</code></pre>
+##    Institution      Category  State  `Avg. SalaryFull … `Avg. ChangeContin… `CountFull Profe… `Avg. Total Compens… `Salary EquityFul…
+##    &lt;chr&gt;            &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;                           &lt;int&gt; &lt;chr&gt;                             &lt;dbl&gt;
+##  1 Auburn Universi… Doctoral  ALABA… $132,600           4.4%                              407 $170,300                           90.1
+##  2 Birmingham Sout… Baccalau… ALABA… $81,000            0.0%                               39 $100,000                           92.8
+##  3 Huntingdon Coll… Baccalau… ALABA… $76,700            0.0%                               13 $89,500                           110. 
+##  4 Jacksonville St… Master’s  ALABA… $77,300            N/A                                78 $104,100                           94.8
+##  5 Samford Univers… Master    ALABA… $105,200           3.2%                              130 $133,300                           86.8
+##  6 Troy University  Masters   ALABA… $84,500            1.6%                               30 $88,500                           106. 
+##  7 The University … Doctoral  ALABA… $151,600           2.0%                              300 $205,100                           85.6
+##  8 University of A… Doctoral  ALABA… $139,100           2.8%                              191 $164,800                           88.4
+##  9 University of A… Doctoral  ALABA… $126,400           2.0%                               64 $169,200                           95.6
+## 10 University of M… Master    ALABA… $80,700            2.1%                               47 $106,100                           94.4</code></pre>
 <p>So the default is 10 listings per page but there are many more pages we could process to get more information. If we look at the bottom of the page we can get some clues as to what the URLs are. Here we’ll just process the first two pages since it will be quick and won’t burden the server.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="Moreexamples.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># So now we could process multiple pages</span></span>
 <span id="cb73-2"><a href="Moreexamples.html#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -484,8 +483,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb76-13"><a href="Moreexamples.html#cb76-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="st">&quot;/[0-9]{6,6}&quot;</span>,.,<span class="at">value=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">unique</span>(.)</span>
 <span id="cb76-14"><a href="Moreexamples.html#cb76-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-15"><a href="Moreexamples.html#cb76-15" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
-<pre><code>##  [1] &quot;/27061610/&quot; &quot;/30041224/&quot; &quot;/25925822/&quot; &quot;/25925819/&quot; &quot;/28066912/&quot; &quot;/28535526/&quot; &quot;/27545636/&quot;
-##  [8] &quot;/30041223/&quot; &quot;/26586045/&quot; &quot;/27781373/&quot;</code></pre>
+<pre><code>##  [1] &quot;/27061610/&quot; &quot;/30041224/&quot; &quot;/25925822/&quot; &quot;/25925819/&quot; &quot;/28066912/&quot; &quot;/28535526/&quot; &quot;/27545636/&quot; &quot;/30041223/&quot; &quot;/26586045/&quot;
+## [10] &quot;/27781373/&quot;</code></pre>
 <p><img src="PICS/pubmed_results.png" width="550" /></p>
 <p>So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 20 results per page. As before we would have to dive in to the underlying structure of the page to get the correct HTML pathnames or we could just look for Paragraph elements and pick out the links that way.</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="Moreexamples.html#cb78-1" aria-hidden="true" tabindex="-1"></a>text.vec <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
