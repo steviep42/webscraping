@@ -465,7 +465,7 @@ all the tables and then experiment to find the precise one.</p>
 <span id="cb11-8"><a href="index.html#cb11-8" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
 <span id="cb11-9"><a href="index.html#cb11-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb11-10"><a href="index.html#cb11-10" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_df <span class="sc">%&gt;%</span> </span>
-<span id="cb11-11"><a href="index.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span>
+<span id="cb11-11"><a href="index.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span>
 <span id="cb11-12"><a href="index.html#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-13"><a href="index.html#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s get just the first three columns</span></span>
 <span id="cb11-14"><a href="index.html#cb11-14" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_populous[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span>

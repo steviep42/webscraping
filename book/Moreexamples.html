@@ -240,12 +240,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## # A tibble: 6 × 3
 ##   Name         Symbol Price     
 ##   &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;     
-## 1 BTCBitcoin   BTC    $43,153.72
-## 2 ETHEthereum  ETH    $3,062.44 
+## 1 BTCBitcoin   BTC    $43,118.16
+## 2 ETHEthereum  ETH    $3,059.35 
 ## 3 USDTTether   USDT   $1.00     
-## 4 BNBBNB       BNB    $415.98   
-## 5 USDCUSD Coin USDC   $0.9996   
-## 6 XRPXRP       XRP    $0.8176</code></pre>
+## 4 BNBBNB       BNB    $415.10   
+## 5 USDCUSD Coin USDC   $0.9995   
+## 6 XRPXRP       XRP    $0.8168</code></pre>
 <p>Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="Moreexamples.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span></span>
 <span id="cb60-2"><a href="Moreexamples.html#cb60-2" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Price=</span><span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))</span>
@@ -259,18 +259,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb60-10"><a href="Moreexamples.html#cb60-10" aria-hidden="true" tabindex="-1"></a>top_10 <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Price)) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span>
 <span id="cb60-11"><a href="Moreexamples.html#cb60-11" aria-hidden="true" tabindex="-1"></a>top_10</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 3
-##    Name                Symbol   Price
-##    &lt;chr&gt;               &lt;chr&gt;    &lt;dbl&gt;
-##  1 BTCBitcoin          BTC    43154. 
-##  2 WBTCWrapped Bitcoin WBTC   43133. 
-##  3 ETHEthereum         ETH     3062. 
-##  4 BNBBNB              BNB      416. 
-##  5 LTCLitecoin         LTC      132. 
-##  6 SOLSolana           SOL      112. 
-##  7 AVAXAvalanche       AVAX      85.1
-##  8 LUNATerra           LUNA      56.5
-##  9 DOTPolkadot         DOT       21.3
-## 10 MATICPolygon        MATIC      1.9</code></pre>
+##    Name                Symbol    Price
+##    &lt;chr&gt;               &lt;chr&gt;     &lt;dbl&gt;
+##  1 WBTCWrapped Bitcoin WBTC   43128.  
+##  2 BTCBitcoin          BTC    43118.  
+##  3 ETHEthereum         ETH     3059.  
+##  4 BNBBNB              BNB      415.  
+##  5 LTCLitecoin         LTC      132.  
+##  6 SOLSolana           SOL      112.  
+##  7 AVAXAvalanche       AVAX      85.2 
+##  8 LUNATerra           LUNA      56.5 
+##  9 DOTPolkadot         DOT       21.3 
+## 10 MATICPolygon        MATIC      1.89</code></pre>
 <p>Let’s make a barplot of the top 10 crypto currencies.</p>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="Moreexamples.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Next we want to make a barplot of the Top 10</span></span>
 <span id="cb62-2"><a href="Moreexamples.html#cb62-2" aria-hidden="true" tabindex="-1"></a>ylim<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(top_10<span class="sc">$</span>Price)<span class="sc">+</span><span class="dv">10000</span>)</span>
