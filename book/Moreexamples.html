@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 3 More Real Life Examples | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 3 More Real Life Examples | Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2022-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,9 @@
   
 <link rel="prev" href="xml.html"/>
 <link rel="next" href="APIs.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,54 +51,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -114,45 +145,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">Web Scraping</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a><ul>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#useful-tools"><i class="fa fa-check"></i><b>1.3.1</b> Useful tools</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a>
+<ul>
 <li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
 <li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
 </ul></li>
 <li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
 <li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
 <li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
 <li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
 <li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
 <li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
 <li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
 <li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
 <li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
 <li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
@@ -179,248 +218,204 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="Moreexamples" class="section level1">
+<div id="Moreexamples" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> More Real Life Examples</h1>
 <p>Okay. This is a tour of some sites that will serve as important examples on how to parse sites. Let’s check the price of bitcoins. You want to be rich don’t you ?</p>
-<div id="bitcoin-prices" class="section level2">
+<div id="bitcoin-prices" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> BitCoin Prices</h2>
-<div class="figure">
-<img src="PICS/bc4.png" />
-
-</div>
+<p><img src="PICS/bc4.png" /></p>
 <p>The challenge here is that it’s all one big table and it’s not clear how to adress it. And the owners of the web site will ususally change the format or start using Javascript or HTML5 which will mess things up in the future. One solid approach I frequently use is to simply pull out all the tables and, by experimentation, try to figure out which one has the information I want. This always require some work.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
-url &lt;-<span class="st"> &quot;https://coinmarketcap.com/all/views/all/&quot;</span>
-bc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url)
-
-bc_table &lt;-<span class="st"> </span>bc <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&#39;table&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="dv">3</span>]]
- <span class="co"># We get back a one element list that is a data frame</span>
- <span class="kw">str</span>(bc_table,<span class="dv">0</span>)</code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    200 obs. of  11 variables:</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> bc_table &lt;-<span class="st"> </span>bc_table[,<span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>)]
- <span class="kw">head</span>(bc_table)</code></pre></div>
-<pre><code>##           Name Symbol      Price
-## 1      Bitcoin    BTC $10,342.90
-## 2     Ethereum    ETH    $271.77
-## 3          XRP    XRP  $0.309994
-## 4 Bitcoin Cash    BCH    $476.81
-## 5   Bitcoin SV    BSV    $364.21
-## 6     Litecoin    LTC     $82.35</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="Moreexamples.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb56-2"><a href="Moreexamples.html#cb56-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://coinmarketcap.com/all/views/all/&quot;</span></span>
+<span id="cb56-3"><a href="Moreexamples.html#cb56-3" aria-hidden="true" tabindex="-1"></a>bc <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb56-4"><a href="Moreexamples.html#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="Moreexamples.html#cb56-5" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc <span class="sc">%&gt;%</span> </span>
+<span id="cb56-6"><a href="Moreexamples.html#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&#39;table&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-7"><a href="Moreexamples.html#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>() <span class="sc">%&gt;%</span> .[[<span class="dv">3</span>]]</span>
+<span id="cb56-8"><a href="Moreexamples.html#cb56-8" aria-hidden="true" tabindex="-1"></a> <span class="co"># We get back a one element list that is a data frame</span></span>
+<span id="cb56-9"><a href="Moreexamples.html#cb56-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">str</span>(bc_table,<span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## tibble [200 × 1,001] (S3: tbl_df/tbl/data.frame)</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="Moreexamples.html#cb58-1" aria-hidden="true" tabindex="-1"></a> bc_table <span class="ot">&lt;-</span> bc_table[,<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">5</span>)]</span>
+<span id="cb58-2"><a href="Moreexamples.html#cb58-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(bc_table)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   Name         Symbol Price     
+##   &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;     
+## 1 BTCBitcoin   BTC    $43,023.30
+## 2 ETHEthereum  ETH    $3,055.21 
+## 3 USDTTether   USDT   $1.00     
+## 4 BNBBNB       BNB    $416.09   
+## 5 USDCUSD Coin USDC   $0.9995   
+## 6 XRPXRP       XRP    $0.8144</code></pre>
 <p>Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span>
-bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Price=</span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))
-bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Price=</span><span class="kw">gsub</span>(<span class="st">&quot;,&quot;</span>,<span class="st">&quot;&quot;</span>,Price))
-bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Price=</span><span class="kw">round</span>(<span class="kw">as.numeric</span>(Price),<span class="dv">2</span>))
-
-<span class="co"># There are four rows wherein the Price is missing NA</span>
-bc_table &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">complete.cases</span>(bc_table))
-
-<span class="co"># Let&#39;s get the Crypto currencies with the Top 10 highest prices </span>
-top_<span class="dv">10</span> &lt;-<span class="st"> </span>bc_table <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(<span class="kw">desc</span>(Price)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>)
-top_<span class="dv">10</span></code></pre></div>
-<pre><code>##            Name Symbol    Price
-## 1       Bitcoin    BTC 10342.90
-## 2         Maker    MKR   633.20
-## 3  Bitcoin Cash    BCH   476.81
-## 4    Bitcoin SV    BSV   364.21
-## 5      Ethereum    ETH   271.77
-## 6          Dash   DASH   132.51
-## 7        Monero    XMR    95.13
-## 8      Litecoin    LTC    82.35
-## 9         Zcash    ZEC    73.42
-## 10     DigixDAO    DGD    50.05</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="Moreexamples.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The data is &quot;dirty&quot; and has characers in it that need cleaning</span></span>
+<span id="cb60-2"><a href="Moreexamples.html#cb60-2" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Price=</span><span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>,<span class="st">&quot;&quot;</span>,Price))</span>
+<span id="cb60-3"><a href="Moreexamples.html#cb60-3" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Price=</span><span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>,<span class="st">&quot;&quot;</span>,Price))</span>
+<span id="cb60-4"><a href="Moreexamples.html#cb60-4" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Price=</span><span class="fu">round</span>(<span class="fu">as.numeric</span>(Price),<span class="dv">2</span>))</span>
+<span id="cb60-5"><a href="Moreexamples.html#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="Moreexamples.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="co"># There are four rows wherein the Price is missing NA</span></span>
+<span id="cb60-7"><a href="Moreexamples.html#cb60-7" aria-hidden="true" tabindex="-1"></a>bc_table <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(bc_table))</span>
+<span id="cb60-8"><a href="Moreexamples.html#cb60-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-9"><a href="Moreexamples.html#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s get the Crypto currencies with the Top 10 highest prices </span></span>
+<span id="cb60-10"><a href="Moreexamples.html#cb60-10" aria-hidden="true" tabindex="-1"></a>top_10 <span class="ot">&lt;-</span> bc_table <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Price)) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span>
+<span id="cb60-11"><a href="Moreexamples.html#cb60-11" aria-hidden="true" tabindex="-1"></a>top_10</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 3
+##    Name                Symbol    Price
+##    &lt;chr&gt;               &lt;chr&gt;     &lt;dbl&gt;
+##  1 WBTCWrapped Bitcoin WBTC   43062.  
+##  2 BTCBitcoin          BTC    43023.  
+##  3 ETHEthereum         ETH     3055.  
+##  4 BNBBNB              BNB      416.  
+##  5 LTCLitecoin         LTC      132.  
+##  6 SOLSolana           SOL      112.  
+##  7 AVAXAvalanche       AVAX      84.1 
+##  8 LUNATerra           LUNA      56.4 
+##  9 DOTPolkadot         DOT       21.3 
+## 10 MATICPolygon        MATIC      1.89</code></pre>
 <p>Let’s make a barplot of the top 10 crypto currencies.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next we want to make a barplot of the Top 10</span>
-ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(top_<span class="dv">10</span><span class="op">$</span>Price)<span class="op">+</span><span class="dv">10000</span>)
-main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of Price&quot;</span>
-bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(top_<span class="dv">10</span><span class="op">$</span>Price,<span class="dt">col=</span><span class="st">&quot;aquamarine&quot;</span>,
-              <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
-<span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
-<span class="kw">grid</span>()</code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="Moreexamples.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Next we want to make a barplot of the Top 10</span></span>
+<span id="cb62-2"><a href="Moreexamples.html#cb62-2" aria-hidden="true" tabindex="-1"></a>ylim<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(top_10<span class="sc">$</span>Price)<span class="sc">+</span><span class="dv">10000</span>)</span>
+<span id="cb62-3"><a href="Moreexamples.html#cb62-3" aria-hidden="true" tabindex="-1"></a>main<span class="ot">=</span><span class="st">&quot;Top 10 Crypto Currencies in Terms of Price&quot;</span></span>
+<span id="cb62-4"><a href="Moreexamples.html#cb62-4" aria-hidden="true" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(top_10<span class="sc">$</span>Price,<span class="at">col=</span><span class="st">&quot;aquamarine&quot;</span>,</span>
+<span id="cb62-5"><a href="Moreexamples.html#cb62-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ylim=</span>ylim,<span class="at">main=</span>main)</span>
+<span id="cb62-6"><a href="Moreexamples.html#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span>bp, <span class="at">labels=</span>top_10<span class="sc">$</span>Symbol,  <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
+<span id="cb62-7"><a href="Moreexamples.html#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bitbar-1.png" width="672" /></p>
 <p>So that didn’t work out so well since one of the crypto currencies dominates the others in terms of price. So let’s create a log transformed verion of the plot.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s take the log of the price</span>
-ylim=<span class="kw">c</span>(<span class="dv">0</span>,<span class="kw">max</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price))<span class="op">+</span><span class="dv">5</span>)
-main=<span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span>
-bp &lt;-<span class="st"> </span><span class="kw">barplot</span>(<span class="kw">log</span>(top_<span class="dv">10</span><span class="op">$</span>Price),<span class="dt">col=</span><span class="st">&quot;aquamarine&quot;</span>,
-              <span class="dt">ylim=</span>ylim,<span class="dt">main=</span>main)
-<span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span>bp, <span class="dt">labels=</span>top_<span class="dv">10</span><span class="op">$</span>Symbol,  <span class="dt">cex.axis =</span> <span class="fl">0.7</span>)
-<span class="kw">grid</span>()</code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="Moreexamples.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s take the log of the price</span></span>
+<span id="cb63-2"><a href="Moreexamples.html#cb63-2" aria-hidden="true" tabindex="-1"></a>ylim<span class="ot">=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(<span class="fu">log</span>(top_10<span class="sc">$</span>Price))<span class="sc">+</span><span class="dv">5</span>)</span>
+<span id="cb63-3"><a href="Moreexamples.html#cb63-3" aria-hidden="true" tabindex="-1"></a>main<span class="ot">=</span><span class="st">&quot;Top 10 Crypto Currencies in Terms of log(Price)&quot;</span></span>
+<span id="cb63-4"><a href="Moreexamples.html#cb63-4" aria-hidden="true" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(<span class="fu">log</span>(top_10<span class="sc">$</span>Price),<span class="at">col=</span><span class="st">&quot;aquamarine&quot;</span>,</span>
+<span id="cb63-5"><a href="Moreexamples.html#cb63-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ylim=</span>ylim,<span class="at">main=</span>main)</span>
+<span id="cb63-6"><a href="Moreexamples.html#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span>bp, <span class="at">labels=</span>top_10<span class="sc">$</span>Symbol,  <span class="at">cex.axis =</span> <span class="fl">0.7</span>)</span>
+<span id="cb63-7"><a href="Moreexamples.html#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bitbarlog-1.png" width="672" /></p>
 </div>
-<div id="imdb" class="section level2">
+<div id="imdb" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> IMDB</h2>
 <p>Look at this example from IMDb (Internet Movie Database). According to Wikipedia:</p>
 <p>IMDb (Internet Movie Database)[2] is an online database of information related to films, television programs, home videos, video games, and streaming content online – including cast, production crew and personal biographies, plot summaries, trivia, fan and critical reviews, and ratings. We can search or refer to specific movies by URL if we wanted. For example, consider the following link to the “Lego Movie”: <a href="http://www.imdb.com/title/tt1490017/" class="uri">http://www.imdb.com/title/tt1490017/</a></p>
-<div class="figure">
-<img src="PICS/legom.png" />
-
-</div>
+<p><img src="PICS/legom.png" /></p>
 <p>In terms of scraping information from this site we could do that using the <strong>rvest</strong> package. Let’s say that we wanted to capture the rating information which is 7.8 out of 10. We could use the xPath Tool or the Selector gadet tool to zone in on this information. According to selector gadget we have the following xpath expression:</p>
-<div class="figure">
-<img src="PICS/sg.png" />
-
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://www.imdb.com/title/tt1490017/&quot;</span>
-lego_movie &lt;-<span class="st"> </span><span class="kw">read_html</span>(url)
-
-<span class="co"># Scrape the website for the movie rating</span>
-rating &lt;-<span class="st"> </span>lego_movie <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;.ratingValue span&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_text</span>() </code></pre></div>
+<p><img src="PICS/sg.png" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="Moreexamples.html#cb64-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://www.imdb.com/title/tt1490017/&quot;</span></span>
+<span id="cb64-2"><a href="Moreexamples.html#cb64-2" aria-hidden="true" tabindex="-1"></a>lego_movie <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb64-3"><a href="Moreexamples.html#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="Moreexamples.html#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Scrape the website for the movie rating</span></span>
+<span id="cb64-5"><a href="Moreexamples.html#cb64-5" aria-hidden="true" tabindex="-1"></a>rating <span class="ot">&lt;-</span> lego_movie <span class="sc">%&gt;%</span></span>
+<span id="cb64-6"><a href="Moreexamples.html#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;.ratingValue span&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-7"><a href="Moreexamples.html#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() </span></code></pre></div>
 <p>So that gives us what we need albeit in character form. Now it’s a simple matter of parsing out the first rating value:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rating &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(rating[<span class="dv">1</span>]))</code></pre></div>
-<pre><code>## [1] 7.8</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="Moreexamples.html#cb65-1" aria-hidden="true" tabindex="-1"></a>(rating <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(rating[<span class="dv">1</span>]))</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
 <p>That wasn’t so bad. Let’s see what using the xPath plugin gives us:</p>
-<div class="figure">
-<img src="PICS/xpp.png" />
-
-</div>
+<p><img src="PICS/xpp.png" /></p>
 <p>We get a much longer xpath expression which should provide us with direct access to the value.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xp &lt;-<span class="st"> &quot;/html/body/div[3]/div/div[2]/div[5]/div[1]/div[2]/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/strong/span&quot;</span>
-
-<span class="co"># Scrape the website for the movie rating</span>
-rating &lt;-<span class="st"> </span>lego_movie <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span>xp) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_text</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()
-
-rating</code></pre></div>
-<pre><code>## [1] 7.8</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="Moreexamples.html#cb67-1" aria-hidden="true" tabindex="-1"></a>xp <span class="ot">&lt;-</span> <span class="st">&quot;/html/body/div[3]/div/div[2]/div[5]/div[1]/div[2]/div/div[1]/div[2]/div/div[1]/div[1]/div[1]/strong/span&quot;</span></span>
+<span id="cb67-2"><a href="Moreexamples.html#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="Moreexamples.html#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Scrape the website for the movie rating</span></span>
+<span id="cb67-4"><a href="Moreexamples.html#cb67-4" aria-hidden="true" tabindex="-1"></a>rating <span class="ot">&lt;-</span> lego_movie <span class="sc">%&gt;%</span></span>
+<span id="cb67-5"><a href="Moreexamples.html#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath=</span>xp) <span class="sc">%&gt;%</span></span>
+<span id="cb67-6"><a href="Moreexamples.html#cb67-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb67-7"><a href="Moreexamples.html#cb67-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="Moreexamples.html#cb67-8" aria-hidden="true" tabindex="-1"></a>rating</span></code></pre></div>
+<pre><code>## numeric(0)</code></pre>
 <p>Let’s access the summary section of the link. We could use Selector Gadget or the xPath plugin. I’ll use the former.</p>
-<div class="figure">
-<img src="PICS/summary.png" />
-
+<p><img src="PICS/summary.png" /></p>
+<p><img src="PICS/sumxt.png" /></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="Moreexamples.html#cb69-1" aria-hidden="true" tabindex="-1"></a>mov_summary <span class="ot">&lt;-</span> lego_movie <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a href="Moreexamples.html#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;.summary_text&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb69-3"><a href="Moreexamples.html#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() </span>
+<span id="cb69-4"><a href="Moreexamples.html#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="Moreexamples.html#cb69-5" aria-hidden="true" tabindex="-1"></a>mov_summary</span></code></pre></div>
+<pre><code>## character(0)</code></pre>
 </div>
-<div class="figure">
-<img src="PICS/sumxt.png" />
-
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mov_summary &lt;-<span class="st"> </span>lego_movie <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;.summary_text&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_text</span>() 
-
-mov_summary</code></pre></div>
-<pre><code>## [1] &quot;\n                    An ordinary LEGO construction worker, thought to be the prophesied as \&quot;special\&quot;, is recruited to join a quest to stop an evil tyrant from gluing the LEGO universe into eternal stasis.\n            &quot;</code></pre>
-</div>
-<div id="faculty-salaries" class="section level2">
+<div id="faculty-salaries" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Faculty Salaries</h2>
 <p>In this example we have to parse the main table associated with the results page.</p>
 <div class="figure">
-<img src="PICS/salary.png" alt="Salary" />
+<img src="PICS/salary.png" alt="" />
 <p class="caption">Salary</p>
 </div>
 <div class="figure">
-<img src="PICS/sal_page.png" alt="Salary" />
+<img src="PICS/sal_page.png" alt="" />
 <p class="caption">Salary</p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://www.insidehighered.com/aaup-compensation-survey&quot;</span>
-df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">1</span>)
-intost &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)
-salary &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">separate</span>(InstitutionCategoryState,<span class="dt">into=</span>intost,<span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) 
-salary</code></pre></div>
-<pre><code>##                            Institution      Category   State
-## 1                    Auburn University      Doctoral ALABAMA
-## 2          Birmingham Southern College Baccalaureate ALABAMA
-## 3                   Huntingdon College Baccalaureate ALABAMA
-## 4                    Jacksonville St U      Master’s ALABAMA
-## 5                   Samford University        Master ALABAMA
-## 6                      Troy University       Masters ALABAMA
-## 7            The University of Alabama      Doctoral ALABAMA
-## 8  University of Alabama at Birmingham      Doctoral ALABAMA
-## 9     University of Alabama Huntsville      Doctoral ALABAMA
-## 10            University of Montevallo        Master ALABAMA
-##    Avg. SalaryFull Professors Avg. ChangeContinuing Full Professors
-## 1                    $132,600                                  4.4%
-## 2                     $81,000                                  0.0%
-## 3                     $76,700                                  0.0%
-## 4                     $77,300                                   N/A
-## 5                    $105,200                                  3.2%
-## 6                     $84,500                                  1.6%
-## 7                    $151,600                                  2.0%
-## 8                    $139,100                                  2.8%
-## 9                    $126,400                                  2.0%
-## 10                    $80,700                                  2.1%
-##    CountFull Professors Avg. Total CompensationFull Professors
-## 1                   407                               $170,300
-## 2                    39                               $100,000
-## 3                    13                                $89,500
-## 4                    78                               $104,100
-## 5                   130                               $133,300
-## 6                    30                                $88,500
-## 7                   300                               $205,100
-## 8                   191                               $164,800
-## 9                    64                               $169,200
-## 10                   47                               $106,100
-##    Salary EquityFull Professors
-## 1                          90.1
-## 2                          92.8
-## 3                         109.6
-## 4                          94.8
-## 5                          86.8
-## 6                         105.7
-## 7                          85.6
-## 8                          88.4
-## 9                          95.6
-## 10                         94.4</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="Moreexamples.html#cb71-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.insidehighered.com/aaup-compensation-survey&quot;</span></span>
+<span id="cb71-2"><a href="Moreexamples.html#cb71-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>() <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">1</span>)</span>
+<span id="cb71-3"><a href="Moreexamples.html#cb71-3" aria-hidden="true" tabindex="-1"></a>intost <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)</span>
+<span id="cb71-4"><a href="Moreexamples.html#cb71-4" aria-hidden="true" tabindex="-1"></a>salary <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(InstitutionCategoryState,<span class="at">into=</span>intost,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) </span>
+<span id="cb71-5"><a href="Moreexamples.html#cb71-5" aria-hidden="true" tabindex="-1"></a>salary</span></code></pre></div>
+<pre><code>## # A tibble: 10 × 8
+##    Institution Category State `Avg. SalaryFul… `Avg. ChangeCon… `CountFull Prof… `Avg. Total Com…
+##    &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;           
+##  1 Auburn Uni… Doctoral ALAB… $132,600         4.4%                          407 $170,300        
+##  2 Birmingham… Baccala… ALAB… $81,000          0.0%                           39 $100,000        
+##  3 Huntingdon… Baccala… ALAB… $76,700          0.0%                           13 $89,500         
+##  4 Jacksonvil… Master’s ALAB… $77,300          N/A                            78 $104,100        
+##  5 Samford Un… Master   ALAB… $105,200         3.2%                          130 $133,300        
+##  6 Troy Unive… Masters  ALAB… $84,500          1.6%                           30 $88,500         
+##  7 The Univer… Doctoral ALAB… $151,600         2.0%                          300 $205,100        
+##  8 University… Doctoral ALAB… $139,100         2.8%                          191 $164,800        
+##  9 University… Doctoral ALAB… $126,400         2.0%                           64 $169,200        
+## 10 University… Master   ALAB… $80,700          2.1%                           47 $106,100        
+## # … with 1 more variable: Salary EquityFull Professors &lt;dbl&gt;</code></pre>
 <p>So the default is 10 listings per page but there are many more pages we could process to get more information. If we look at the bottom of the page we can get some clues as to what the URLs are. Here we’ll just process the first two pages since it will be quick and won’t burden the server.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># So now we could process multiple pages</span>
-
-url &lt;-<span class="st"> &#39;https://www.insidehighered.com/aaup-compensation-survey?institution-name=&amp;professor-category=1591&amp;page=1&#39;</span>
-str1 &lt;-<span class="st"> &quot;https://www.insidehighered.com/aaup-compensation-survey?&quot;</span>
-str2 &lt;-<span class="st"> &quot;institution-name=&amp;professor-category=1591&amp;page=&quot;</span>
-intost &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)
-
-salary &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
-
-<span class="co"># We&#39;ll get just the first two pages</span>
-
-<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {
-  nurl  &lt;-<span class="st"> </span><span class="kw">paste</span>(str1,str2,ii,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
-  df &lt;-<span class="st"> </span><span class="kw">read_html</span>(nurl)
-  tmp &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">1</span>)
-  tmp &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">separate</span>(InstitutionCategoryState,<span class="dt">into=</span>intost,<span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) 
-  salary &lt;-<span class="st"> </span><span class="kw">rbind</span>(salary,tmp)
-}
-
-salary</code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="Moreexamples.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># So now we could process multiple pages</span></span>
+<span id="cb73-2"><a href="Moreexamples.html#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="Moreexamples.html#cb73-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://www.insidehighered.com/aaup-compensation-survey?institution-name=&amp;professor-category=1591&amp;page=1&#39;</span></span>
+<span id="cb73-4"><a href="Moreexamples.html#cb73-4" aria-hidden="true" tabindex="-1"></a>str1 <span class="ot">&lt;-</span> <span class="st">&quot;https://www.insidehighered.com/aaup-compensation-survey?&quot;</span></span>
+<span id="cb73-5"><a href="Moreexamples.html#cb73-5" aria-hidden="true" tabindex="-1"></a>str2 <span class="ot">&lt;-</span> <span class="st">&quot;institution-name=&amp;professor-category=1591&amp;page=&quot;</span></span>
+<span id="cb73-6"><a href="Moreexamples.html#cb73-6" aria-hidden="true" tabindex="-1"></a>intost <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)</span>
+<span id="cb73-7"><a href="Moreexamples.html#cb73-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-8"><a href="Moreexamples.html#cb73-8" aria-hidden="true" tabindex="-1"></a>salary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb73-9"><a href="Moreexamples.html#cb73-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-10"><a href="Moreexamples.html#cb73-10" aria-hidden="true" tabindex="-1"></a><span class="co"># We&#39;ll get just the first two pages</span></span>
+<span id="cb73-11"><a href="Moreexamples.html#cb73-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-12"><a href="Moreexamples.html#cb73-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) {</span>
+<span id="cb73-13"><a href="Moreexamples.html#cb73-13" aria-hidden="true" tabindex="-1"></a>  nurl  <span class="ot">&lt;-</span> <span class="fu">paste</span>(str1,str2,ii,<span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb73-14"><a href="Moreexamples.html#cb73-14" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(nurl)</span>
+<span id="cb73-15"><a href="Moreexamples.html#cb73-15" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">html_table</span>() <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">1</span>)</span>
+<span id="cb73-16"><a href="Moreexamples.html#cb73-16" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> <span class="fu">separate</span>(InstitutionCategoryState,<span class="at">into=</span>intost,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) </span>
+<span id="cb73-17"><a href="Moreexamples.html#cb73-17" aria-hidden="true" tabindex="-1"></a>  salary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(salary,tmp)</span>
+<span id="cb73-18"><a href="Moreexamples.html#cb73-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb73-19"><a href="Moreexamples.html#cb73-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-20"><a href="Moreexamples.html#cb73-20" aria-hidden="true" tabindex="-1"></a>salary</span></code></pre></div>
 <p>Look at the URLs at the bottom of the main page to find beginning and ending page numbers. Visually this is easy. Programmatically we could do something like the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># https://www.insidehighered.com/aaup-compensation-survey?page=1</span>
-<span class="co"># https://www.insidehighered.com/aaup-compensation-survey?page=94</span>
-
-<span class="co"># What is the last page number ? We already know the answer - 94</span>
-
-lastnum &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span><span class="st">&#39;//a&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="op">%&gt;%</span><span class="st"> &#39;[&#39;</span>(<span class="dv">103</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">strsplit</span>(.,<span class="st">&quot;page=&quot;</span>) <span class="op">%&gt;%</span><span class="st"> &#39;[[&#39;</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> &#39;[&#39;</span>(<span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>(.)
-
-<span class="co"># So now we could get all pages of the survey</span>
-
-str1 &lt;-<span class="st"> &quot;https://www.insidehighered.com/aaup-compensation-survey?&quot;</span>
-str2 &lt;-<span class="st"> &quot;institution-name=&amp;professor-category=1591&amp;page=&quot;</span>
-intost &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)
-
-salary &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
-
-<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>lastnum) {
-  nurl  &lt;-<span class="st"> </span><span class="kw">paste</span>(str1,str2,ii,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
-  df &lt;-<span class="st"> </span><span class="kw">read_html</span>(nurl)
-  tmp &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>() <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">1</span>)
-  tmp &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">separate</span>(InstitutionCategoryState,<span class="dt">into=</span>intost,<span class="dt">sep=</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) 
-  salary &lt;-<span class="st"> </span><span class="kw">rbind</span>(salary,tmp)
-  <span class="kw">Sys.sleep</span>(<span class="dv">1</span>)
-}
-<span class="kw">names</span>(salary) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>,<span class="st">&quot;AvgSalFP&quot;</span>,<span class="st">&quot;AvgChgFP&quot;</span>,
-                   <span class="st">&quot;CntFP&quot;</span>,<span class="st">&quot;AvgTotCompFP&quot;</span>,<span class="st">&quot;SalEquityFP&quot;</span>)
-
-salary &lt;-<span class="st"> </span>salary <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">AvgSalFP=</span><span class="kw">as.numeric</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">$|,&quot;</span>,<span class="st">&quot;&quot;</span>,salary<span class="op">$</span>AvgSalFP))) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">AvgTotCompFP=</span><span class="kw">as.numeric</span>(<span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">$|,&quot;</span>,<span class="st">&quot;&quot;</span>,salary<span class="op">$</span>AvgTotCompFP)))
-
-salary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(State,Category) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">avg=</span><span class="kw">mean</span>(AvgSalFP)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(avg))</code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="Moreexamples.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.insidehighered.com/aaup-compensation-survey?page=1</span></span>
+<span id="cb74-2"><a href="Moreexamples.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.insidehighered.com/aaup-compensation-survey?page=94</span></span>
+<span id="cb74-3"><a href="Moreexamples.html#cb74-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-4"><a href="Moreexamples.html#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="co"># What is the last page number ? We already know the answer - 94</span></span>
+<span id="cb74-5"><a href="Moreexamples.html#cb74-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-6"><a href="Moreexamples.html#cb74-6" aria-hidden="true" tabindex="-1"></a>lastnum <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="at">xpath=</span><span class="st">&#39;//a&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-7"><a href="Moreexamples.html#cb74-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">&#39;[&#39;</span>(<span class="dv">103</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb74-8"><a href="Moreexamples.html#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(.,<span class="st">&quot;page=&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">&#39;[[&#39;</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="st">&#39;[&#39;</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>(.)</span>
+<span id="cb74-9"><a href="Moreexamples.html#cb74-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-10"><a href="Moreexamples.html#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="co"># So now we could get all pages of the survey</span></span>
+<span id="cb74-11"><a href="Moreexamples.html#cb74-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-12"><a href="Moreexamples.html#cb74-12" aria-hidden="true" tabindex="-1"></a>str1 <span class="ot">&lt;-</span> <span class="st">&quot;https://www.insidehighered.com/aaup-compensation-survey?&quot;</span></span>
+<span id="cb74-13"><a href="Moreexamples.html#cb74-13" aria-hidden="true" tabindex="-1"></a>str2 <span class="ot">&lt;-</span> <span class="st">&quot;institution-name=&amp;professor-category=1591&amp;page=&quot;</span></span>
+<span id="cb74-14"><a href="Moreexamples.html#cb74-14" aria-hidden="true" tabindex="-1"></a>intost <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>)</span>
+<span id="cb74-15"><a href="Moreexamples.html#cb74-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-16"><a href="Moreexamples.html#cb74-16" aria-hidden="true" tabindex="-1"></a>salary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb74-17"><a href="Moreexamples.html#cb74-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-18"><a href="Moreexamples.html#cb74-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>lastnum) {</span>
+<span id="cb74-19"><a href="Moreexamples.html#cb74-19" aria-hidden="true" tabindex="-1"></a>  nurl  <span class="ot">&lt;-</span> <span class="fu">paste</span>(str1,str2,ii,<span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb74-20"><a href="Moreexamples.html#cb74-20" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(nurl)</span>
+<span id="cb74-21"><a href="Moreexamples.html#cb74-21" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">html_table</span>() <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">1</span>)</span>
+<span id="cb74-22"><a href="Moreexamples.html#cb74-22" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> <span class="fu">separate</span>(InstitutionCategoryState,<span class="at">into=</span>intost,<span class="at">sep=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) </span>
+<span id="cb74-23"><a href="Moreexamples.html#cb74-23" aria-hidden="true" tabindex="-1"></a>  salary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(salary,tmp)</span>
+<span id="cb74-24"><a href="Moreexamples.html#cb74-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">1</span>)</span>
+<span id="cb74-25"><a href="Moreexamples.html#cb74-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb74-26"><a href="Moreexamples.html#cb74-26" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(salary) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Institution&quot;</span>,<span class="st">&quot;Category&quot;</span>,<span class="st">&quot;State&quot;</span>,<span class="st">&quot;AvgSalFP&quot;</span>,<span class="st">&quot;AvgChgFP&quot;</span>,</span>
+<span id="cb74-27"><a href="Moreexamples.html#cb74-27" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;CntFP&quot;</span>,<span class="st">&quot;AvgTotCompFP&quot;</span>,<span class="st">&quot;SalEquityFP&quot;</span>)</span>
+<span id="cb74-28"><a href="Moreexamples.html#cb74-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-29"><a href="Moreexamples.html#cb74-29" aria-hidden="true" tabindex="-1"></a>salary <span class="ot">&lt;-</span> salary <span class="sc">%&gt;%</span> </span>
+<span id="cb74-30"><a href="Moreexamples.html#cb74-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AvgSalFP=</span><span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">$|,&quot;</span>,<span class="st">&quot;&quot;</span>,salary<span class="sc">$</span>AvgSalFP))) <span class="sc">%&gt;%</span></span>
+<span id="cb74-31"><a href="Moreexamples.html#cb74-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AvgTotCompFP=</span><span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">$|,&quot;</span>,<span class="st">&quot;&quot;</span>,salary<span class="sc">$</span>AvgTotCompFP)))</span>
+<span id="cb74-32"><a href="Moreexamples.html#cb74-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-33"><a href="Moreexamples.html#cb74-33" aria-hidden="true" tabindex="-1"></a>salary <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(State,Category) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-34"><a href="Moreexamples.html#cb74-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg=</span><span class="fu">mean</span>(AvgSalFP)) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-35"><a href="Moreexamples.html#cb74-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg))</span></code></pre></div>
 <p>There are some problems:</p>
 <ul>
 <li>Data is large and scattered across multiple pages</li>
@@ -430,10 +425,10 @@ salary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">g
 <li>rvest (and other packages) let you do this</li>
 </ul>
 </div>
-<div id="filling-out-forms-from-a-program" class="section level2">
+<div id="filling-out-forms-from-a-program" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Filling Out Forms From a Program</h2>
 <div class="figure">
-<img src="PICS/salary_form.png" alt="Salary" width="250" />
+<img src="PICS/salary_form.png" width="250" alt="" />
 <p class="caption">Salary</p>
 </div>
 <p>Let’s find salaries between $ 150,000 and the default max ($ 244,000)</p>
@@ -443,99 +438,80 @@ salary <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">g
 <li>Get a local copy of the form</li>
 <li>Fill in the value for the “Average Salary”</li>
 <li>Submit the lled in form</li>
-<li>Get the results and parse them like above `</li>
+<li>Get the results and parse them like above
+`</li>
 </ul>
 <p>So finding the correct element is more challenging. I use Chrome to do this. Just highlight the area over the form and right click to “Insepct” the element. This opens up the developer tools. You have to dig down to find the corrext form and the element name. Here is a screen shot of my activity:</p>
 <div class="figure">
-<img src="PICS/form.png" alt="Salary" width="550" />
+<img src="PICS/form.png" width="550" alt="" />
 <p class="caption">Salary</p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://www.insidehighered.com/aaup-compensation-survey&quot;</span>
-
-<span class="co"># Establish a session</span>
-mysess &lt;-<span class="st"> </span><span class="kw">html_session</span>(url)
-
-<span class="co"># Get the form</span>
-
-form_unfilled &lt;-<span class="st"> </span>mysess <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_node</span>(<span class="st">&quot;form&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_form</span>()
-form_filled   &lt;-<span class="st"> </span>form_unfilled <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">set_values</span>(<span class="st">&quot;range-from&quot;</span>=<span class="dv">150000</span>)
-
-<span class="co"># Submit form</span>
-
-results &lt;-<span class="st"> </span><span class="kw">submit_form</span>(mysess,form_filled)
-first_page &lt;-<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span>expr) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()
-
-first_page</code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="Moreexamples.html#cb75-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.insidehighered.com/aaup-compensation-survey&quot;</span></span>
+<span id="cb75-2"><a href="Moreexamples.html#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="Moreexamples.html#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Establish a session</span></span>
+<span id="cb75-4"><a href="Moreexamples.html#cb75-4" aria-hidden="true" tabindex="-1"></a>mysess <span class="ot">&lt;-</span> <span class="fu">html_session</span>(url)</span>
+<span id="cb75-5"><a href="Moreexamples.html#cb75-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="Moreexamples.html#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the form</span></span>
+<span id="cb75-7"><a href="Moreexamples.html#cb75-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-8"><a href="Moreexamples.html#cb75-8" aria-hidden="true" tabindex="-1"></a>form_unfilled <span class="ot">&lt;-</span> mysess <span class="sc">%&gt;%</span> <span class="fu">html_node</span>(<span class="st">&quot;form&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_form</span>()</span>
+<span id="cb75-9"><a href="Moreexamples.html#cb75-9" aria-hidden="true" tabindex="-1"></a>form_filled   <span class="ot">&lt;-</span> form_unfilled <span class="sc">%&gt;%</span> <span class="fu">set_values</span>(<span class="st">&quot;range-from&quot;</span><span class="ot">=</span><span class="dv">150000</span>)</span>
+<span id="cb75-10"><a href="Moreexamples.html#cb75-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-11"><a href="Moreexamples.html#cb75-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit form</span></span>
+<span id="cb75-12"><a href="Moreexamples.html#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="Moreexamples.html#cb75-13" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">submit_form</span>(mysess,form_filled)</span>
+<span id="cb75-14"><a href="Moreexamples.html#cb75-14" aria-hidden="true" tabindex="-1"></a>first_page <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="at">xpath=</span>expr) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span>
+<span id="cb75-15"><a href="Moreexamples.html#cb75-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-16"><a href="Moreexamples.html#cb75-16" aria-hidden="true" tabindex="-1"></a>first_page</span></code></pre></div>
 </div>
-<div id="pubmed" class="section level2">
+<div id="pubmed" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> PubMed</h2>
 <p>Pubmed provides a rich source of information on published scientific literature. There are tutorials on how to leverage its capabilities but one thing to consider is that MESH terms are a good starting place since the search is index-based. MeSH (Medical Subject Headings) is the NLM controlled vocabulary thesaurus used for indexing articles for PubMed. It’s faster and more accurate so you can first use the MESH browser to generate the appropriate search terms and add that into the Search interface. The MESH browser can be found at <a href="https://www.ncbi.nlm.nih.gov/mesh/" class="uri">https://www.ncbi.nlm.nih.gov/mesh/</a></p>
-<div class="figure">
-<img src="PICS/pubmed1.png" width="550" />
-
-</div>
-<div class="figure">
-<img src="PICS/mesh.png" width="550" />
-
-</div>
+<p><img src="PICS/pubmed1.png" width="550" /></p>
+<p><img src="PICS/mesh.png" width="550" /></p>
 <p>What we do here is get the links associated with each publication so we can then process each of those and get the abstract associated with each publication.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># &quot;hemodialysis, home&quot; [MeSH Terms] </span>
-
-url&lt;-<span class="st">&quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span>
-
-<span class="co"># </span>
-<span class="co"># The results from the search will be of the form:</span>
-<span class="co"># https://www.ncbi.nlm.nih.gov/pubmed/30380542</span>
-
-results &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">grep</span>(<span class="st">&quot;/pubmed/[0-9]{1,6}&quot;</span>,.,<span class="dt">value=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>(.)
-
-results</code></pre></div>
-<pre><code>##  [1] &quot;/pubmed/31566344&quot; &quot;/pubmed/31556520&quot; &quot;/pubmed/31448033&quot;
-##  [4] &quot;/pubmed/31320319&quot; &quot;/pubmed/31009189&quot; &quot;/pubmed/30964936&quot;
-##  [7] &quot;/pubmed/30799978&quot; &quot;/pubmed/30760251&quot; &quot;/pubmed/30663973&quot;
-## [10] &quot;/pubmed/30545707&quot; &quot;/pubmed/30480534&quot; &quot;/pubmed/30473061&quot;
-## [13] &quot;/pubmed/30463079&quot; &quot;/pubmed/30457224&quot; &quot;/pubmed/30392981&quot;
-## [16] &quot;/pubmed/30380542&quot; &quot;/pubmed/30352485&quot; &quot;/pubmed/30314451&quot;
-## [19] &quot;/pubmed/30281539&quot; &quot;/pubmed/30235331&quot;</code></pre>
-<div class="figure">
-<img src="PICS/pubmed_results.png" width="550" />
-
-</div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="Moreexamples.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;hemodialysis, home&quot; [MeSH Terms] </span></span>
+<span id="cb76-2"><a href="Moreexamples.html#cb76-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-3"><a href="Moreexamples.html#cb76-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-4"><a href="Moreexamples.html#cb76-4" aria-hidden="true" tabindex="-1"></a>url<span class="ot">&lt;-</span><span class="st">&quot;https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D&quot;</span></span>
+<span id="cb76-5"><a href="Moreexamples.html#cb76-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a href="Moreexamples.html#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb76-7"><a href="Moreexamples.html#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The results from the search will be of the form:</span></span>
+<span id="cb76-8"><a href="Moreexamples.html#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.ncbi.nlm.nih.gov/pubmed/30380542</span></span>
+<span id="cb76-9"><a href="Moreexamples.html#cb76-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-10"><a href="Moreexamples.html#cb76-10" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-11"><a href="Moreexamples.html#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb76-12"><a href="Moreexamples.html#cb76-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb76-13"><a href="Moreexamples.html#cb76-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grep</span>(<span class="st">&quot;/[0-9]{6,6}&quot;</span>,.,<span class="at">value=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">unique</span>(.)</span>
+<span id="cb76-14"><a href="Moreexamples.html#cb76-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-15"><a href="Moreexamples.html#cb76-15" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>##  [1] &quot;/27061610/&quot; &quot;/30041224/&quot; &quot;/25925822/&quot; &quot;/25925819/&quot; &quot;/28066912/&quot; &quot;/28535526/&quot; &quot;/27545636/&quot;
+##  [8] &quot;/30041223/&quot; &quot;/26586045/&quot; &quot;/27781373/&quot;</code></pre>
+<p><img src="PICS/pubmed_results.png" width="550" /></p>
 <p>So now we could loop through these links and get the abstracts for these results. It looks that there are approximately 20 results per page. As before we would have to dive in to the underlying structure of the page to get the correct HTML pathnames or we could just look for Paragraph elements and pick out the links that way.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text.vec &lt;-<span class="st"> </span><span class="kw">vector</span>()
-
-<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(results)) {
-  string &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.ncbi.nlm.nih.gov&quot;</span>,results[ii])
-  text.vec[ii] &lt;-<span class="st"> </span><span class="kw">read_html</span>(string) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">11</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
-}
-
-<span class="co"># Eliminate lines with newlines characters</span>
-
-final.vec &lt;-<span class="st"> </span>text.vec[<span class="kw">grep</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,text.vec,<span class="dt">invert=</span><span class="ot">TRUE</span>)]
-
-final.vec</code></pre></div>
-<pre><code>##  [1] &quot;Globally, home dialysis prevalence has been declining relative to the increase in end stage renal disease and renal replacement therapy. The goal of this study was to identify international perceptions and practices. A web-based questionnaire was disseminated to nephrology nurses in 30 home dialysis-prevalent nations. Global telehealth use was low (23%), contrasting with 83% respondents agreeing telehealth would improve care. Only 31% of all programs enabled patient training outside of normal working hours (e.g., nights and weekends), and 31% of all program patients had some cost reimbursement, with a significant difference between U.S. and non-U.S. programs (U.S. 11%, non-U.S. 59%, 2 = 93.6, p &lt; 0.0001). Significant differences in the need for monthly clinic visits (U.S. 72%, non-US 44%, 2 = 83.7, p &lt; 0.0001) were also found. Telehealth provision and patient training flexibility is limited, and patient cost reimbursement is low. Increased telehealth, patient cost reimbursement, and flexible training models may promote home dialysis growth.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-##  [2] &quot;The authors report the first case of successful peritoneal dialysis (PD) in a developing country performed about a 13-year-old adolescent followed-up for stage V chronic kidney disease (CKD) with anuria. After 3 months of hemodialysis, the parents opted for continuous ambulatory peritoneal dialysis (CAPD) as they wished to return home located 121km from Dakar. After PD catheter insertion, the plan proposed to the patient consisted 3-4 hours stasis of isotonic dialysate during the day and a night stasis of 8 hours of icodextrin for an injection volume of 1L per session. The patient and his mother were trained and assessed on the PD technique. After dialysis adequacy was tested while hospitalised, they were able to return home and continued the sessions following the same plan prescribed and while keeping in touch, by telephone, with the medical team. The technique assessment at the day hospital every 2 weeks revealed dialysis adequacy and satisfactory tolerance of PD at home after 04 months of observation. It was the first case of successful CAPD in the pediatrics unit in this context. Scaling this technique is a challenge for the pediatric nephrologist in developing countries like Senegal.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-##  [3] &quot;dialysis; ethnicity; hemodialysis; hemodialysis, home; public policy&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-##  [4] &quot;This article describes one woman&#39;s journey to home hemodialysis therapy. Her training and trials in adjusting to the therapy led to a passion for promoting improvements in dialysis for herself and others. Ms. Gedney has become a patient advocate who travels the country speaking for home dialyzers to politicians, physicians, and an alphabet soup of renal care committees. Her example should inspire others in the renal care community to speak out to make a difference for positive change.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-##  [5] &quot;Improvement in Home Dialysis (HoD) utilizations as a mean to improve the patient reported and health services outcomes, has been a long-held goal of the providers and healthcare system in United States. However, measures to improve HoD rates have yielded limited success so far. Lack of patient awareness of chronic kidney disease (CKD) and its management options, is one of the important barriers against patient adoption of HoD. Despite ample evidence that Comprehensive pre-ESERD Patient Education (CPE) improves patient awareness and informed HoD choice, use of CPE among US advanced CKD patients is low. Need for significant resources, lack of validated data showing unequivocal and reproducible benefits, and the lack of validated CPE protocols proven to have consistent efficacy in improving not only patient awareness but also HoD rates in US population, are major limitations deterring adoption of CPE in routine clinical practice. We recently demonstrated that if a structured, protocol based CPE is integrated within the routine nephrology care for patients with advanced CKD, it substantially improves informed HoD choice and utilizations. However, this requires establishing CPE resources within each nephrology practice. Efficacy of a stand-alone CPE model, independent of clinical care, has not been examined till date. In this report we report the efficacy of our structured CPE protocol, delivered outside the realm of routine nephrology care-as a stand-alone patient education program, in a geographically distant region, and show that: when provided opportunity for informed dialysis choice, a majority of advanced CKD patients in US would prefer HoD. We also show that initiating CPE leads to accelerated growth in HoD utilizations and reduces disparities in HoD utilizations, goals for system improvements. Finally, the reproducibility of our structured CPE protocol with consistent efficacy data suggest that initiating such programs at institutional levels has the potential to improve informed dialysis selection and HoD rates across any similar large healthcare institute within US.&quot;                                                                                                                                                                                                                                                                                                                                                                                                 
-##  [6] &quot;A growing number of dialysis patients is treated with home haemodialysis. Our current pre-analytical protocols require patients to centrifuge the blood sample and transfer the plasma into a new tube at home. This procedure is prone to errors and precludes accurate bicarbonate measurement, required for determining dialysate bicarbonate concentration and maintaining acid-base status. We therefore evaluated whether cooled overnight storage of gel separated plasma is an acceptable alternative.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-##  [7] &quot;The survival rate for dialysis patients is poor. Previous studies have shown improved survival with home hemodialysis (HHD), but this could be due to patient selection, since HHD patients tend to be younger and healthier. The aim of the present study is to analyse the long-term effects of HHD on patient survival and on subsequent renal transplantation, compared with institutional hemodialysis (IHD) and peritoneal dialysis (PD), taking age and comorbidity into account.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-##  [8] &quot;Intensive hemodialysis is associated with more frequent arteriovenous (AV) access complications. We performed a retrospective cohort study to ascertain potential risk factors associated with access dysfunction in a cohort of nocturnal home hemodialysis (HHD) patients.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-##  [9] &quot;Home dialysis therapy, including home hemodialysis and peritoneal dialysis, is underused as a modality for the treatment of chronic kidney failure. The National Kidney Foundation-Kidney Disease Outcomes Quality Initiative sponsored a home dialysis conference in late 2017 that was designed to identify the barriers to starting and maintaining patients on home dialysis therapy. Clinical, operational, policy, and societal barriers were identified that need to be overcome to ensure that dialysis patients have the freedom to choose their treatment modality. Education of patients and patient partners, as well as health care providers, about home dialysis therapy, if offered at all, is often provided in a cursory manner. Lack of exposure to home dialysis therapies perpetuates a lack of familiarity and thus a hesitancy to refer patients to home dialysis therapies. Patient and care partner support, both psychosocial and financial, is also critical to minimize the risk for burnout leading to dropout from a home dialysis modality. Thus, the facilitation of home dialysis therapy will require a systematic change in chronic kidney disease education and the approach to dialysis therapy initiation, the creation of additional incentives for performing home dialysis, and breakthroughs to simplify the performance of home dialysis modalities. The home dialysis work group plans to develop strategies to overcome these barriers to home dialysis therapy, which will be presented at a follow-up home dialysis conference.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-## [10] &quot;Telehealth encompasses a broad variety of technologies and tactics to deliver virtual medical, health, and education services. Telemedicine is the use of electronic communications for the exchange of medical information from one site to another to improve a patient&#39;s clinical health status.Several studies show that, by providing better patient oversight and communication, telehealth in PD enhances patient care, outcomes, quality of care, and satisfaction. Associated benefits include increased patient retention to home dialysis, reduced use of hospital services, and reduced costs of care.The sustainability of telehealth had been limited by reimbursement and regulatory restrictions. The Centers for Medicare and Medicaid Services (CMS) limited services related to end-stage renal disease by providing reimbursement for telehealth only in rural areas or counties outside of a metropolitan statistical area. Moreover, the dialysis facility and the patient&#39;s home were not approved as originating sites. However, effective January 1, 2019, those restrictions will be lifted. Telehealth will require that home dialysis patients be established with 3 initial face-to-face monthly clinical assessments without the use of telehealth; after those initial 3 months, a face-to-face visit at least once every 3 consecutive months will be required. Claims can be submitted using designated Current Procedural Terminology codes and modifiers.The actual extension of telehealth to home dialysis patients will depend on the details of forthcoming CMS regulations.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-## [11] &quot;Since a couple of years, a new paradigm of care has taken place where the patient plays a major role in the choice of his treatment. Patient information in a context where the doctor-patient relationship has drastically changed and where knowledge is continuously growing, is a challenge for the nephrologist. For the patient who decides to undergo home dialysis, numerous questions arise during the decision-making process. How should treatment alternatives be discussed with the patient? What are the current data available on the different methods? As comfort, quality of life and level of autonomy often drive the choice of care management, home dialysis can be promoted more with appropriate assistance from both the nephrologist and the healthcare team. Cet article fait partie du numéro supplément Innovations en Néphrologie réalisé avec le soutien institutionnel de Vifor Fresenius Medical Care Renal Pharma.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-## [12] &quot;Patients on peritoneal dialysis (PD) can be assisted by a nurse or a family member and treated either by automated PD (APD) or continuous ambulatory PD (CAPD). The aim of this study was to evaluate the effect of PD modality and type of assistance on the risk of transfer to haemodialysis (HD) and on the peritonitis risk in assisted PD patients.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-## [13] &quot;Hemodialysis for chronic renal failure was introduced and developed in Seattle, WA, in the 1960s. Using Kiil dialyzers, weekly dialysis time and frequency were established to be about 30 hours on 3 time weekly dialysis. This dialysis time and frequency was associated with 10% yearly mortality in the United States in 1970s. Later in 1970s, newer and more efficient dialyzers were developed and it was felt that dialysis time could be shortened. An additional incentive to shorten dialysis was felt to be lower cost and higher convenience. Additional support for shortening dialysis time was provided by a randomized prospective trial performed by National Cooperative Dialysis Study (NCDS). This study committed a Type II statistical error rejecting the time of dialysis as an important factor in determining the quality of dialysis. This study also provided the basis for the establishment of the Kt/Vurea index as a measure of dialysis adequacy. This index having been established in a sacrosanct randomized controlled trial (RCT), was readily accepted by the HD community, and led to shorter dialysis, and higher mortality in the United States. Kt/Vurea is a poor measure of dialysis quality because it combines three unrelated variables into a single formula. These variables influence the clinical status of the patient independent of each other. It is impossible to compensate short dialysis duration (t) with the increased clearance of urea (K), because the tolerance of ultrafiltration depends on the plasma-refilling rate, which has nothing in common with urea clearance. Later, another RCT (the HEMO study) committed a Type III statistical error by asking the wrong research question, thus not yielding any valuable results. Fortunately, it did not lead to deterioration of dialysis outcomes in the United States. The third RCT in this field (\&quot;in-center hemodialysis 6 times per week versus 3 times per week\&quot;) did not bring forth any valuable results, but at least confirmed what was already known. The fourth such trial (\&quot;The effects of frequent nocturnal home hemodialysis\&quot;) too did not show any positive results primarily due to significant subject recruitment issues leading to inappropriate selection of patients. Comparison of the value of peritoneal dialysis and HD in RCTs could not be completed because of recruitment problems. Randomized controlled trials have therefore failed to yield any meaningful information in the area of dose and or frequency of hemodialysis.&quot;
-## [14] &quot;Increasing uptake of home hemodialysis (HD) has led to interest in characteristics that predict discontinuation of home HD therapy for reasons other than death or transplantation. Recent reports of practice pattern variability led to the hypothesis that there are patient- and center-specific factors that influence these discontinuations.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-## [15] &quot;Assisted PD (assPD) is an option of home dialysis treatment for dependent end-stage renal patients and worldwide applied in different countries since more than 40 years. China and Germany shares similar trends in demographic development with a growing proportion of elderly referred to dialysis treatment. So far number of patients treated by assPD is low in both countries. We analyze experiences in the implementation process, barriers, and benefits of ass PD in the aging population to provide a model for sustainable home dialysis treatment with PD in both countries. Differences and similarities of different factors (industrial, patient and facility based) which affect utilization of assPD are discussed. AssPD should be promoted in China and Germany to realize the benefits of home dialysis for the aging population by providing a structured model of implementation and quality assurance.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-## [16] &quot;The prevalence of end-stage renal disease continues to increase in the United States with commensurate need for renal replacement therapies. Hemodialysis continues to be the predominant modality, though less than 2% of these patients will receive hemodialysis in their own home. While home modalities utilizing peritoneal dialysis have been growing, home hemodialysis (HHD) remains underutilized despite studies showing regression in left ventricular mass, improved quality of life, reduced depressive symptoms, and decreased postdialysis recovery time. To increase penetration of HHD will require a proactive approach from both physicians and dialysis networks to address barriers both in the system and on the level of the patients and families. We are reviewing these issues with a focus on the state of Mississippi.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-## [17] &quot;Utilization of home hemodialysis (HHD) is low in Europe. The Knowledge to Improve Home Dialysis Network in Europe (KIHDNEy) is a multi-center study of HHD patients who have used a transportable hemodialysis machine that employs a low volume of lactate-buffered, ultrapure dialysate per session. In this retrospective cohort analysis, we describe patient factors, HHD prescription factors, and biochemistry and medication use during the first 6 months of HHD and rates of clinical outcomes thereafter.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-## [18] &quot;There is increasing evidence that extended-hours regimens are associated with improved outcomes for patients on maintenance hemodialysis programs. Home hemodialysis programs are a well established way for patients to benefit from extended-hours dialysis overnight; however, there are significant barriers to home hemodialysis, which means that for many this is not an option. In center, nocturnal hemodialysis is an increasingly recognized way of offering extended-hours treatment to patients unable to undertake home-based programs and is an underutilized modality for such patients to gain from the physiological benefits of extended-hours dialysis regimens.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-## [19] &quot;Health-related quality of life (HRQOL) is an important outcome measure in patients with end-stage renal disease. HRQOL is assumed to improve with kidney transplantation and also with nocturnal hemodialysis compared to conventional hemodialysis. However, there is no evidence regarding HRQOL to support the optimal treatment choice for patients on nocturnal hemodialysis who hesitate opting for transplantation. We therefore compared HRQOL between patients who were treated with kidney transplantation or nocturnal hemodialysis for one year.&quot;</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="Moreexamples.html#cb78-1" aria-hidden="true" tabindex="-1"></a>text.vec <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb78-2"><a href="Moreexamples.html#cb78-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="Moreexamples.html#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(results)) {</span>
+<span id="cb78-4"><a href="Moreexamples.html#cb78-4" aria-hidden="true" tabindex="-1"></a>  string <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;https://pubmed.ncbi.nlm.nih.gov&quot;</span>,results[ii])</span>
+<span id="cb78-5"><a href="Moreexamples.html#cb78-5" aria-hidden="true" tabindex="-1"></a>  text.vec[ii] <span class="ot">&lt;-</span> <span class="fu">read_html</span>(string) <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">7</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
+<span id="cb78-6"><a href="Moreexamples.html#cb78-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb78-7"><a href="Moreexamples.html#cb78-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-8"><a href="Moreexamples.html#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminate lines with newlines characters</span></span>
+<span id="cb78-9"><a href="Moreexamples.html#cb78-9" aria-hidden="true" tabindex="-1"></a>final.vec <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="st">&quot;&quot;</span>,text.vec)</span>
+<span id="cb78-10"><a href="Moreexamples.html#cb78-10" aria-hidden="true" tabindex="-1"></a>final.vec <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;^</span><span class="sc">\\</span><span class="st">s+&quot;</span>,<span class="st">&quot;&quot;</span>,final.vec)</span>
+<span id="cb78-11"><a href="Moreexamples.html#cb78-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-12"><a href="Moreexamples.html#cb78-12" aria-hidden="true" tabindex="-1"></a><span class="co">#final.vec &lt;- text.vec[grep(&quot;^\n&quot;,text.vec,invert=TRUE)]</span></span>
+<span id="cb78-13"><a href="Moreexamples.html#cb78-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-14"><a href="Moreexamples.html#cb78-14" aria-hidden="true" tabindex="-1"></a>final.vec</span></code></pre></div>
+<pre><code>##  [1] &quot;Pediatric home hemodialysis is infrequently performed despite a growing need globally among patients with end-stage renal disease who do not have immediate access to a kidney transplant. In this review, we expand the scope of the Implementing Hemodialysis in the Home website and associated supplement published previously in Hemodialysis International and offer information tailored to the pediatric population. We describe the experience and outcomes of centers managing pediatric patients, and offer recommendations and practical tools to assist clinicians in providing quotidian dialysis for children, including infrastructural and staffing needs, equipment and prescriptions, and patient selection and training.    &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+##  [2] &quot;Home hemodialysis (HHD) has been available as a modality of renal replacement therapy since the 1960s. HHD allows intensive dialysis such as nocturnal hemodialysis or short daily hemodialysis. Previous studies have shown that patients receiving HHD have an increased survival and better quality of life compared with those receiving in-center conventional HD. However, HHD may increase the risk for specific complications such as vascular access complications, infection, loss of residual kidney function and patient and caregiver burden. In Japan, only 529 patients (0.2% of the total dialysis patients) were on maintenance HHD at the end of 2014. The most commonly perceived barriers to intensive HHD included lack of patient motivation, unwillingness to change from in-center modality, and fear of self-cannulation. However, these barriers can often be overcome by adequate predialysis education, motivational training of patient and caregiver, nurse-assisted cannulation, nurse-led home visits, a well-defined nursing/technical support system for patients, and provision of respite care.    &quot;                                                                                                                                                                                                                                                                                                                                                                                                
+##  [3] &quot;This special supplement of Hemodialysis International focuses on home hemodialysis (HD). It has been compiled by a group of international experts in home HD who were brought together throughout 2013-2014 to construct a home HD \&quot;manual.\&quot; Drawing upon both the literature and their own extensive expertise, these experts have helped develop this supplement that now stands as an A-to-Z guide for any who may be unfamiliar or uncertain about how to establish and maintain a successful home HD program.     &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+##  [4] &quot;Prescribing a regimen that provides \&quot;optimal dialysis\&quot; to patients who wish to dialyze at home is of major importance, yet there is substantial variation in how home hemodialysis (HD) is prescribed. Geographic location, patient health status and clinical goals, and patient lifestyle and preferences all influence the selection of a prescription for a particular patient-there is no single prescription that provides optimal therapy for all patients, and careful weighing of potential benefit and burden is required for long-term success. This article describes how home HD prescribing patterns have changed over time and provides examples of commonly used home HD prescriptions. In addition, associated clinical outcomes and adequacy parameters as well as criteria for identifying which patients may benefit most from these diverse prescriptions are also presented.     &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+##  [5] &quot;Home hemodialysis (HD) was first introduced in the 1960s with a rapid increase in its use due to inability of dialysis units to accommodate patient demand. A sharp decline was subsequently seen with expanding outpatient dialysis facilities and changes in reimbursement policies. In the last decade, with emerging reports of benefits with home HD and more user-friendly equipment, there has been resurgence in home HD. However, home HD remains underutilized with considerable variations between and within countries. This paper will review the history of home HD, elaborate on its established benefits, identify some of the barriers in uptake of this modality and expand on potential strategies to overcome these barriers.    &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+##  [6] &quot;Home hemodialysis (HD) is undergoing a resurgence. A major driver of this is economics, however, providers are also encouraged by a combination of excellent patient outcomes and patient experiences as well as the development of newer technologies that offer ease of use. Home HD offers significant advantages in flexible scheduling and the practical implementation of extended hours dialysis. This paper explores the reasons why home HD is making a comeback and strives to offer approaches to improve the uptake of this dialysis modality.    &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+##  [7] &quot;The home extracorporeal hemodialysis, which aroused a great interest in the past, has not kept its promises due to the complexity and expectations for family involvement in treatment management. In the United States NxStage One portable system was proposed and designed for home use. In this work we describe, starting from the history of home hemodialysis, the method with NxStage system by comparing it with the conventional HD in 5 patients. The dialysis efficiency was similar between the two treatments, even if home hemodialysis showed a reduction in serum urea, creatinine and phosphorus. At the same time phosphate binders use decreased with an increase in serum calcium while hemoglobin increased reducing doses of erythropoietin. The method was successful in the training of the patients and their partners during hospital training and at home. Patients have shown great enthusiasm at the beginning and during the therapy, which is developed around the users personal needs, being able to decide at its own times during 24 hours according to personal needs, in addition to faster recovery after the dialysis. This method certainly improved the patients&#39; wellness and increased their autonomy.     &quot;                                                                                                                                                                                                                                                                                
+##  [8] &quot;Most hemodialysis (HD) in Japan is based on the central dialysis fluid delivery system (CDDS). With CDDS, there is an improvement in work efficiency, reduction in cost, and a reduction in regional and institutional differences in dialysis conditions. This has resulted in an improvement in the survival rate throughout Japan. However, as the number of cases with various complications increases, it is necessary to select the optimal dialysis prescription (including hours and frequency) for each individual in order to further improve survival rates. To perform intensive HD, home HD is essential, and various prescriptions have been tried. However, several challenges remain before widespread implementation of home HD can occur.    &quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+##  [9] &quot;Home hemodialysis (HD) is a modality of renal replacement therapy that can be safely and independently performed at home by end-stage renal disease (ESRD) patients. Home HD can be performed at the convenience of the patients on a daily basis, every other day and overnight (nocturnal). Despite the great and many perceived benefits of home HD, including the significant improvements in health outcomes and resource utilization, the adoption of home HD has been limited; lack or inadequate pre-dialysis education and training constitute a major barrier. The lack of self-confidence and/or self-efficacy to manage own therapy, lack of family and/or social support, fear of machine and cannulation of blood access and worries of possible catastrophic events represent other barriers for the implementation of home HD besides inadequate competence and/or expertise in caring for home HD patients among renal care providers (nephrologists, dialysis nurses, educators). A well-studied, planned and prepared and carefully implemented central country program supported by adequate budget can play a positive role in overcoming the challenges to home HD. Healthcare authorities, with the increasingly financial and logistic demands and the relatively higher mortality and morbidity rates of the conventional in-center HD, should tackle home HD as an attractive and cost-effective modality with more freedom, quality of life and improvement of clinical outcomes for the ESRD patients.     &quot;
+## [10] &quot;Home hemodialysis (HHD) is emerging as an important alternate renal replacement therapy. Although there are multiple clinical advantages with HHD, concerns surrounding increased risks of infection in this group of patients remain a major barrier to its implementation. In contrast to conventional hemodialysis, infection related complication represents the major morbidity in this mode of renal replacement therapy. Vascular access related infection is an important cause of infection in this population. Use of central vein catheters and buttonhole cannulation in HHD are important modifiable risk factors for HHD associated infection. Several preventive measures are suggested in the literature, which will require further prospective validation.    &quot;</code></pre>
 <p>Well that was tedious. And we processed only the first page of results. How do we “progrmmatically” hit the “Next” Button at the bottom of the page ? This is complicated by the fact that there appears to be some Javascript at work that we would have to somehow interact with to get the URL for the next page. Unlike with the school salary example it isn’t obvious how to do this. If we hove over the “Next” button we don’t get an associated link.</p>
 
 </div>
@@ -550,7 +526,6 @@ final.vec</code></pre></div>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -565,12 +540,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -585,7 +560,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

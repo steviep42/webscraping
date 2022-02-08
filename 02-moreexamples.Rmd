@@ -284,6 +284,7 @@ What we do here is get the links associated with each publication so we can then
 
 # "hemodialysis, home" [MeSH Terms] 
 
+
 url<-"https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMeSH+Terms%5D"
 
 # 
@@ -293,7 +294,7 @@ url<-"https://www.ncbi.nlm.nih.gov/pubmed/?term=%22hemodialysis%2C+home%22+%5BMe
 results <- read_html(url) %>% 
   html_nodes("a") %>% 
   html_attr("href") %>%
-  grep("/pubmed/[0-9]{1,6}",.,value=TRUE) %>% unique(.)
+  grep("/[0-9]{6,6}",.,value=TRUE) %>% unique(.)
 
 results
 ```
@@ -307,13 +308,15 @@ So now we could loop through these links and get the abstracts for these results
 text.vec <- vector()
 
 for (ii in 1:length(results)) {
-  string <- paste0("https://www.ncbi.nlm.nih.gov",results[ii])
-  text.vec[ii] <- read_html(string) %>% html_nodes("p") %>% `[[`(11) %>% html_text()
+  string <- paste0("https://pubmed.ncbi.nlm.nih.gov",results[ii])
+  text.vec[ii] <- read_html(string) %>% html_nodes("p") %>% `[[`(7) %>% html_text()
 }
 
 # Eliminate lines with newlines characters
+final.vec <- gsub("\n","",text.vec)
+final.vec <- gsub("^\\s+","",final.vec)
 
-final.vec <- text.vec[grep("^\n",text.vec,invert=TRUE)]
+#final.vec <- text.vec[grep("^\n",text.vec,invert=TRUE)]
 
 final.vec
 ```

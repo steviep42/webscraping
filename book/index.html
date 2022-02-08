@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2022-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,9 @@
   
 
 <link rel="next" href="xml.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,54 +51,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -114,45 +145,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">Web Scraping</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a><ul>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#useful-tools"><i class="fa fa-check"></i><b>1.3.1</b> Useful tools</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a>
+<ul>
 <li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
 <li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
 </ul></li>
 <li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
 <li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
 <li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
 <li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
 <li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
 <li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
 <li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
 <li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
 <li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
 <li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
@@ -182,17 +221,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Web Scraping with R</h1>
 <p class="author"><em>Steve Pittard</em></p>
-<p class="date"><em>2020-02-12</em></p>
+<p class="date"><em>2022-02-08</em></p>
 </div>
-<div id="motivations" class="section level1">
+<div id="motivations" class="section level1" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Motivations</h1>
-<div id="lots-of-data-for-the-taking" class="section level2">
+<div id="lots-of-data-for-the-taking" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> Lots of Data For The Taking ?</h2>
 <p>The web hosts lots of interesting data that you can ”scrape”. Some of it is stashed in data bases, behind APIs, or in free form text. Lots of people want to grab information of of Twitter or from user forums to see what people are thinking. There is a lot of valuable information out there for the taking although some web sites have “caught on” and either block programmatic access or they setup “pay walls” that require you to subscribe to an API for access. The New York Times does this. But there are lots of opportunities to get data.</p>
-<div class="figure">
-<img src="PICS/ws.png" />
-
-</div>
+<p><img src="PICS/ws.png" /></p>
 <table>
 <tbody>
 <tr class="odd">
@@ -222,7 +258,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tbody>
 </table>
 </div>
-<div id="web-scraping-can-be-ugly" class="section level2">
+<div id="web-scraping-can-be-ugly" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Web Scraping Can Be Ugly</h2>
 <p>Depending on what web sites you want to scrape the process can be involved and quite tedious. Many websites are very much aware that people are scraping so they offer Application Programming Interfaces (APIs) to make requests for information easier for the user and easier for the server administrators to control access. Most times the user must apply for a “key” to gain access.</p>
 <p>For premium sites, the key costs money. Some sites like Google and Wunderground (a popular weather site) allow some number of free accesses before they start charging you. Even so the results are typically returned in XML or JSON which then requires you to parse the result to get the information you want. In the best situation there is an R package that will wrap in the parsing and will return lists or data frames.</p>
@@ -233,48 +269,40 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>If the Web site doesn’t have an API then you will need to scrape text. This isn’t hard but it is tedious. You will need to use <em>rvest</em> to parse HMTL elements. If you want to parse mutliple pages then you will need to use <em>rvest</em> to move to the other pages and possibly fill out forms. If there is a lot of Javascript then you might need to use RSelenium to programmatically manage the web page.</p></li>
 </ul>
 </div>
-<div id="understanding-the-language-of-the-web" class="section level2">
+<div id="understanding-the-language-of-the-web" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> Understanding The Language of The Web</h2>
 <p>The Web has its own languages: HTML, CSS, Javascript</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&lt;</span>h1<span class="op">&gt;</span>, <span class="op">&lt;</span>h2<span class="op">&gt;</span>, ..., <span class="op">&lt;</span>h6<span class="op">&gt;</span><span class="st"> </span>Heading <span class="dv">1</span> and so on
-<span class="op">&lt;</span>p<span class="op">&gt;</span><span class="st"> </span>Paragraph elements
-<span class="op">&lt;</span>ul<span class="op">&gt;</span><span class="st"> </span>Unordered List
-<span class="op">&lt;</span>ol<span class="op">&gt;</span><span class="st"> </span>Ordered List
-<span class="op">&lt;</span>li<span class="op">&gt;</span><span class="st"> </span>List Element
-<span class="op">&lt;</span>div<span class="op">&gt;</span><span class="st"> </span>Division <span class="op">/</span><span class="st"> </span>Section
-<span class="op">&lt;</span>table<span class="op">&gt;</span><span class="st"> </span>Tables
-<span class="op">&lt;</span>form<span class="op">&gt;</span><span class="st"> </span>Web forms</code></pre></div>
-<p>So to be productive at scraping requires you to have some familiarity with HMTL XML, and CSS. Here we look at a very basic HTML file. Refer to See <a href="http://bradleyboehmke.github.io/2015/12/scraping-html-text.html" class="uri">http://bradleyboehmke.github.io/2015/12/scraping-html-text.html</a> for a basic introductory session on HTML and webscraping with R</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&lt;!</span>DOCTYPE html<span class="op">&gt;</span>
-<span class="er">&lt;</span>html<span class="op">&gt;</span>
-<span class="st">  </span><span class="er">&lt;</span>body<span class="op">&gt;</span>
-<span class="st">    </span><span class="er">&lt;</span>h1<span class="op">&gt;</span>My First Heading<span class="op">&lt;</span><span class="er">/</span>h1<span class="op">&gt;</span>
-<span class="st">    </span><span class="er">&lt;</span>p<span class="op">&gt;</span>My first paragraph.<span class="op">&lt;</span><span class="er">/</span>p<span class="op">&gt;</span>
-<span class="st">   </span><span class="er">&lt;/</span>body<span class="op">&gt;</span>
-<span class="er">&lt;/</span>html<span class="op">&gt;</span></code></pre></div>
-<div class="figure">
-<img src="PICS/first_heading.png" width="450" />
-
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>h1<span class="sc">&gt;</span>, <span class="sc">&lt;</span>h2<span class="sc">&gt;</span>, ..., <span class="sc">&lt;</span>h6<span class="sc">&gt;</span> Heading <span class="dv">1</span> and so on</span>
+<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>p<span class="sc">&gt;</span> Paragraph elements</span>
+<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>ul<span class="sc">&gt;</span> Unordered List</span>
+<span id="cb1-4"><a href="index.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>ol<span class="sc">&gt;</span> Ordered List</span>
+<span id="cb1-5"><a href="index.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>li<span class="sc">&gt;</span> List Element</span>
+<span id="cb1-6"><a href="index.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>div<span class="sc">&gt;</span> Division <span class="sc">/</span> Section</span>
+<span id="cb1-7"><a href="index.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>table<span class="sc">&gt;</span> Tables</span>
+<span id="cb1-8"><a href="index.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>form<span class="sc">&gt;</span> Web forms</span></code></pre></div>
+<p>So to be productive at scraping requires you to have some familiarity with HMTL XML, and CSS. Here we look at a very basic HTML file. Refer to See <a href="http://bradleyboehmke.github.io/2015/12/scraping-html-text.html" class="uri">http://bradleyboehmke.github.io/2015/12/scraping-html-text.html</a>
+for a basic introductory session on HTML and webscraping with R</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;!</span>DOCTYPE html<span class="sc">&gt;</span></span>
+<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;</span>html<span class="sc">&gt;</span></span>
+<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>body<span class="sc">&gt;</span></span>
+<span id="cb2-4"><a href="index.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>h1<span class="sc">&gt;</span>My First Heading<span class="sc">&lt;</span><span class="er">/</span>h1<span class="sc">&gt;</span></span>
+<span id="cb2-5"><a href="index.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&lt;</span>p<span class="sc">&gt;</span>My first paragraph.<span class="sc">&lt;</span><span class="er">/</span>p<span class="sc">&gt;</span></span>
+<span id="cb2-6"><a href="index.html#cb2-6" aria-hidden="true" tabindex="-1"></a>   <span class="er">&lt;/</span>body<span class="sc">&gt;</span></span>
+<span id="cb2-7"><a href="index.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="er">&lt;/</span>html<span class="sc">&gt;</span></span></code></pre></div>
+<p><img src="PICS/first_heading.png" width="450" /></p>
 <p> </p>
 <p>And you could apply some styling to this courtest of the CSS language which allows you to inject styles into plain HTML:</p>
-<div class="figure">
-<img src="PICS/css.png" width="450" />
-
-</div>
+<p><img src="PICS/css.png" width="450" /></p>
 <p> </p>
-<div class="figure">
-<img src="PICS/css_page.png" width="450" />
-
-</div>
-<div id="useful-tools" class="section level3">
+<p><img src="PICS/css_page.png" width="450" /></p>
+<div id="useful-tools" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> Useful tools</h3>
-<p>There are a number of tools that allow us to inspect web pages and see “what is under the hood”. Warning - I just discovered that one of my favorite browser plugins (firebug) to find the xpaths and/or css paths of page elements is no longer supported under Firefox or Chrome. I’ve found a couple of replacements but they don’t work as well. I’ll research it more. The way that <strong>Selector Gadget</strong> and <strong>xPath</strong> work is that you install them into your browswer and then activate them whenever you need to identify the <strong>selector</strong> associated with a part of a web page.</p>
+<p>There are a number of tools that allow us to inspect web pages and see “what is under the hood.” Warning - I just discovered that one of my favorite browser plugins (firebug) to find the xpaths and/or css paths of page elements is no longer supported under Firefox or Chrome. I’ve found a couple of replacements but they don’t work as well. I’ll research it more. The way that <strong>Selector Gadget</strong> and <strong>xPath</strong> work is that you install them into your browswer and then activate them whenever you need to identify the <strong>selector</strong> associated with a part of a web page.</p>
 <p> </p>
-<table style="width:56%;">
+<table>
 <colgroup>
-<col width="9%" />
-<col width="45%" />
+<col width="15%" />
+<col width="84%" />
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -305,113 +333,114 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </table>
 </div>
 </div>
-<div id="useful-packages" class="section level2">
+<div id="useful-packages" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Useful Packages</h2>
 <p>You will use the following three primary packages to help you get data from various web pages: <em>rvest</em>, <em>XML</em>, and <em>RJSONIO</em>. Note that you won’t always use them simultaneously but you might use them in pairs or individually depending on the task at hand.</p>
 </div>
-<div id="quick-rvest-tutorial" class="section level2">
+<div id="quick-rvest-tutorial" class="section level2" number="1.5">
 <h2><span class="header-section-number">1.5</span> Quick <strong>rvest</strong> tutorial</h2>
 <p>Now let’s do a quick <em>rvest</em> tutorial. There are several steps involved in using <strong>rvest</strong> which are conceptually quite straightforward:</p>
 <ol style="list-style-type: decimal">
 <li>Identify a URL to be examined for content</li>
-<li>Use Selector Gadet, xPath, or Google Insepct to identify the “selector” This will be a paragraph, table, hyper links, images</li>
+<li>Use Selector Gadet, xPath, or Google Insepct to identify the “selector”
+This will be a paragraph, table, hyper links, images</li>
 <li>Load rvest</li>
 <li>Use <strong>read_html</strong> to “read” the URL</li>
 <li>Pass the result to <strong>html_nodes</strong> to get the selectors identified in step number 2</li>
 <li>Get the text or table content</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
-url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
-
-(paragraphs &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>))</code></pre></div>
-<pre><code>## {xml_nodeset (63)}
-##  [1] &lt;p class=&quot;mw-empty-elt&quot;&gt;\n&lt;/p&gt;
-##  [2] &lt;p class=&quot;mw-empty-elt&quot;&gt;\n&lt;/p&gt;
-##  [3] &lt;p&gt;In &lt;a href=&quot;/wiki/Demography&quot; title=&quot;Demography&quot;&gt;demographics&lt;/a ...
-##  [4] &lt;p&gt;The world population has experienced &lt;a href=&quot;/wiki/Population_g ...
-##  [5] &lt;p&gt;Total annual births were highest in the late 1980s at about 139  ...
-##  [6] &lt;p&gt;Six of the &lt;a href=&quot;/wiki/Earth&quot; title=&quot;Earth&quot;&gt;Earth&lt;/a&gt;&#39;s seven ...
-##  [7] &lt;p&gt;Estimates of world population by their nature are an aspect of &lt; ...
-##  [8] &lt;p&gt;It is difficult for estimates to be better than rough approximat ...
-##  [9] &lt;p&gt;Estimates of the population of the world at the time agriculture ...
-## [10] &lt;p&gt;The &lt;a href=&quot;/wiki/Plague_of_Justinian&quot; title=&quot;Plague of Justini ...
-## [11] &lt;p&gt;Starting in AD 2, the &lt;a href=&quot;/wiki/Han_Dynasty&quot; class=&quot;mw-redi ...
-## [12] &lt;p&gt;The &lt;a href=&quot;/wiki/Pre-Columbian_era&quot; title=&quot;Pre-Columbian era&quot;&gt; ...
-## [13] &lt;p&gt;During the European &lt;a href=&quot;/wiki/British_Agricultural_Revoluti ...
-## [14] &lt;p&gt;Population growth in the West became more rapid after the introd ...
-## [15] &lt;p&gt;The first half of the 20th century in &lt;a href=&quot;/wiki/Russian_Emp ...
-## [16] &lt;p&gt;Many countries in the &lt;a href=&quot;/wiki/Developing_world&quot; class=&quot;mw ...
-## [17] &lt;p&gt;It is estimated that the world population reached one billion fo ...
-## [18] &lt;p&gt;According to current projections, the global population will rea ...
-## [19] &lt;p&gt;There is no estimation for the exact day or month the world&#39;s po ...
-## [20] &lt;p&gt;As of 2012, the global &lt;a href=&quot;/wiki/Human_sex_ratio&quot; title=&quot;Hu ...
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a>(paragraphs <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>))</span></code></pre></div>
+<pre><code>## {xml_nodeset (51)}
+##  [1] &lt;p class=&quot;mw-empty-elt&quot;&gt;\n\n&lt;/p&gt;
+##  [2] &lt;p&gt;In &lt;a href=&quot;/wiki/Demography&quot; title=&quot;Demography&quot;&gt;demographics&lt;/a&gt;, the &lt;b&gt;world popula ...
+##  [3] &lt;p&gt;The world population has experienced &lt;a href=&quot;/wiki/Population_growth&quot; title=&quot;Populati ...
+##  [4] &lt;p&gt;&lt;a href=&quot;/wiki/Birth_rate&quot; title=&quot;Birth rate&quot;&gt;Birth rates&lt;/a&gt; were highest in the late ...
+##  [5] &lt;p&gt;Six of the Earth&#39;s seven &lt;a href=&quot;/wiki/Continent&quot; title=&quot;Continent&quot;&gt;continents&lt;/a&gt; ar ...
+##  [6] &lt;p&gt;Estimates of world population by their nature are an aspect of &lt;a href=&quot;/wiki/Modernit ...
+##  [7] &lt;p&gt;It is difficult for estimates to be better than rough approximations, as even modern p ...
+##  [8] &lt;p&gt;Estimates of the population of the world at the time agriculture emerged in around 10, ...
+##  [9] &lt;p&gt;The &lt;a href=&quot;/wiki/Plague_of_Justinian&quot; title=&quot;Plague of Justinian&quot;&gt;Plague of Justinia ...
+## [10] &lt;p&gt;Starting in AD 2, the &lt;a href=&quot;/wiki/Han_Dynasty&quot; class=&quot;mw-redirect&quot; title=&quot;Han Dynas ...
+## [11] &lt;p&gt;The &lt;a href=&quot;/wiki/Pre-Columbian_era&quot; title=&quot;Pre-Columbian era&quot;&gt;pre-Columbian&lt;/a&gt; popu ...
+## [12] &lt;p&gt;During the European &lt;a href=&quot;/wiki/British_Agricultural_Revolution&quot; title=&quot;British Agr ...
+## [13] &lt;p&gt;Population growth in the West became more rapid after the introduction of &lt;a href=&quot;/wi ...
+## [14] &lt;p&gt;The first half of the 20th century in &lt;a href=&quot;/wiki/Russian_Empire&quot; title=&quot;Russian Em ...
+## [15] &lt;p&gt;Many countries in the &lt;a href=&quot;/wiki/Developing_world&quot; class=&quot;mw-redirect&quot; title=&quot;Deve ...
+## [16] &lt;p&gt;It is estimated that the world population reached one billion for the first time in 18 ...
+## [17] &lt;p&gt;According to current projections, the global population will reach eight billion by 20 ...
+## [18] &lt;p&gt;There is no estimation for the exact day or month the world&#39;s population surpassed one ...
+## [19] &lt;p&gt;As of 2012, the global &lt;a href=&quot;/wiki/Human_sex_ratio&quot; title=&quot;Human sex ratio&quot;&gt;sex rat ...
+## [20] &lt;p&gt;According to the &lt;a href=&quot;/wiki/World_Health_Organization&quot; title=&quot;World Health Organiz ...
 ## ...</code></pre>
 <p>Then we might want to actually parse out those paragraphs into text:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
-paragraphs &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
-paragraphs[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
-<pre><code>##  [1] &quot;\n&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-##  [2] &quot;\n&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-##  [3] &quot;In demographics, the world population is the total number of humans currently living, and was estimated to have reached 7.7 billion people as of April 2019[update].[2] It took over 200,000 years of human history for the world&#39;s population to reach 1 billion,[3] and only 200 years more to reach 7 billion.[4]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-##  [4] &quot;The world population has experienced continuous growth following the Great Famine of 1315–1317 and the end of the Black Death in 1350, when it was near 370 million.[5] \nThe highest global population growth rates, with increases of over 1.8% per year, occurred between 1955 and 1975—peaking to 2.1% between 1965 and 1970.[6] The growth rate declined to 1.2% between 2010 and 2015 and is projected to decline further in the course of the 21st century.[6] However, the global population is still increasing[7] and is projected to reach about 10 billion in 2050 and more than 11 billion in 2100.[8]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-##  [5] &quot;Total annual births were highest in the late 1980s at about 139 million,[9] and as of 2011 were expected to remain essentially constant at a level of 135 million,[10] while deaths numbered 56 million per year and were expected to increase to 80 million per year by 2040.[11] \nThe median age of the world&#39;s population was estimated to be 30.4 years in 2018.[12] In mid-2019, the United Nations estimated that the world population had reached 7,713,468,000.[13]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-##  [6] &quot;Six of the Earth&#39;s seven continents are permanently inhabited on a large scale. Asia is the most populous continent, with its 4.54 billion inhabitants accounting for 60% of the world population. The world&#39;s two most populated countries, China and India, together constitute about 36% of the world&#39;s population. Africa is the second most populated continent, with around 1.28 billion people, or 16% of the world&#39;s population. Europe&#39;s 742 million people make up 10% of the world&#39;s population as of 2018, while the Latin American and Caribbean regions are home to around 651 million (9%). Northern America, primarily consisting of the United States and Canada, has a population of around 363 million (5%), and Oceania, the least populated region, has about 41 million inhabitants (0.5%).[15] Though it is not permanently inhabited by any fixed population, Antarctica has a very small, fluctuating international population of about 1000 people based mainly in polar science stations. This population tends to rise in the summer months and decrease significantly in winter, as visiting researchers return to their home countries.[16]&quot;
-##  [7] &quot;Estimates of world population by their nature are an aspect of modernity, possible only since the Age of Discovery. Early estimates for the population of the world[18] date to the 17th century: William Petty in 1682 estimated world population at 320 million (modern estimates ranging close to twice this number); by the late 18th century, estimates ranged close to one billion (consistent with modern estimates).[19] More refined estimates, broken down by continents, were published in the first half of the 19th century, at 600 to 1000 million in the early 1800s and at 800 to 1000 million in the 1840s.[20]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-##  [8] &quot;It is difficult for estimates to be better than rough approximations, as even modern population estimates are fraught with uncertainties on the order of 3% to 5%.[21]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-##  [9] &quot;Estimates of the population of the world at the time agriculture emerged in around 10,000 BC have ranged between 1 million and 15 million.[22][23] Even earlier, genetic evidence suggests humans may have gone through a population bottleneck of between 1,000 and 10,000 people about 70,000 BC, according to the Toba catastrophe theory. By contrast, it is estimated that around 50–60 million people lived in the combined eastern and western Roman Empire in the 4th century AD.[24]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-## [10] &quot;The Plague of Justinian, which first emerged during the reign of the Roman emperor Justinian, caused Europe&#39;s population to drop by around 50% between the 6th and 8th centuries AD.[25] The population of Europe was more than 70 million in 1340.[26] The Black Death pandemic of the 14th century may have reduced the world&#39;s population from an estimated 450 million in 1340 to between 350 and 375 million in 1400;[27] it took 200 years for population figures to recover.[28] The population of China decreased from 123 million in 1200 to 65 million in 1393,[29] presumably from a combination of Mongol invasions, famine, and plague.[30]&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb5-2"><a href="index.html#cb5-2" aria-hidden="true" tabindex="-1"></a>paragraphs <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
+<span id="cb5-3"><a href="index.html#cb5-3" aria-hidden="true" tabindex="-1"></a>paragraphs[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
+<pre><code>##  [1] &quot;\n\n&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+##  [2] &quot;In demographics, the world population is the total number of humans currently living, and was estimated to have exceeded 7.9 billion people as of November 2021[update].[2] It took over 2 million years of human prehistory and history for the world&#39;s population to reach 1 billion[3] and only 200 years more to grow to 7 billion.[4]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+##  [3] &quot;The world population has experienced continuous growth following the Great Famine of 1315–1317 and the end of the Black Death in 1350, when it was near 370 million.[5]\nThe highest global population growth rates, with increases of over 1.8% per year, occurred between 1955 and 1975 – peaking at 2.1% between 1965 and 1970.[6] The growth rate declined to 1.2% between 2010 and 2015 and is projected to decline further in the course of the 21st century.[6] The global population is still increasing, but there is significant uncertainty about its long-term trajectory due to changing rates of fertility and mortality.[7] The UN Department of Economics and Social Affairs projects between 9–10 billion people by 2050, and gives an 80% confidence interval of 10–12 billion by the end of the 21st century.[8] Other demographers predict that world population will begin to decline in the second half of the 21st century.[9]&quot;                                                                                                                                                                               
+##  [4] &quot;Birth rates were highest in the late 1980s at about 139 million,[11] and as of 2011 were expected to remain essentially constant at a level of 135 million,[12] while the mortality rate numbered 56 million per year and were expected to increase to 80 million per year by 2040.[13]\nThe median age of human beings as of 2020 is 31 years.[14]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+##  [5] &quot;Six of the Earth&#39;s seven continents are permanently inhabited on a large scale. Asia is the most populous continent, with its 4.64 billion inhabitants accounting for 60% of the world population. The world&#39;s two most populated countries, China and India, together constitute about 36% of the world&#39;s population. Africa is the second most populated continent, with around 1.34 billion people, or 17% of the world&#39;s population. Europe&#39;s 747 million people make up 10% of the world&#39;s population as of 2020, while the Latin American and Caribbean regions are home to around 653 million (8%). Northern America, primarily consisting of the United States and Canada, has a population of around 368 million (5%), and Oceania, the least populated region, has about 42 million inhabitants (0.5%).[16]Antarctica only has a very small, fluctuating population of about 1200 people based mainly in polar science stations.[17]&quot;                                                                                                                                                                                      
+##  [6] &quot;Estimates of world population by their nature are an aspect of modernity, possible only since the Age of Discovery. Early estimates for the population of the world[18] date to the 17th century: William Petty in 1682 estimated world population at 320 million (modern estimates ranging close to twice this number); by the late 18th century, estimates ranged close to one billion (consistent with modern estimates).[19] More refined estimates, broken down by continents, were published in the first half of the 19th century, at 600 million to 1 billion in the early 1800s and at 800 million to 1 billion in the 1840s.[20]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+##  [7] &quot;It is difficult for estimates to be better than rough approximations, as even modern population estimates are fraught with uncertainties on the order of 3% to 5%.[21]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+##  [8] &quot;Estimates of the population of the world at the time agriculture emerged in around 10,000 BC have ranged between 1 million and 15 million.[22][23] Even earlier, genetic evidence suggests humans may have gone through a population bottleneck of between 1,000 and 10,000 people about 70,000 BC, according to the Toba catastrophe theory. By contrast, it is estimated that around 50–60 million people lived in the combined eastern and western Roman Empire in the 4th century AD.[24]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+##  [9] &quot;The Plague of Justinian, which first emerged during the reign of the Roman emperor Justinian, caused Europe&#39;s population to drop by around 50% between the 6th and 8th centuries AD.[25] The population of Europe was more than 70 million in 1340.[26] The Black Death pandemic of the 14th century may have reduced the world&#39;s population from an estimated 450 million in 1340 to between 350 and 375 million in 1400;[27] it took 200 years for population figures to recover.[28] The population of China decreased from 123 million in 1200 to 65 million in 1393,[29] presumably from a combination of Mongol invasions, famine, and plague.[30]&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+## [10] &quot;Starting in AD 2, the Han Dynasty of ancient China kept consistent family registers in order to properly assess the poll taxes and labor service duties of each household.[31] In that year, the population of Western Han was recorded as 57,671,400 individuals in 12,366,470 households, decreasing to 47,566,772 individuals in 9,348,227 households by AD 146, towards the End of the Han Dynasty.[31] At the founding of the Ming Dynasty in 1368, China&#39;s population was reported to be close to 60 million; toward the end of the dynasty in 1644, it may have approached 150 million.[32] England&#39;s population reached an estimated 5.6 million in 1650, up from an estimated 2.6 million in 1500.[33] New crops that were brought to Asia and Europe from the Americas by Portuguese and Spanish colonists in the 16th century are believed to have contributed to population growth.[34][35][36] Since their introduction to Africa by Portuguese traders in the 16th century,[37]maize and cassava have similarly replaced traditional African crops as the most important staple food crops grown on the continent.[38]&quot;</code></pre>
 <p>Get some other types of HTML obejects. Let’s get all the hyperlinks to other pages</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) </code></pre></div>
-<pre><code>## {xml_nodeset (1774)}
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;a&quot;</span>) </span></code></pre></div>
+<pre><code>## {xml_nodeset (1647)}
 ##  [1] &lt;a id=&quot;top&quot;&gt;&lt;/a&gt;
-##  [2] &lt;a href=&quot;/wiki/Wikipedia:Protection_policy#semi&quot; title=&quot;This articl ...
+##  [2] &lt;a href=&quot;/wiki/Wikipedia:Protection_policy#semi&quot; title=&quot;This article is semi-protected.&quot;&gt; ...
 ##  [3] &lt;a class=&quot;mw-jump-link&quot; href=&quot;#mw-head&quot;&gt;Jump to navigation&lt;/a&gt;
-##  [4] &lt;a class=&quot;mw-jump-link&quot; href=&quot;#p-search&quot;&gt;Jump to search&lt;/a&gt;
-##  [5] &lt;a href=&quot;/wiki/File:Question_book-new.svg&quot; class=&quot;image&quot;&gt;&lt;img alt=&quot; ...
-##  [6] &lt;a href=&quot;/wiki/Wikipedia:Citing_sources#Inline_citations&quot; title=&quot;Wi ...
-##  [7] &lt;a class=&quot;external text&quot; href=&quot;https://en.wikipedia.org/w/index.php ...
-##  [8] &lt;a href=&quot;/wiki/Wikipedia:Verifiability&quot; title=&quot;Wikipedia:Verifiabil ...
-##  [9] &lt;a href=&quot;/wiki/Template:Citation_needed&quot; title=&quot;Template:Citation n ...
-## [10] &lt;a href=&quot;/wiki/Wikipedia:Identifying_reliable_sources&quot; class=&quot;mw-re ...
-## [11] &lt;a href=&quot;/wiki/Wikipedia:Verifiability#Burden_of_evidence&quot; title=&quot;W ...
-## [12] &lt;a href=&quot;/wiki/Help:Maintenance_template_removal&quot; title=&quot;Help:Maint ...
-## [13] &lt;a href=&quot;/wiki/File:World_population_v3.svg&quot; class=&quot;image&quot;&gt;&lt;img alt ...
-## [14] &lt;a href=&quot;/wiki/File:World_population_v3.svg&quot; class=&quot;internal&quot; title ...
-## [15] &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;http://esa.un.org/wpp ...
-## [16] &lt;a rel=&quot;nofollow&quot; class=&quot;external text&quot; href=&quot;https://esa.un.org/un ...
-## [17] &lt;a href=&quot;/wiki/File:Population_Growth_by_World_Bank_continental_div ...
-## [18] &lt;a href=&quot;/wiki/File:Population_Growth_by_World_Bank_continental_div ...
-## [19] &lt;a href=&quot;#cite_note-1&quot;&gt;[1]&lt;/a&gt;
-## [20] &lt;a href=&quot;/wiki/File:World_population_percentage.png&quot; class=&quot;image&quot;&gt; ...
+##  [4] &lt;a class=&quot;mw-jump-link&quot; href=&quot;#searchInput&quot;&gt;Jump to search&lt;/a&gt;
+##  [5] &lt;a href=&quot;/wiki/Demographics_of_the_world&quot; title=&quot;Demographics of the world&quot;&gt;Demographics  ...
+##  [6] &lt;a href=&quot;/wiki/File:World_Population_Prospects_2019.png&quot; class=&quot;image&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/ ...
+##  [7] &lt;a href=&quot;/wiki/File:World_Population_Prospects_2019.png&quot; class=&quot;internal&quot; title=&quot;Enlarge&quot; ...
+##  [8] &lt;a href=&quot;#cite_note-1&quot;&gt;[1]&lt;/a&gt;
+##  [9] &lt;a href=&quot;/wiki/Demography&quot; title=&quot;Demography&quot;&gt;demographics&lt;/a&gt;
+## [10] &lt;a href=&quot;/wiki/Human&quot; title=&quot;Human&quot;&gt;humans&lt;/a&gt;
+## [11] &lt;a class=&quot;external text&quot; href=&quot;https://en.wikipedia.org/w/index.php?title=World_populatio ...
+## [12] &lt;a href=&quot;#cite_note-2&quot;&gt;[2]&lt;/a&gt;
+## [13] &lt;a href=&quot;/wiki/Prehistory&quot; title=&quot;Prehistory&quot;&gt;human prehistory&lt;/a&gt;
+## [14] &lt;a href=&quot;/wiki/Human_history&quot; title=&quot;Human history&quot;&gt;history&lt;/a&gt;
+## [15] &lt;a href=&quot;/wiki/Billion&quot; title=&quot;Billion&quot;&gt;billion&lt;/a&gt;
+## [16] &lt;a href=&quot;#cite_note-3&quot;&gt;[3]&lt;/a&gt;
+## [17] &lt;a href=&quot;#cite_note-4&quot;&gt;[4]&lt;/a&gt;
+## [18] &lt;a href=&quot;/wiki/Population_growth&quot; title=&quot;Population growth&quot;&gt;continuous growth&lt;/a&gt;
+## [19] &lt;a href=&quot;/wiki/Great_Famine_of_1315%E2%80%931317&quot; title=&quot;Great Famine of 1315–1317&quot;&gt;Great ...
+## [20] &lt;a href=&quot;/wiki/Black_Death&quot; title=&quot;Black Death&quot;&gt;Black Death&lt;/a&gt;
 ## ...</code></pre>
 <p>What about tables ?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
-tables &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) 
-tables</code></pre></div>
-<pre><code>## {xml_nodeset (23)}
-##  [1] &lt;table class=&quot;box-Verify_sources plainlinks metadata ambox ambox-co ...
-##  [2] &lt;table class=&quot;infobox&quot; style=&quot;float: right; font-size:90%&quot;&gt;&lt;tbody&gt;\ ...
-##  [3] &lt;table class=&quot;wikitable sortable&quot;&gt;\n&lt;caption&gt;Population by continen ...
-##  [4] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center; float:right; cle ...
-##  [5] &lt;table width=&quot;100%&quot;&gt;&lt;tbody&gt;&lt;tr&gt;\n&lt;td valign=&quot;top&quot;&gt; &lt;div class=&quot;lege ...
-##  [6] &lt;table class=&quot;wikitable sortable&quot; style=&quot;text-align:right&quot;&gt;&lt;tbody&gt;\ ...
-##  [7] &lt;table class=&quot;wikitable sortable&quot; style=&quot;text-align:right&quot;&gt;\n&lt;capti ...
-##  [8] &lt;table class=&quot;wikitable sortable&quot; style=&quot;text-align:right&quot;&gt;\n&lt;capti ...
-##  [9] &lt;table class=&quot;wikitable sortable&quot; style=&quot;font-size:97%; text-align: ...
-## [10] &lt;table class=&quot;wikitable sortable&quot; style=&quot;font-size:97%; text-align: ...
-## [11] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:right;&quot;&gt;&lt;tbody&gt;\n&lt;tr&gt;\n&lt; ...
-## [12] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center; margin:1em; floa ...
-## [13] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:right; font-size:96%;&quot;&gt;\ ...
-## [14] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center;&quot;&gt;\n&lt;caption&gt;Star ...
-## [15] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center;&quot;&gt;\n&lt;caption&gt;Star ...
-## [16] &lt;table role=&quot;presentation&quot; class=&quot;mbox-small plainlinks sistersiteb ...
-## [17] &lt;table class=&quot;nowraplinks mw-collapsible autocollapse navbox-inner&quot; ...
-## [18] &lt;table class=&quot;nowraplinks mw-collapsible mw-collapsed navbox-inner&quot; ...
-## [19] &lt;table class=&quot;nowraplinks hlist mw-collapsible autocollapse navbox- ...
-## [20] &lt;table class=&quot;nowraplinks hlist mw-collapsible autocollapse navbox- ...
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="index.html#cb9-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb9-2"><a href="index.html#cb9-2" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) </span>
+<span id="cb9-3"><a href="index.html#cb9-3" aria-hidden="true" tabindex="-1"></a>tables</span></code></pre></div>
+<pre><code>## {xml_nodeset (26)}
+##  [1] &lt;table class=&quot;infobox&quot; style=&quot;float: right; font-size:90%&quot;&gt;&lt;tbody&gt;\n&lt;tr&gt;&lt;th colspan=&quot;5&quot; s ...
+##  [2] &lt;table class=&quot;wikitable sortable&quot;&gt;\n&lt;caption&gt;Population by region (2020 estimates)\n&lt;/cap ...
+##  [3] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center; float:right; clear:right; margin-left: ...
+##  [4] &lt;table width=&quot;100%&quot;&gt;&lt;tbody&gt;&lt;tr&gt;\n&lt;td valign=&quot;top&quot;&gt; &lt;style data-mw-deduplicate=&quot;TemplateSt ...
+##  [5] &lt;table class=&quot;wikitable sortable plainrowheaders&quot; style=&quot;text-align:right&quot;&gt;&lt;tbody&gt;\n&lt;tr&gt;\ ...
+##  [6] &lt;table class=&quot;wikitable sortable&quot; style=&quot;text-align:right&quot;&gt;\n&lt;caption&gt;10 most densely pop ...
+##  [7] &lt;table class=&quot;wikitable sortable&quot; style=&quot;text-align:right&quot;&gt;\n&lt;caption&gt;Countries ranking h ...
+##  [8] &lt;table class=&quot;wikitable sortable&quot;&gt;\n&lt;caption&gt;Global annual population growth&lt;sup id=&quot;cite ...
+##  [9] &lt;table class=&quot;wikitable sortable&quot; style=&quot;font-size:97%; text-align:right;&quot;&gt;\n&lt;caption&gt;Wor ...
+## [10] &lt;table class=&quot;wikitable sortable&quot; style=&quot;font-size:97%; text-align:right;&quot;&gt;\n&lt;caption&gt;Wor ...
+## [11] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:right;&quot;&gt;&lt;tbody&gt;\n&lt;tr&gt;\n&lt;th&gt;Year\n&lt;/th&gt;\n&lt;th st ...
+## [12] &lt;table class=&quot;box-More_citations_needed_section plainlinks metadata ambox ambox-content a ...
+## [13] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center; margin-top:0.5em; margin-right:1em; fl ...
+## [14] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:right; margin-top:2.6em; font-size:96%;&quot;&gt;\n&lt;ca ...
+## [15] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center&quot;&gt;\n&lt;caption&gt;Starting at 500 million\n&lt;/ ...
+## [16] &lt;table class=&quot;wikitable&quot; style=&quot;text-align:center&quot;&gt;\n&lt;caption&gt;Starting at 375 million\n&lt;/ ...
+## [17] &lt;table role=&quot;presentation&quot; class=&quot;mbox-small plainlinks sistersitebox&quot; style=&quot;background- ...
+## [18] &lt;table class=&quot;nowraplinks mw-collapsible autocollapse navbox-inner&quot; style=&quot;border-spacing ...
+## [19] &lt;table class=&quot;nowraplinks mw-collapsible mw-collapsed navbox-inner&quot; style=&quot;border-spacing ...
+## [20] &lt;table class=&quot;nowraplinks hlist mw-collapsible autocollapse navbox-inner&quot; style=&quot;border-s ...
 ## ...</code></pre>
 </div>
-<div id="example-parsing-a-table-from-wikipedia" class="section level2">
+<div id="example-parsing-a-table-from-wikipedia" class="section level2" number="1.6">
 <h2><span class="header-section-number">1.6</span> Example: Parsing A Table From Wikipedia</h2>
 <p>Look at the <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia Page</a> for world population:</p>
 <p><a href="https://en.wikipedia.org/wiki/World_population" class="uri">https://en.wikipedia.org/wiki/World_population</a></p>
@@ -422,88 +451,77 @@ tables</code></pre></div>
 <li>I think this might be the 4th or 5th table on the page</li>
 <li>How do we get this ?</li>
 </ul>
-<div class="figure">
-<img src="PICS/worldpop.png" width="450" />
-
-</div>
+<p><img src="PICS/worldpop.png" width="450" /></p>
 <p>First we will load packages that will help us throughout this session.</p>
-<p>In this case we’ll need to figure out what number table it is we want. We could fetch all the tables and then experiment to find the precise one.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
-<span class="kw">library</span>(tidyr)
-<span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(ggplot2)
-
-<span class="co"># Use read_html to fetch the webpage</span>
-url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
-ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) 
-  
-ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="op">%&gt;%</span><span class="st"> `</span><span class="dt">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()
-
-<span class="co"># Let&#39;s get just the first three columns</span>
-ten_most_populous &lt;-<span class="st"> </span>ten_most_populous[,<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>]
-
-<span class="co"># Get some content - Change the column names</span>
-<span class="kw">names</span>(ten_most_populous) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Country_Territory&quot;</span>,<span class="st">&quot;Population&quot;</span>,<span class="st">&quot;Date&quot;</span>)
-
-<span class="co"># Do reformatting on the columns to be actual numerics where appropriate</span>
-ten_most_populous <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Population=</span><span class="kw">gsub</span>(<span class="st">&quot;,&quot;</span>,<span class="st">&quot;&quot;</span>,Population)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Population=</span><span class="kw">round</span>(<span class="kw">as.numeric</span>(Population)<span class="op">/</span><span class="fl">1e+06</span>))  <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Country_Territory,<span class="dt">y=</span>Population)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Population / 1,000,000&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">coord_flip</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Top 10 Most Populous Countries&quot;</span>)</code></pre></div>
+<p>In this case we’ll need to figure out what number table it is we want. We could fetch
+all the tables and then experiment to find the precise one.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="index.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb11-2"><a href="index.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb11-3"><a href="index.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-4"><a href="index.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-5"><a href="index.html#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="index.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use read_html to fetch the webpage</span></span>
+<span id="cb11-7"><a href="index.html#cb11-7" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb11-8"><a href="index.html#cb11-8" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
+<span id="cb11-9"><a href="index.html#cb11-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-10"><a href="index.html#cb11-10" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_df <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="index.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> <span class="st">`</span><span class="at">[[</span><span class="st">`</span>(<span class="dv">6</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span>
+<span id="cb11-12"><a href="index.html#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="index.html#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s get just the first three columns</span></span>
+<span id="cb11-14"><a href="index.html#cb11-14" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_populous[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb11-15"><a href="index.html#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="index.html#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Get some content - Change the column names</span></span>
+<span id="cb11-17"><a href="index.html#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(ten_most_populous) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Country_Territory&quot;</span>,<span class="st">&quot;Population&quot;</span>,<span class="st">&quot;Date&quot;</span>)</span>
+<span id="cb11-18"><a href="index.html#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="index.html#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Do reformatting on the columns to be actual numerics where appropriate</span></span>
+<span id="cb11-20"><a href="index.html#cb11-20" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="sc">%&gt;%</span> </span>
+<span id="cb11-21"><a href="index.html#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Population=</span><span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>,<span class="st">&quot;&quot;</span>,Population)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-22"><a href="index.html#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Population=</span><span class="fu">round</span>(<span class="fu">as.numeric</span>(Population)<span class="sc">/</span><span class="fl">1e+06</span>))  <span class="sc">%&gt;%</span></span>
+<span id="cb11-23"><a href="index.html#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Country_Territory,<span class="at">y=</span>Population)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb11-24"><a href="index.html#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Population / 1,000,000&quot;</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb11-25"><a href="index.html#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Top 10 Most Populous Countries&quot;</span>)</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>In the above example we leveraged the fact that we were looking specifically for a table element and it became a project to locate the correct table number. This isn’t always the case with more complicated websites in that the element we are trying to grab or scrape is contained within a nested structure that doesn’t correspond neatly to a paragraph, link, heading, or table. This can be the case if the page is heavily styled with CSS or Javascript. We might have to work harder. But it’s okay to try to use simple elements and then try to refine the search some more.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Could have use the xPath plugin to help</span>
-
-url &lt;-<span class="st"> &quot;https://en.wikipedia.org/wiki/World_population&quot;</span>
-ten_most_df &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) 
-  
-ten_most_populous &lt;-<span class="st"> </span>ten_most_df <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span><span class="st">&quot;/html/body/div[3]/div[3]/div[4]/div/table[5]&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>()</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="index.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Could have use the xPath plugin to help</span></span>
+<span id="cb12-2"><a href="index.html#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="index.html#cb12-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://en.wikipedia.org/wiki/World_population&quot;</span></span>
+<span id="cb12-4"><a href="index.html#cb12-4" aria-hidden="true" tabindex="-1"></a>ten_most_df <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) </span>
+<span id="cb12-5"><a href="index.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-6"><a href="index.html#cb12-6" aria-hidden="true" tabindex="-1"></a>ten_most_populous <span class="ot">&lt;-</span> ten_most_df <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="index.html#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath=</span><span class="st">&quot;/html/body/div[3]/div[3]/div[4]/div/table[5]&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_table</span>()</span></code></pre></div>
 </div>
-<div id="scraping-patient-dialysis-stories" class="section level2">
+<div id="scraping-patient-dialysis-stories" class="section level2" number="1.7">
 <h2><span class="header-section-number">1.7</span> Scraping Patient Dialysis Stories</h2>
 <p>Here is an example relating to the experiences of dialysis patients with a specific dialysis provider. It might be more useful to find a support forum that is managed by dialysis patients to get more general opinions but this example is helpful in showing you what is involved. Check out this website:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">https<span class="op">:</span><span class="er">//</span>www.americanrenal.com<span class="op">/</span>dialysis<span class="op">-</span>centers<span class="op">/</span>patient<span class="op">-</span>stories</code></pre></div>
-<div class="figure">
-<img src="PICS/dia1.png" />
-
-</div>
-<div id="getting-more-detail" class="section level3">
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="index.html#cb13-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>www.americanrenal.com<span class="sc">/</span>dialysis<span class="sc">-</span>centers<span class="sc">/</span>patient<span class="sc">-</span>stories</span></code></pre></div>
+<p><img src="PICS/dia1.png" /></p>
+<div id="getting-more-detail" class="section level3" number="1.7.1">
 <h3><span class="header-section-number">1.7.1</span> Getting More Detail</h3>
 <p>In looking at this page you will see that there are a number of patient stories. Actually, there is a summary line followed by a “Read More” link that provides more detail on the patient experience. Our goal is to get the full content as opposed to only the summary. How would we do this ?</p>
-<div class="figure">
-<img src="PICS/dia2.png" />
-
+<p><img src="PICS/dia2.png" /></p>
+<p><img src="PICS/dia3.png" width="550" /></p>
 </div>
-<div class="figure">
-<img src="PICS/dia3.png" width="550" />
-
-</div>
-</div>
-<div id="writing-some-code" class="section level3">
+<div id="writing-some-code" class="section level3" number="1.7.2">
 <h3><span class="header-section-number">1.7.2</span> Writing Some Code</h3>
 <p>Let’s use our new found knowledge of <strong>rvest</strong> to help us get these detailed stories. Maybe we want to do some sentiment analysis on this. If you hover over the <strong>Read More</strong> link on the website it will provide a specific link for each patient. For example,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">https<span class="op">:</span><span class="er">//</span>www.americanrenal.com<span class="op">/</span>dialysis<span class="op">-</span>centers<span class="op">/</span>patient<span class="op">-</span>stories<span class="op">/</span>john<span class="op">-</span>baguchinsky</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="index.html#cb14-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>www.americanrenal.com<span class="sc">/</span>dialysis<span class="sc">-</span>centers<span class="sc">/</span>patient<span class="sc">-</span>stories<span class="sc">/</span>john<span class="sc">-</span>baguchinsky</span></code></pre></div>
 <p>What we want to do is first get a list of all these links from the main page after which we can loop over each of the patient specific links and capture that information into a vector. Each element of the vector will be the content of a specific patient’s story.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rvest)
-
-burl &lt;-<span class="st"> &quot;https://www.americanrenal.com/dialysis-centers/patient-stories&quot;</span>
-
-<span class="co"># Setup an empty vector to which we will add the content of each story</span>
-workVector &lt;-<span class="st"> </span><span class="kw">vector</span>()
-
-
-<span class="co"># Grab the links from the site that relate patient stories</span>
-  
-  links &lt;-<span class="st"> </span><span class="kw">read_html</span>(burl) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">grep</span>(<span class="st">&quot;stories&quot;</span>,.,<span class="dt">value=</span><span class="ot">TRUE</span>)
-  
-links</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="index.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb15-2"><a href="index.html#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="index.html#cb15-3" aria-hidden="true" tabindex="-1"></a>burl <span class="ot">&lt;-</span> <span class="st">&quot;https://www.americanrenal.com/dialysis-centers/patient-stories&quot;</span></span>
+<span id="cb15-4"><a href="index.html#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="index.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup an empty vector to which we will add the content of each story</span></span>
+<span id="cb15-6"><a href="index.html#cb15-6" aria-hidden="true" tabindex="-1"></a>workVector <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb15-7"><a href="index.html#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="index.html#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="index.html#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Grab the links from the site that relate patient stories</span></span>
+<span id="cb15-10"><a href="index.html#cb15-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-11"><a href="index.html#cb15-11" aria-hidden="true" tabindex="-1"></a>  links <span class="ot">&lt;-</span> <span class="fu">read_html</span>(burl) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-12"><a href="index.html#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">&quot;a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-13"><a href="index.html#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-14"><a href="index.html#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grep</span>(<span class="st">&quot;stories&quot;</span>,.,<span class="at">value=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-15"><a href="index.html#cb15-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-16"><a href="index.html#cb15-16" aria-hidden="true" tabindex="-1"></a>links</span></code></pre></div>
 <pre><code>##  [1] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;                 
 ##  [2] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot;   
 ##  [3] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/patricia-garcia&quot; 
@@ -515,11 +533,11 @@ links</code></pre></div>
 ##  [9] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;                 
 ## [10] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories&quot;</code></pre>
 <p>Some of these links do not correspond directly to a specific patient name so we need to filter those out.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get only the ones that seem to have actual names associated with them</span>
-
- storiesLinks &lt;-<span class="st"> </span>links[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;stories$&quot;</span>,links)] 
-
- storiesLinks</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="index.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get only the ones that seem to have actual names associated with them</span></span>
+<span id="cb17-2"><a href="index.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="index.html#cb17-3" aria-hidden="true" tabindex="-1"></a> storiesLinks <span class="ot">&lt;-</span> links[<span class="sc">-</span><span class="fu">grep</span>(<span class="st">&quot;stories$&quot;</span>,links)] </span>
+<span id="cb17-4"><a href="index.html#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="index.html#cb17-5" aria-hidden="true" tabindex="-1"></a> storiesLinks</span></code></pre></div>
 <pre><code>## [1] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot;   
 ## [2] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/patricia-garcia&quot; 
 ## [3] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/john-baguchinsky&quot;
@@ -528,13 +546,13 @@ links</code></pre></div>
 ## [6] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/sharon-cauthen&quot;  
 ## [7] &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/remond-ellis&quot;</code></pre>
 <p>Next we will visit each of these pages and scrape the text information. We’ll step through this in class so you can see this in action but here is the code. We will get each story and place each paragrpah of the story into a vector element. After that we will eliminate blank lines and some junk lines that begin with a new line character. Then we will collapse all of the vector text into a single paragraph and store it into a list element. Let’s step through it for the first link.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This corresponds to the first link</span>
-<span class="co"># &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot; </span>
-
-tmpResult &lt;-<span class="st"> </span><span class="kw">read_html</span>(storiesLinks[<span class="dv">1</span>]) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">                       </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
-
-tmpResult</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="index.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This corresponds to the first link</span></span>
+<span id="cb19-2"><a href="index.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;http://www.americanrenal.com/dialysis-centers/patient-stories/randal-beatty&quot; </span></span>
+<span id="cb19-3"><a href="index.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="index.html#cb19-4" aria-hidden="true" tabindex="-1"></a>tmpResult <span class="ot">&lt;-</span> <span class="fu">read_html</span>(storiesLinks[<span class="dv">1</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="index.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
+<span id="cb19-6"><a href="index.html#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="index.html#cb19-7" aria-hidden="true" tabindex="-1"></a>tmpResult</span></code></pre></div>
 <pre><code>##  [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes Lane&quot;                                                                                                                                                                                                                                                                                                                                                                                         
 ##  [2] &quot;In April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.&quot;                                                                                                                                                                                                                                                                       
 ##  [3] &quot;“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”&quot;                                                                                                                                                                                                                                
@@ -546,27 +564,24 @@ tmpResult</code></pre></div>
 ##  [9] &quot;Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.&quot;                                                                                                                                                                                                                                                                                                        
 ## [10] &quot;“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”&quot;                                                    
 ## [11] &quot;Read more patient stories&quot;                                                                                                                                                                                                                                                                                                                                                                                                                      
-## [12] &quot;As of September 30, 2019&quot;                                                                                                                                                                                                                                                                                                                                                                                                                       
-## [13] &quot;American Renal Associates operates 244 dialysis clinics in 27 states and Washington D.C., serving more than 17,100 patients with end stage renal disease in partnership with approximately 400 local nephrologists.&quot;                                                                                                                                                                                                                            
-## [14] &quot;\r\n&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                           
-## [15] &quot;Our core values emphasize taking good care of patients, providing physicians with clinical autonomy and support, hiring the best possible staff and providing best practices management.&quot;                                                                                                                                                                                                                                                       
-## [16] &quot;&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                               
-## [17] &quot;&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                               
-## [18] &quot;\n                ©2016 American Renal® Associates. All Rights Reserved.500 Cummings Center, Suite\n                6550, Beverly, MA, 01915\n            &quot;</code></pre>
+## [12] &quot;American Renal Associates operates 240 dialysis clinics in 27 states and Washington D.C., serving more than 17,300 patients with end-stage renal disease in partnership with approximately 400 local nephrologists.&quot;                                                                                                                                                                                                                            
+## [13] &quot;If you have questions, you can call 1-877-99-RENAL (1-877-997-3625) or patients@americanrenal.com&quot;                                                                                                                                                                                                                                                                                                                                              
+## [14] &quot;&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                               
+## [15] &quot;\n                ©2022  American Renal® Associates. All Rights Reserved.500 Cummings Center, Suite\n                6550, Beverly, MA, 01915\n            &quot;</code></pre>
 <p>Okay, that has some junk in it like blank lines and lines that begin with new line characters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get rid of elements that are a blank line</span>
-    
-    tmpResult &lt;-<span class="st"> </span>tmpResult[tmpResult<span class="op">!=</span><span class="st">&quot;&quot;</span>]
-  
-  <span class="co"># Get rid of elements that begin with a newline character &quot;\n&quot;</span>
-    
-    newlines_begin &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult))
-
-    <span class="cf">if</span> (newlines_begin <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
-      tmpResult &lt;-<span class="st"> </span>tmpResult[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult)]
-    }
-
-    tmpResult</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="index.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get rid of elements that are a blank line</span></span>
+<span id="cb21-2"><a href="index.html#cb21-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-3"><a href="index.html#cb21-3" aria-hidden="true" tabindex="-1"></a>    tmpResult <span class="ot">&lt;-</span> tmpResult[tmpResult<span class="sc">!=</span><span class="st">&quot;&quot;</span>]</span>
+<span id="cb21-4"><a href="index.html#cb21-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-5"><a href="index.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get rid of elements that begin with a newline character &quot;\n&quot;</span></span>
+<span id="cb21-6"><a href="index.html#cb21-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-7"><a href="index.html#cb21-7" aria-hidden="true" tabindex="-1"></a>    newlines_begin <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">&quot;^</span><span class="sc">\n</span><span class="st">&quot;</span>,tmpResult))</span>
+<span id="cb21-8"><a href="index.html#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="index.html#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (newlines_begin <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb21-10"><a href="index.html#cb21-10" aria-hidden="true" tabindex="-1"></a>      tmpResult <span class="ot">&lt;-</span> tmpResult[<span class="sc">-</span><span class="fu">grep</span>(<span class="st">&quot;^</span><span class="sc">\n</span><span class="st">&quot;</span>,tmpResult)]</span>
+<span id="cb21-11"><a href="index.html#cb21-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-12"><a href="index.html#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="index.html#cb21-13" aria-hidden="true" tabindex="-1"></a>    tmpResult</span></code></pre></div>
 <pre><code>##  [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes Lane&quot;                                                                                                                                                                                                                                                                                                                                                                                         
 ##  [2] &quot;In April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.&quot;                                                                                                                                                                                                                                                                       
 ##  [3] &quot;“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”&quot;                                                                                                                                                                                                                                
@@ -578,51 +593,49 @@ tmpResult</code></pre></div>
 ##  [9] &quot;Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.&quot;                                                                                                                                                                                                                                                                                                        
 ## [10] &quot;“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”&quot;                                                    
 ## [11] &quot;Read more patient stories&quot;                                                                                                                                                                                                                                                                                                                                                                                                                      
-## [12] &quot;As of September 30, 2019&quot;                                                                                                                                                                                                                                                                                                                                                                                                                       
-## [13] &quot;American Renal Associates operates 244 dialysis clinics in 27 states and Washington D.C., serving more than 17,100 patients with end stage renal disease in partnership with approximately 400 local nephrologists.&quot;                                                                                                                                                                                                                            
-## [14] &quot;\r\n&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                           
-## [15] &quot;Our core values emphasize taking good care of patients, providing physicians with clinical autonomy and support, hiring the best possible staff and providing best practices management.&quot;</code></pre>
+## [12] &quot;American Renal Associates operates 240 dialysis clinics in 27 states and Washington D.C., serving more than 17,300 patients with end-stage renal disease in partnership with approximately 400 local nephrologists.&quot;                                                                                                                                                                                                                            
+## [13] &quot;If you have questions, you can call 1-877-99-RENAL (1-877-997-3625) or patients@americanrenal.com&quot;</code></pre>
 <p>Next, let’s create a more compact version of the data. We’ll cram it all into a single element.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(tmpResult &lt;-<span class="st"> </span><span class="kw">paste</span>(tmpResult,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>))</code></pre></div>
-<pre><code>## [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes LaneIn April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”So for three years, he waited, hoping to find his miracle. But by August 2013, he knew he waited too long.“Before my first dialysis treatment, I could feel myself pulling away from everyone, especially my family. I didn’t want to go anywhere or do anything and I was sick all the time. I realized at that point that how I was feeling was exactly what I wanted to avoid.”He began his in-center dialysis treatments with American Renal Associates (ARA) at University Kidney Center in Louisville, Kentucky in August 2013 and transferred to another local ARA facility – University Kidney Center Hikes Lane – in May 2014 since it was closer to his home.“In a short time, dialysis completely changed me,” he said. His health improved, along with his confidence, encouraging him to start driving himself to and from treatments. Not only did this give him a renewed feeling of independence, but a strong sense of accomplishment, as well.Now 67 years old, Mr. Beatty says he can do everything he did before, including keeping up with his two granddaughters, playing basketball, among other hobbies, and going on family vacations. In fact, with the help of ARA’s Travel Department, Mr. Beatty can travel stress free. Though he admits traveling while on dialysis can be intimidating, he explained, “All I had to do was show up. ARA’s Travel Team took care of everything.”Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”Read more patient storiesAs of September 30, 2019American Renal Associates operates 244 dialysis clinics in 27 states and Washington D.C., serving more than 17,100 patients with end stage renal disease in partnership with approximately 400 local nephrologists.\r\nOur core values emphasize taking good care of patients, providing physicians with clinical autonomy and support, hiring the best possible staff and providing best practices management.&quot;</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="index.html#cb23-1" aria-hidden="true" tabindex="-1"></a>(tmpResult <span class="ot">&lt;-</span> <span class="fu">paste</span>(tmpResult,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes LaneIn April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”So for three years, he waited, hoping to find his miracle. But by August 2013, he knew he waited too long.“Before my first dialysis treatment, I could feel myself pulling away from everyone, especially my family. I didn’t want to go anywhere or do anything and I was sick all the time. I realized at that point that how I was feeling was exactly what I wanted to avoid.”He began his in-center dialysis treatments with American Renal Associates (ARA) at University Kidney Center in Louisville, Kentucky in August 2013 and transferred to another local ARA facility – University Kidney Center Hikes Lane – in May 2014 since it was closer to his home.“In a short time, dialysis completely changed me,” he said. His health improved, along with his confidence, encouraging him to start driving himself to and from treatments. Not only did this give him a renewed feeling of independence, but a strong sense of accomplishment, as well.Now 67 years old, Mr. Beatty says he can do everything he did before, including keeping up with his two granddaughters, playing basketball, among other hobbies, and going on family vacations. In fact, with the help of ARA’s Travel Department, Mr. Beatty can travel stress free. Though he admits traveling while on dialysis can be intimidating, he explained, “All I had to do was show up. ARA’s Travel Team took care of everything.”Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”Read more patient storiesAmerican Renal Associates operates 240 dialysis clinics in 27 states and Washington D.C., serving more than 17,300 patients with end-stage renal disease in partnership with approximately 400 local nephrologists.If you have questions, you can call 1-877-99-RENAL (1-877-997-3625) or patients@americanrenal.com&quot;</code></pre>
 <p>So we could put this logic into a loop and process each of the links programmatically.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="co"># Now go to these pages and scrape the text necessary to</span>
-  <span class="co"># build a corpus</span>
-
-  tmpResult &lt;-<span class="st"> </span><span class="kw">vector</span>()
-  textList &lt;-<span class="st"> </span><span class="kw">list</span>()
-  
-  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(storiesLinks)) {
-    tmpResult &lt;-<span class="st"> </span><span class="kw">read_html</span>(storiesLinks[ii]) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">                       </span><span class="kw">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_text</span>()
-  
-  <span class="co"># Get rid of elements that are a blank line</span>
-    
-    tmpResult &lt;-<span class="st"> </span>tmpResult[tmpResult<span class="op">!=</span><span class="st">&quot;&quot;</span>]
-  
-  <span class="co"># Get rid of elements that begin with a newline character &quot;\n&quot;</span>
-    
-    newlines_begin &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult))
-
-    <span class="cf">if</span> (newlines_begin <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
-      tmpResult &lt;-<span class="st"> </span>tmpResult[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;^</span><span class="ch">\n</span><span class="st">&quot;</span>,tmpResult)]
-    }
-      
-    <span class="co"># Let&#39;s collpase all the elements into a single element and then store</span>
-    <span class="co"># it into a list element so we can maintain each patient story separately</span>
-    <span class="co"># This is not necessary but until we figure out what we want to do with</span>
-    <span class="co"># the data then this gives us some options</span>
-    
-    tmpResult &lt;-<span class="st"> </span><span class="kw">paste</span>(tmpResult,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)
-    textList[[ii]] &lt;-<span class="st"> </span>tmpResult
-    
-  }</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="index.html#cb25-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># Now go to these pages and scrape the text necessary to</span></span>
+<span id="cb25-2"><a href="index.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># build a corpus</span></span>
+<span id="cb25-3"><a href="index.html#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="index.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  tmpResult <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb25-5"><a href="index.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  textList <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb25-6"><a href="index.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-7"><a href="index.html#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(storiesLinks)) {</span>
+<span id="cb25-8"><a href="index.html#cb25-8" aria-hidden="true" tabindex="-1"></a>    tmpResult <span class="ot">&lt;-</span> <span class="fu">read_html</span>(storiesLinks[ii]) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-9"><a href="index.html#cb25-9" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">html_nodes</span>(<span class="st">&quot;p&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_text</span>()</span>
+<span id="cb25-10"><a href="index.html#cb25-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-11"><a href="index.html#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get rid of elements that are a blank line</span></span>
+<span id="cb25-12"><a href="index.html#cb25-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-13"><a href="index.html#cb25-13" aria-hidden="true" tabindex="-1"></a>    tmpResult <span class="ot">&lt;-</span> tmpResult[tmpResult<span class="sc">!=</span><span class="st">&quot;&quot;</span>]</span>
+<span id="cb25-14"><a href="index.html#cb25-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-15"><a href="index.html#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get rid of elements that begin with a newline character &quot;\n&quot;</span></span>
+<span id="cb25-16"><a href="index.html#cb25-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-17"><a href="index.html#cb25-17" aria-hidden="true" tabindex="-1"></a>    newlines_begin <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">&quot;^</span><span class="sc">\n</span><span class="st">&quot;</span>,tmpResult))</span>
+<span id="cb25-18"><a href="index.html#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="index.html#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (newlines_begin <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb25-20"><a href="index.html#cb25-20" aria-hidden="true" tabindex="-1"></a>      tmpResult <span class="ot">&lt;-</span> tmpResult[<span class="sc">-</span><span class="fu">grep</span>(<span class="st">&quot;^</span><span class="sc">\n</span><span class="st">&quot;</span>,tmpResult)]</span>
+<span id="cb25-21"><a href="index.html#cb25-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb25-22"><a href="index.html#cb25-22" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb25-23"><a href="index.html#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Let&#39;s collpase all the elements into a single element and then store</span></span>
+<span id="cb25-24"><a href="index.html#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># it into a list element so we can maintain each patient story separately</span></span>
+<span id="cb25-25"><a href="index.html#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This is not necessary but until we figure out what we want to do with</span></span>
+<span id="cb25-26"><a href="index.html#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the data then this gives us some options</span></span>
+<span id="cb25-27"><a href="index.html#cb25-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-28"><a href="index.html#cb25-28" aria-hidden="true" tabindex="-1"></a>    tmpResult <span class="ot">&lt;-</span> <span class="fu">paste</span>(tmpResult,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb25-29"><a href="index.html#cb25-29" aria-hidden="true" tabindex="-1"></a>    textList[[ii]] <span class="ot">&lt;-</span> tmpResult</span>
+<span id="cb25-30"><a href="index.html#cb25-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-31"><a href="index.html#cb25-31" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 <p>If we did our job correctly then each element of the <strong>textList</strong> will have text in it corresponding to each patient</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">textList[[<span class="dv">1</span>]]</code></pre></div>
-<pre><code>## [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes LaneIn April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”So for three years, he waited, hoping to find his miracle. But by August 2013, he knew he waited too long.“Before my first dialysis treatment, I could feel myself pulling away from everyone, especially my family. I didn’t want to go anywhere or do anything and I was sick all the time. I realized at that point that how I was feeling was exactly what I wanted to avoid.”He began his in-center dialysis treatments with American Renal Associates (ARA) at University Kidney Center in Louisville, Kentucky in August 2013 and transferred to another local ARA facility – University Kidney Center Hikes Lane – in May 2014 since it was closer to his home.“In a short time, dialysis completely changed me,” he said. His health improved, along with his confidence, encouraging him to start driving himself to and from treatments. Not only did this give him a renewed feeling of independence, but a strong sense of accomplishment, as well.Now 67 years old, Mr. Beatty says he can do everything he did before, including keeping up with his two granddaughters, playing basketball, among other hobbies, and going on family vacations. In fact, with the help of ARA’s Travel Department, Mr. Beatty can travel stress free. Though he admits traveling while on dialysis can be intimidating, he explained, “All I had to do was show up. ARA’s Travel Team took care of everything.”Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”Read more patient storiesAs of September 30, 2019American Renal Associates operates 244 dialysis clinics in 27 states and Washington D.C., serving more than 17,100 patients with end stage renal disease in partnership with approximately 400 local nephrologists.\r\nOur core values emphasize taking good care of patients, providing physicians with clinical autonomy and support, hiring the best possible staff and providing best practices management.&quot;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="index.html#cb26-1" aria-hidden="true" tabindex="-1"></a>textList[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## [1] &quot;Mr. Randal Beatty, University Kidney Center Hikes LaneIn April 2010, Randal Beatty was diagnosed with end stage renal disease (ESRD). The diagnosis came as a surprise, and, Mr. Beatty admits, he kept praying for a miracle.“I heard all those stories about how people feel during dialysis and I didn’t want to deal with it,” said Mr. Beatty. “I didn’t want to lose my freedom and I certainly didn’t want to feel sick all the time.”So for three years, he waited, hoping to find his miracle. But by August 2013, he knew he waited too long.“Before my first dialysis treatment, I could feel myself pulling away from everyone, especially my family. I didn’t want to go anywhere or do anything and I was sick all the time. I realized at that point that how I was feeling was exactly what I wanted to avoid.”He began his in-center dialysis treatments with American Renal Associates (ARA) at University Kidney Center in Louisville, Kentucky in August 2013 and transferred to another local ARA facility – University Kidney Center Hikes Lane – in May 2014 since it was closer to his home.“In a short time, dialysis completely changed me,” he said. His health improved, along with his confidence, encouraging him to start driving himself to and from treatments. Not only did this give him a renewed feeling of independence, but a strong sense of accomplishment, as well.Now 67 years old, Mr. Beatty says he can do everything he did before, including keeping up with his two granddaughters, playing basketball, among other hobbies, and going on family vacations. In fact, with the help of ARA’s Travel Department, Mr. Beatty can travel stress free. Though he admits traveling while on dialysis can be intimidating, he explained, “All I had to do was show up. ARA’s Travel Team took care of everything.”Receiving a diagnosis of ESRD can be challenging, but Mr. Beatty’s advice is to take a step back and see dialysis as the miracle it is.“It took me three years to realize that dialysis was the miracle I was waiting for. I was an extremely sick individual and just a few months on dialysis completely changed me. I don’t know why I waited as long as I did. I could have been enjoying life for the last few years rather than staying home sick. And I honestly haven’t been sick since I started my dialysis treatments!”Read more patient storiesAmerican Renal Associates operates 240 dialysis clinics in 27 states and Washington D.C., serving more than 17,300 patients with end-stage renal disease in partnership with approximately 400 local nephrologists.If you have questions, you can call 1-877-99-RENAL (1-877-997-3625) or patients@americanrenal.com&quot;</code></pre>
 </div>
 </div>
-<div id="summary" class="section level2">
+<div id="summary" class="section level2" number="1.8">
 <h2><span class="header-section-number">1.8</span> Summary</h2>
 <ul>
 <li>Need some basic HTML and CSS knowledge to find correct elements</li>
@@ -645,7 +658,6 @@ tmpResult</code></pre></div>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -660,12 +672,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -680,7 +692,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

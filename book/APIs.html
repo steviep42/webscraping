@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 APIs | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 APIs | Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2022-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,9 @@
   
 <link rel="prev" href="Moreexamples.html"/>
 <link rel="next" href="bagofwords.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,54 +51,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -114,45 +145,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">Web Scraping</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a><ul>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#useful-tools"><i class="fa fa-check"></i><b>1.3.1</b> Useful tools</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a>
+<ul>
 <li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
 <li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
 </ul></li>
 <li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
 <li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
 <li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
 <li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
 <li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
 <li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
 <li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
 <li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
 <li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
 <li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
@@ -179,52 +218,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="APIs" class="section level1">
+<div id="APIs" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> APIs</h1>
-<div id="omdb" class="section level2">
+<div id="omdb" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> OMDB</h2>
-<p>Let’s look at the IMDB page whic catalogues lots of information about movies. Just got to the web site and search although here is an example link. <a href="https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2" class="uri">https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2</a> In this case we would like to get the summary information for the movie. So we would use Selector Gadget or some other method to find the XPATH or CSS associated with this element.</p>
-<div class="figure">
-<img src="PICS/suspiria_77.png" width="450" />
-
-</div>
+<p>Let’s look at the IMDB page which catalogues lots of information about movies. Just got to the web site and search although here is an example link. <a href="https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2" class="uri">https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2</a> In this case we would like to get the summary information for the movie. So we would use Selector Gadget or some other method to find the XPATH or CSS associated with this element.</p>
+<p><img src="PICS/suspiria_77.png" width="450" /></p>
 <p>This pretty easy and doesn’t present much of a problem although for large scale mining of movie data we would run into trouble because IMDB doesn’t really like you to scrape their pages. They have an API that they would like for you to use.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &#39;https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2&#39;</span>
-summary &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_nodes</span>(<span class="st">&quot;.summary_text&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">html_text</span>()
-
-summary</code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="APIs.html#cb80-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://www.imdb.com/title/tt0076786/?ref_=fn_al_tt_2&#39;</span></span>
+<span id="cb80-2"><a href="APIs.html#cb80-2" aria-hidden="true" tabindex="-1"></a>summary <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span> </span>
+<span id="cb80-3"><a href="APIs.html#cb80-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath=</span><span class="st">&quot;/html/body/div[2]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[1]/div[1]/div[2]/span[3]&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb80-4"><a href="APIs.html#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span>
+<span id="cb80-5"><a href="APIs.html#cb80-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-6"><a href="APIs.html#cb80-6" aria-hidden="true" tabindex="-1"></a>summary</span></code></pre></div>
 <p>But here we go again. We have to parse the desired elements on this page and then what if we wanted to follow other links or set up a general function to search IMDB for other movies of various genres, titles, directors, etc.</p>
-<div class="figure">
-<img src="PICS/omdb.png" width="550" />
-
-</div>
-<div class="figure">
-<img src="PICS/omdb_api.png" width="450" />
-
-</div>
-<div class="figure">
-<img src="PICS/omdb_instruc.png" width="450" />
-
-</div>
+<p><img src="PICS/omdb.png" width="550" /></p>
+<p><img src="PICS/omdb_api.png" width="450" /></p>
+<p><img src="PICS/omdb_instruc.png" width="450" /></p>
 <hr />
 <p>So as an example on how this works. Paste the URL into any web browser. You must supply your key for this to work. What you get back is a JSON formatted entry corresponding to ”The GodFather”movie.</p>
 <hr />
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span></code></pre></div>
-<div class="figure">
-<img src="PICS/omdb_result.png" width="650" />
-
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RJSONIO)
-
-url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span>
-
-<span class="co"># Fetch the URL via fromJSON</span>
-movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span>)
-
-<span class="co"># We get back a list which is much easier to process than raw JSON or XML</span>
-<span class="kw">str</span>(movie)</code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="APIs.html#cb81-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span></span></code></pre></div>
+<p><img src="PICS/omdb_result.png" width="650" /></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="APIs.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RJSONIO)</span>
+<span id="cb82-2"><a href="APIs.html#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="APIs.html#cb82-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span></span>
+<span id="cb82-4"><a href="APIs.html#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="APIs.html#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the URL via fromJSON</span></span>
+<span id="cb82-6"><a href="APIs.html#cb82-6" aria-hidden="true" tabindex="-1"></a>movie <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=The+Godfather&quot;</span>)</span>
+<span id="cb82-7"><a href="APIs.html#cb82-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-8"><a href="APIs.html#cb82-8" aria-hidden="true" tabindex="-1"></a><span class="co"># We get back a list which is much easier to process than raw JSON or XML</span></span>
+<span id="cb82-9"><a href="APIs.html#cb82-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(movie)</span></code></pre></div>
 <pre><code>## List of 25
 ##  $ Title     : chr &quot;The Godfather&quot;
 ##  $ Year      : chr &quot;1972&quot;
@@ -233,279 +257,240 @@ movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class
 ##  $ Runtime   : chr &quot;175 min&quot;
 ##  $ Genre     : chr &quot;Crime, Drama&quot;
 ##  $ Director  : chr &quot;Francis Ford Coppola&quot;
-##  $ Writer    : chr &quot;Mario Puzo (screenplay by), Francis Ford Coppola (screenplay by), Mario Puzo (based on the novel by)&quot;
-##  $ Actors    : chr &quot;Marlon Brando, Al Pacino, James Caan, Richard S. Castellano&quot;
-##  $ Plot      : chr &quot;The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.&quot;
+##  $ Writer    : chr &quot;Mario Puzo, Francis Ford Coppola&quot;
+##  $ Actors    : chr &quot;Marlon Brando, Al Pacino, James Caan&quot;
+##  $ Plot      : chr &quot;The Godfather follows Vito Corleone, Don of the Corleone family, as he passes the mantle to his unwilling son, Michael.&quot;
 ##  $ Language  : chr &quot;English, Italian, Latin&quot;
-##  $ Country   : chr &quot;USA&quot;
-##  $ Awards    : chr &quot;Won 3 Oscars. Another 26 wins &amp; 30 nominations.&quot;
+##  $ Country   : chr &quot;United States&quot;
+##  $ Awards    : chr &quot;Won 3 Oscars. 31 wins &amp; 30 nominations total&quot;
 ##  $ Poster    : chr &quot;https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ&quot;| __truncated__
 ##  $ Ratings   :List of 3
 ##   ..$ : Named chr [1:2] &quot;Internet Movie Database&quot; &quot;9.2/10&quot;
 ##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
-##   ..$ : Named chr [1:2] &quot;Rotten Tomatoes&quot; &quot;98%&quot;
+##   ..$ : Named chr [1:2] &quot;Rotten Tomatoes&quot; &quot;97%&quot;
 ##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
 ##   ..$ : Named chr [1:2] &quot;Metacritic&quot; &quot;100/100&quot;
 ##   .. ..- attr(*, &quot;names&quot;)= chr [1:2] &quot;Source&quot; &quot;Value&quot;
 ##  $ Metascore : chr &quot;100&quot;
 ##  $ imdbRating: chr &quot;9.2&quot;
-##  $ imdbVotes : chr &quot;1,502,403&quot;
+##  $ imdbVotes : chr &quot;1,742,506&quot;
 ##  $ imdbID    : chr &quot;tt0068646&quot;
 ##  $ Type      : chr &quot;movie&quot;
-##  $ DVD       : chr &quot;09 Oct 2001&quot;
-##  $ BoxOffice : chr &quot;N/A&quot;
-##  $ Production: chr &quot;Paramount Pictures&quot;
+##  $ DVD       : chr &quot;11 May 2004&quot;
+##  $ BoxOffice : chr &quot;$134,966,411&quot;
+##  $ Production: chr &quot;N/A&quot;
 ##  $ Website   : chr &quot;N/A&quot;
 ##  $ Response  : chr &quot;True&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movie<span class="op">$</span>Plot</code></pre></div>
-<pre><code>## [1] &quot;The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(movie<span class="op">$</span>Ratings,unlist)</code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="APIs.html#cb84-1" aria-hidden="true" tabindex="-1"></a>movie<span class="sc">$</span>Plot</span></code></pre></div>
+<pre><code>## [1] &quot;The Godfather follows Vito Corleone, Don of the Corleone family, as he passes the mantle to his unwilling son, Michael.&quot;</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="APIs.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(movie<span class="sc">$</span>Ratings,unlist)</span></code></pre></div>
 <pre><code>##        [,1]                      [,2]              [,3]        
 ## Source &quot;Internet Movie Database&quot; &quot;Rotten Tomatoes&quot; &quot;Metacritic&quot;
-## Value  &quot;9.2/10&quot;                  &quot;98%&quot;             &quot;100/100&quot;</code></pre>
+## Value  &quot;9.2/10&quot;                  &quot;97%&quot;             &quot;100/100&quot;</code></pre>
 <p>Let’s Get all the Episodes for Season 1 of Game of Thrones</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=Game%20of%20Thrones&amp;Season=1&quot;</span>
-movie &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(url)
-<span class="kw">str</span>(movie,<span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="APIs.html#cb88-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://www.omdbapi.com/?apikey=f7c004c&amp;t=Game%20of%20Thrones&amp;Season=1&quot;</span></span>
+<span id="cb88-2"><a href="APIs.html#cb88-2" aria-hidden="true" tabindex="-1"></a>movie <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(url)</span>
+<span id="cb88-3"><a href="APIs.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(movie,<span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## List of 5
 ##  $ Title       : chr &quot;Game of Thrones&quot;
 ##  $ Season      : chr &quot;1&quot;
 ##  $ totalSeasons: chr &quot;8&quot;
 ##  $ Episodes    :List of 10
 ##  $ Response    : chr &quot;True&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">episodes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">do.call</span>(rbind,movie<span class="op">$</span>Episodes),<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-episodes</code></pre></div>
-<pre><code>##                                    Title   Released Episode imdbRating
-## 1                       Winter Is Coming 2011-04-17       1        9.0
-## 2                          The Kingsroad 2011-04-24       2        8.8
-## 3                              Lord Snow 2011-05-01       3        8.7
-## 4  Cripples, Bastards, and Broken Things 2011-05-08       4        8.8
-## 5                  The Wolf and the Lion 2011-05-15       5        9.1
-## 6                         A Golden Crown 2011-05-22       6        9.2
-## 7                     You Win or You Die 2011-05-29       7        9.2
-## 8                         The Pointy End 2011-06-05       8        9.0
-## 9                                 Baelor 2011-06-12       9        9.6
-## 10                        Fire and Blood 2011-06-19      10        9.5
-##       imdbID
-## 1  tt1480055
-## 2  tt1668746
-## 3  tt1829962
-## 4  tt1829963
-## 5  tt1829964
-## 6  tt1837862
-## 7  tt1837863
-## 8  tt1837864
-## 9  tt1851398
-## 10 tt1851397</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="APIs.html#cb90-1" aria-hidden="true" tabindex="-1"></a>episodes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">do.call</span>(rbind,movie<span class="sc">$</span>Episodes),<span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb90-2"><a href="APIs.html#cb90-2" aria-hidden="true" tabindex="-1"></a>episodes</span></code></pre></div>
+<pre><code>##                                    Title   Released Episode imdbRating    imdbID
+## 1                       Winter Is Coming 2011-04-17       1        9.1 tt1480055
+## 2                          The Kingsroad 2011-04-24       2        8.8 tt1668746
+## 3                              Lord Snow 2011-05-01       3        8.7 tt1829962
+## 4  Cripples, Bastards, and Broken Things 2011-05-08       4        8.8 tt1829963
+## 5                  The Wolf and the Lion 2011-05-15       5        9.1 tt1829964
+## 6                         A Golden Crown 2011-05-22       6        9.2 tt1837862
+## 7                     You Win or You Die 2011-05-29       7        9.2 tt1837863
+## 8                         The Pointy End 2011-06-05       8        9.0 tt1837864
+## 9                                 Baelor 2011-06-12       9        9.6 tt1851398
+## 10                        Fire and Blood 2011-06-19      10        9.5 tt1851397</code></pre>
 </div>
-<div id="the-omdbapi-package" class="section level2">
+<div id="the-omdbapi-package" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> The omdbapi package</h2>
 <p>Wait a minute. Looks like someone created an R package that wraps all this for us. It is called omdbapi</p>
-<div class="figure">
-<img src="PICS/omdbapi.png" width="650" />
-
+<p><img src="PICS/omdbapi.png" width="650" /></p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="APIs.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use devtools to install</span></span>
+<span id="cb92-2"><a href="APIs.html#cb92-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;hrbrmstr/omdbapi&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="APIs.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(omdbapi)</span>
+<span id="cb93-2"><a href="APIs.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The first time you use this you will be prompted to enter your</span></span>
+<span id="cb93-3"><a href="APIs.html#cb93-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># API key</span></span>
+<span id="cb93-4"><a href="APIs.html#cb93-4" aria-hidden="true" tabindex="-1"></a>movie_df <span class="ot">&lt;-</span> <span class="fu">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="at">page =</span> <span class="dv">2</span>)</span>
+<span id="cb93-5"><a href="APIs.html#cb93-5" aria-hidden="true" tabindex="-1"></a>(movie_df <span class="ot">&lt;-</span> movie_df[,<span class="sc">-</span><span class="dv">5</span>])</span></code></pre></div>
+<pre><code>##                                     Title      Year     imdbID   Type
+## 1                 Solo: A Star Wars Story      2018  tt3778644  movie
+## 2               Star Wars: The Clone Wars 2008–2020  tt0458290 series
+## 3               Star Wars: The Clone Wars      2008  tt1185834  movie
+## 4                       Star Wars: Rebels 2014–2018  tt2930604 series
+## 5                   Star Wars: Clone Wars 2003–2005  tt0361243 series
+## 6                Star Wars: The Bad Batch     2021– tt12708542 series
+## 7           The Star Wars Holiday Special      1978  tt0193524  movie
+## 8                      Star Wars: Visions     2021– tt13622982 series
+## 9                Robot Chicken: Star Wars      2007  tt1020990  movie
+## 10 Star Wars: Knights of the Old Republic      2003  tt0356070   game</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="APIs.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get lots of info on The GodFather</span></span>
+<span id="cb95-2"><a href="APIs.html#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="APIs.html#cb95-3" aria-hidden="true" tabindex="-1"></a>(gf <span class="ot">&lt;-</span> <span class="fu">find_by_title</span>(<span class="st">&quot;The GodFather&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 25
+##   Title Year  Rated Released   Runtime Genre Director Writer Actors Plot  Language Country Awards
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt; 
+## 1 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The … English… United… Won 3…
+## 2 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The … English… United… Won 3…
+## 3 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The … English… United… Won 3…
+## # … with 12 more variables: Poster &lt;chr&gt;, Ratings &lt;list&gt;, Metascore &lt;chr&gt;, imdbRating &lt;dbl&gt;,
+## #   imdbVotes &lt;dbl&gt;, imdbID &lt;chr&gt;, Type &lt;chr&gt;, DVD &lt;date&gt;, BoxOffice &lt;chr&gt;, Production &lt;chr&gt;,
+## #   Website &lt;chr&gt;, Response &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="APIs.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the actors from the GodFather</span></span>
+<span id="cb97-2"><a href="APIs.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_actors</span>((gf))</span></code></pre></div>
+<pre><code>## [1] &quot;Marlon Brando&quot; &quot;Al Pacino&quot;     &quot;James Caan&quot;</code></pre>
+<p><img src="PICS/api_summary.png" width="550" /></p>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use devtools to install</span>
-devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;hrbrmstr/omdbapi&quot;</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(omdbapi)
-<span class="co"># The first time you use this you will be prompted to enter your</span>
- <span class="co"># API key</span>
-movie_df &lt;-<span class="st"> </span><span class="kw">search_by_title</span>(<span class="st">&quot;Star Wars&quot;</span>, <span class="dt">page =</span> <span class="dv">2</span>)
-(movie_df &lt;-<span class="st"> </span>movie_df[,<span class="op">-</span><span class="dv">5</span>])</code></pre></div>
-<pre><code>##                                            Title      Year    imdbID
-## 1  Star Wars: Episode IX - The Rise of Skywalker      2019 tt2527338
-## 2                      Star Wars: The Clone Wars      2008 tt1185834
-## 3                      Star Wars: The Clone Wars 2008–2020 tt0458290
-## 4                               Star Wars Rebels 2014–2018 tt2930604
-## 5                          Star Wars: Clone Wars 2003–2005 tt0361243
-## 6                  The Star Wars Holiday Special      1978 tt0193524
-## 7                       Robot Chicken: Star Wars      2007 tt1020990
-## 8         Star Wars: Knights of the Old Republic      2003 tt0356070
-## 9            Robot Chicken: Star Wars Episode II      2008 tt1334272
-## 10                Star Wars: The Force Unleashed      2008 tt1024923
-##      Type
-## 1   movie
-## 2   movie
-## 3  series
-## 4  series
-## 5  series
-## 6   movie
-## 7   movie
-## 8    game
-## 9   movie
-## 10   game</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get lots of info on The GodFather</span>
-
-(gf &lt;-<span class="st"> </span><span class="kw">find_by_title</span>(<span class="st">&quot;The GodFather&quot;</span>))</code></pre></div>
-<pre><code>## # A tibble: 3 x 25
-##   Title Year  Rated Released   Runtime Genre Director Writer Actors Plot 
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;
-## 1 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
-## 2 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
-## 3 The … 1972  R     1972-03-24 175 min Crim… Francis… Mario… Marlo… The …
-## # … with 15 more variables: Language &lt;chr&gt;, Country &lt;chr&gt;, Awards &lt;chr&gt;,
-## #   Poster &lt;chr&gt;, Ratings &lt;list&gt;, Metascore &lt;chr&gt;, imdbRating &lt;dbl&gt;,
-## #   imdbVotes &lt;dbl&gt;, imdbID &lt;chr&gt;, Type &lt;chr&gt;, DVD &lt;date&gt;,
-## #   BoxOffice &lt;chr&gt;, Production &lt;chr&gt;, Website &lt;chr&gt;, Response &lt;chr&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the actors from the GodFather</span>
-<span class="kw">get_actors</span>((gf))</code></pre></div>
-<pre><code>## [1] &quot;Marlon Brando&quot;         &quot;Al Pacino&quot;             &quot;James Caan&quot;           
-## [4] &quot;Richard S. Castellano&quot;</code></pre>
-<div class="figure">
-<img src="PICS/api_summary.png" width="550" />
-
-</div>
-</div>
-<div id="rselenium" class="section level2">
+<div id="rselenium" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> RSelenium</h2>
 <p>Sometimes we interact with websites that use Javascript to load more text or comments in a user forum. Here is an example of that. Look at <a href="https://www.dailystrength.org/group/dialysis" class="uri">https://www.dailystrength.org/group/dialysis</a> which is a website associated with people wanting to share information about dialysis.</p>
-<div class="figure">
-<img src="PICS/diasupport.png" />
-
-</div>
+<p><img src="PICS/diasupport.png" /></p>
 <p>If you check the bottom of the pag you will see a button.</p>
-<div class="figure">
-<img src="PICS/showmore.png" />
-
+<p><img src="PICS/showmore.png" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="APIs.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.dailystrength.org/group/dialysis</span></span>
+<span id="cb99-2"><a href="APIs.html#cb99-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-3"><a href="APIs.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RSelenium)</span>
+<span id="cb99-4"><a href="APIs.html#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb99-5"><a href="APIs.html#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tm)</span>
+<span id="cb99-6"><a href="APIs.html#cb99-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SentimentAnalysis)</span>
+<span id="cb99-7"><a href="APIs.html#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wordcloud)</span>
+<span id="cb99-8"><a href="APIs.html#cb99-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-9"><a href="APIs.html#cb99-9" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://www.dailystrength.org/group/dialysis&quot;</span></span>
+<span id="cb99-10"><a href="APIs.html#cb99-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-11"><a href="APIs.html#cb99-11" aria-hidden="true" tabindex="-1"></a><span class="co"># The website has a &quot;show more&quot; button that hides most of the patient posts</span></span>
+<span id="cb99-12"><a href="APIs.html#cb99-12" aria-hidden="true" tabindex="-1"></a><span class="co"># If we don&#39;t find a way to programmatically &quot;click&quot; this button then we can</span></span>
+<span id="cb99-13"><a href="APIs.html#cb99-13" aria-hidden="true" tabindex="-1"></a><span class="co"># only get a few of the posts and their responses. To do this we need to</span></span>
+<span id="cb99-14"><a href="APIs.html#cb99-14" aria-hidden="true" tabindex="-1"></a><span class="co"># use the RSelenium package which does a lot of behind the scenes work</span></span>
+<span id="cb99-15"><a href="APIs.html#cb99-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-16"><a href="APIs.html#cb99-16" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://cran.r-project.org/web/packages/RSelenium/RSelenium.pdf</span></span>
+<span id="cb99-17"><a href="APIs.html#cb99-17" aria-hidden="true" tabindex="-1"></a><span class="co"># http://brazenly.blogspot.com/2016/05/r-advanced-web-scraping-dynamic.html</span></span>
+<span id="cb99-18"><a href="APIs.html#cb99-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-19"><a href="APIs.html#cb99-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Open up a connection </span></span>
+<span id="cb99-20"><a href="APIs.html#cb99-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-21"><a href="APIs.html#cb99-21" aria-hidden="true" tabindex="-1"></a><span class="co"># rD &lt;- rsDriver()</span></span>
+<span id="cb99-22"><a href="APIs.html#cb99-22" aria-hidden="true" tabindex="-1"></a><span class="co"># So, you might have to specify the version of chrome you are using</span></span>
+<span id="cb99-23"><a href="APIs.html#cb99-23" aria-hidden="true" tabindex="-1"></a><span class="co"># For someone reason this seems now to be necessary (11/4/19)</span></span>
+<span id="cb99-24"><a href="APIs.html#cb99-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-25"><a href="APIs.html#cb99-25" aria-hidden="true" tabindex="-1"></a>rD <span class="ot">&lt;-</span> <span class="fu">rsDriver</span>(<span class="at">browser=</span><span class="fu">c</span>(<span class="st">&quot;chrome&quot;</span>),<span class="at">chromever=</span><span class="st">&quot;78.0.3904.70&quot;</span>)</span>
+<span id="cb99-26"><a href="APIs.html#cb99-26" aria-hidden="true" tabindex="-1"></a>remDr <span class="ot">&lt;-</span> rD[[<span class="st">&quot;client&quot;</span>]]</span>
+<span id="cb99-27"><a href="APIs.html#cb99-27" aria-hidden="true" tabindex="-1"></a>remDr<span class="sc">$</span><span class="fu">navigate</span>(url)</span>
+<span id="cb99-28"><a href="APIs.html#cb99-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-29"><a href="APIs.html#cb99-29" aria-hidden="true" tabindex="-1"></a>loadmorebutton <span class="ot">&lt;-</span> remDr<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">&#39;css selector&#39;</span>, <span class="st">&quot;#load-more-discussions&quot;</span>)</span>
+<span id="cb99-30"><a href="APIs.html#cb99-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-31"><a href="APIs.html#cb99-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Do this a number of times to get more links</span></span>
+<span id="cb99-32"><a href="APIs.html#cb99-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-33"><a href="APIs.html#cb99-33" aria-hidden="true" tabindex="-1"></a>loadmorebutton<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb99-34"><a href="APIs.html#cb99-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-35"><a href="APIs.html#cb99-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Now get the page with more comments and questions</span></span>
+<span id="cb99-36"><a href="APIs.html#cb99-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-37"><a href="APIs.html#cb99-37" aria-hidden="true" tabindex="-1"></a>page_source <span class="ot">&lt;-</span> remDr<span class="sc">$</span><span class="fu">getPageSource</span>()</span>
+<span id="cb99-38"><a href="APIs.html#cb99-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-39"><a href="APIs.html#cb99-39" aria-hidden="true" tabindex="-1"></a><span class="co"># So let&#39;s parse the contents</span></span>
+<span id="cb99-40"><a href="APIs.html#cb99-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-41"><a href="APIs.html#cb99-41" aria-hidden="true" tabindex="-1"></a>comments <span class="ot">&lt;-</span> <span class="fu">read_html</span>(page_source[[<span class="dv">1</span>]])</span>
+<span id="cb99-42"><a href="APIs.html#cb99-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-43"><a href="APIs.html#cb99-43" aria-hidden="true" tabindex="-1"></a>cumulative_comments <span class="ot">&lt;-</span> <span class="fu">vector</span>()</span>
+<span id="cb99-44"><a href="APIs.html#cb99-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-45"><a href="APIs.html#cb99-45" aria-hidden="true" tabindex="-1"></a>links <span class="ot">&lt;-</span> comments <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="at">css=</span><span class="st">&quot;.newsfeed__description&quot;</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb99-46"><a href="APIs.html#cb99-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_node</span>(<span class="st">&quot;a&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>)</span>
+<span id="cb99-47"><a href="APIs.html#cb99-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-48"><a href="APIs.html#cb99-48" aria-hidden="true" tabindex="-1"></a>full_links <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;https://www.dailystrength.org&quot;</span>,links)</span>
+<span id="cb99-49"><a href="APIs.html#cb99-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-50"><a href="APIs.html#cb99-50" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb99-51"><a href="APIs.html#cb99-51" aria-hidden="true" tabindex="-1"></a>  full_links <span class="ot">&lt;-</span> full_links[<span class="sc">-</span><span class="fu">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)]</span>
+<span id="cb99-52"><a href="APIs.html#cb99-52" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb99-53"><a href="APIs.html#cb99-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-54"><a href="APIs.html#cb99-54" aria-hidden="true" tabindex="-1"></a>ugly_xpath <span class="ot">&lt;-</span> <span class="st">&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;comments__comment-text&quot;, &quot; &quot; ))] | //p&#39;</span></span>
+<span id="cb99-55"><a href="APIs.html#cb99-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-56"><a href="APIs.html#cb99-56" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(full_links)) {</span>
+<span id="cb99-57"><a href="APIs.html#cb99-57" aria-hidden="true" tabindex="-1"></a>  text <span class="ot">&lt;-</span> <span class="fu">read_html</span>(full_links[ii]) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-58"><a href="APIs.html#cb99-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="at">xpath=</span>ugly_xpath) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-59"><a href="APIs.html#cb99-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() </span>
+<span id="cb99-60"><a href="APIs.html#cb99-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(text) <span class="ot">&lt;-</span> <span class="fu">length</span>(text) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb99-61"><a href="APIs.html#cb99-61" aria-hidden="true" tabindex="-1"></a>  text <span class="ot">&lt;-</span> text[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb99-62"><a href="APIs.html#cb99-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-63"><a href="APIs.html#cb99-63" aria-hidden="true" tabindex="-1"></a>  text</span>
+<span id="cb99-64"><a href="APIs.html#cb99-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb99-65"><a href="APIs.html#cb99-65" aria-hidden="true" tabindex="-1"></a>  cumulative_comments <span class="ot">&lt;-</span> <span class="fu">c</span>(cumulative_comments,text)</span>
+<span id="cb99-66"><a href="APIs.html#cb99-66" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb99-67"><a href="APIs.html#cb99-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-68"><a href="APIs.html#cb99-68" aria-hidden="true" tabindex="-1"></a>remDr<span class="sc">$</span><span class="fu">close</span>()</span>
+<span id="cb99-69"><a href="APIs.html#cb99-69" aria-hidden="true" tabindex="-1"></a><span class="co"># stop the selenium server</span></span>
+<span id="cb99-70"><a href="APIs.html#cb99-70" aria-hidden="true" tabindex="-1"></a>rD[[<span class="st">&quot;server&quot;</span>]]<span class="sc">$</span><span class="fu">stop</span>()</span></code></pre></div>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># https://www.dailystrength.org/group/dialysis</span>
-
-<span class="kw">library</span>(RSelenium)
-<span class="kw">library</span>(rvest)
-<span class="kw">library</span>(tm)
-<span class="kw">library</span>(SentimentAnalysis)
-<span class="kw">library</span>(wordcloud)
-
-url &lt;-<span class="st"> &quot;https://www.dailystrength.org/group/dialysis&quot;</span>
-
-<span class="co"># The website has a &quot;show more&quot; button that hides most of the patient posts</span>
-<span class="co"># If we don&#39;t find a way to programmatically &quot;click&quot; this button then we can</span>
-<span class="co"># only get a few of the posts and their responses. To do this we need to</span>
-<span class="co"># use the RSelenium package which does a lot of behind the scenes work</span>
-
-<span class="co"># See https://cran.r-project.org/web/packages/RSelenium/RSelenium.pdf</span>
-<span class="co"># http://brazenly.blogspot.com/2016/05/r-advanced-web-scraping-dynamic.html</span>
-
-<span class="co"># Open up a connection </span>
-
-<span class="co"># rD &lt;- rsDriver()</span>
-<span class="co"># So, you might have to specify the version of chrome you are using</span>
-<span class="co"># For someone reason this seems now to be necessary (11/4/19)</span>
-
-rD &lt;-<span class="st"> </span><span class="kw">rsDriver</span>(<span class="dt">browser=</span><span class="kw">c</span>(<span class="st">&quot;chrome&quot;</span>),<span class="dt">chromever=</span><span class="st">&quot;78.0.3904.70&quot;</span>)
-remDr &lt;-<span class="st"> </span>rD[[<span class="st">&quot;client&quot;</span>]]
-remDr<span class="op">$</span><span class="kw">navigate</span>(url)
-
-loadmorebutton &lt;-<span class="st"> </span>remDr<span class="op">$</span><span class="kw">findElement</span>(<span class="dt">using =</span> <span class="st">&#39;css selector&#39;</span>, <span class="st">&quot;#load-more-discussions&quot;</span>)
-
-<span class="co"># Do this a number of times to get more links</span>
-
-loadmorebutton<span class="op">$</span><span class="kw">clickElement</span>()
-
-<span class="co"># Now get the page with more comments and questions</span>
-
-page_source &lt;-<span class="st"> </span>remDr<span class="op">$</span><span class="kw">getPageSource</span>()
-
-<span class="co"># So let&#39;s parse the contents</span>
-
-comments &lt;-<span class="st"> </span><span class="kw">read_html</span>(page_source[[<span class="dv">1</span>]])
-
-cumulative_comments &lt;-<span class="st"> </span><span class="kw">vector</span>()
-
-links &lt;-<span class="st"> </span>comments <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="dt">css=</span><span class="st">&quot;.newsfeed__description&quot;</span>)  <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">html_node</span>(<span class="st">&quot;a&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_attr</span>(<span class="st">&quot;href&quot;</span>)
-
-full_links &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://www.dailystrength.org&quot;</span>,links)
-
-<span class="cf">if</span> (<span class="kw">length</span>(<span class="kw">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {
-  full_links &lt;-<span class="st"> </span>full_links[<span class="op">-</span><span class="kw">grep</span>(<span class="st">&quot;NA&quot;</span>,full_links)]
-}
-
-ugly_xpath &lt;-<span class="st"> &#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;comments__comment-text&quot;, &quot; &quot; ))] | //p&#39;</span>
-
-<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(full_links)) {
-  text &lt;-<span class="st"> </span><span class="kw">read_html</span>(full_links[ii]) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">html_nodes</span>(<span class="dt">xpath=</span>ugly_xpath) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">html_text</span>() 
-  <span class="kw">length</span>(text) &lt;-<span class="st"> </span><span class="kw">length</span>(text) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
-  text &lt;-<span class="st"> </span>text[<span class="op">-</span><span class="dv">1</span>]
-  
-  text
-  
-  cumulative_comments &lt;-<span class="st"> </span><span class="kw">c</span>(cumulative_comments,text)
-}
-
-remDr<span class="op">$</span><span class="kw">close</span>()
-<span class="co"># stop the selenium server</span>
-rD[[<span class="st">&quot;server&quot;</span>]]<span class="op">$</span><span class="kw">stop</span>()</code></pre></div>
-</div>
-<div id="easypubmed" class="section level2">
+<div id="easypubmed" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> EasyPubMed</h2>
 <p>So there is an R package called <em>EasyPubMed</em> that helps ease the access of data on the Internet. The idea behind this package is to be able to query NCBI Entrez and retrieve PubMed records in XML or TXT format.</p>
-<div class="figure">
-<img src="PICS/easypubmed.png" />
-
-</div>
-<p>The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly”. The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(easyPubMed)</code></pre></div>
+<p><img src="PICS/easypubmed.png" /></p>
+<p>The PubMed records can be downloaded and saved as XML or text files if desired. According to the package authours, “Data integrity is enforced during data download, allowing to retrieve and save very large number of records effortlessly.” The bottom line is that you can do what you want after that. Let’s look at an example involving home hemodialysis</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="APIs.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easyPubMed)</span></code></pre></div>
 <p>Let’s do some searching</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_query &lt;-<span class="st"> &#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span>
-my_entrez_id &lt;-<span class="st"> </span><span class="kw">get_pubmed_ids</span>(my_query)
-
-my_abstracts &lt;-<span class="st"> </span><span class="kw">fetch_pubmed_data</span>(my_entrez_id)
-my_abstracts &lt;-<span class="st"> </span><span class="kw">custom_grep</span>(my_abstracts,<span class="st">&quot;AbstractText&quot;</span>,<span class="st">&quot;char&quot;</span>)
-
-
-my_abstracts[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]
-
-[<span class="dv">1</span>] <span class="st">&quot;Assisted PD (assPD) is an option of home dialysis treatment for dependent </span>
-<span class="st">end-stage renal patients and worldwide applied in different countries since more </span>
-<span class="st">than 40 years. China and Germany shares similar trends in demographic development </span>
-<span class="st">with a growing proportion of elderly referred to dialysis treatment. So far number </span>
-<span class="st">of patients treated by assPD is low in both countries. We analyze experiences in </span>
-<span class="st">the implementation process, barriers, and benefits of ass PD in the aging population </span>
-<span class="st">to provide a model for sustainable home dialysis treatment with PD in both countries. Differences and similarities of different factors (industrial, patient and facility </span>
-<span class="st">based) which affect utilization of assPD are discussed. AssPD should be promoted in </span>
-<span class="st">China and Germany to realize the benefits of home dialysis for the aging population </span>
-<span class="st">by providing a structured model of implementation and quality assurance.&quot;</span>                                                                                                
-
-
-[<span class="dv">2</span>] <span class="st">&quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease </span>
-<span class="st">in which the kidney is not sufficient to meet the needs of daily life. It is necessary </span>
-<span class="st">to understand the role of genes expression involved in ESRD patient responses to </span>
-<span class="st">nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of </span>
-<span class="st">this study was to investigate novel immune-associated genes that may play important </span>
-<span class="st">roles in patients with ESRD.The microarray expression profiles of peripheral blood </span>
-<span class="st">in patients with ESRD before and after NHD were analyzed by network-based approaches, </span>
-<span class="st">and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes </span>
-<span class="st">pathway analysis to explore the biological process and molecular functions of </span>
-<span class="st">differentially expressed genes. Subsequently, a transcriptional regulatory network </span>
-<span class="st">of the core genes and the connected transcriptional regulators was constructed. </span>
-<span class="st">We found that NHD had a significant effect on neutrophil activation and immune </span>
-<span class="st">response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, </span>
-<span class="st">RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL </span>
-<span class="st">genes maybe potential targets regulated by core transcriptional factors, </span>
-<span class="st">including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, </span>
-<span class="st">and EGR3.&quot;</span> 
-
-[<span class="dv">3</span>] <span class="st">&quot;Only a minority of patients with chronic kidney disease treated by </span>
-<span class="st">hemodialysis are currently treated at home. Until relatively recently, the </span>
-<span class="st">only type of hemodialysis machine available for these patients was a slightly </span>
-<span class="st">smaller version of the standard machines used for in-center dialysis treatments. </span>
-<span class="st">Areas covered: There are now an alternative generation of dialysis machines </span>
-<span class="st">specifically designed for home hemodialysis. The home dialysis patient wants </span>
-<span class="st">a smaller machine, which is intuitive to use, easy to trouble shoot, robust </span>
-<span class="st">and reliable, quick to setup and put away, requiring minimal waste disposal. </span>
-<span class="st">The machines designed for home dialysis have some similarities in terms of </span>
-<span class="st">touch-screen patient interfaces, and using pre-prepared cartridges to speed </span>
-<span class="st">up setting up the machine. On the other hand, they differ in terms of whether </span>
-<span class="st">they use slower or standard dialysate flows, prepare batches of dialysis fluid, </span>
-<span class="st">require separate water purification equipment, or whether this is integrated, </span>
-<span class="st">or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis </span>
-<span class="st">machine complexity is one of the hurdles reducing the number of patients opting </span>
-<span class="st">for home hemodialysis and the introduction of the newer generation of dialysis </span>
-<span class="st">machines designed for ease of use will hopefully increase the number of patients </span>
-<span class="st">opting for home hemodialysis.&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="APIs.html#cb101-1" aria-hidden="true" tabindex="-1"></a>my_query <span class="ot">&lt;-</span> <span class="st">&#39;hemodialysis, home&quot; [MeSH Terms]&#39;</span></span>
+<span id="cb101-2"><a href="APIs.html#cb101-2" aria-hidden="true" tabindex="-1"></a>my_entrez_id <span class="ot">&lt;-</span> <span class="fu">get_pubmed_ids</span>(my_query)</span>
+<span id="cb101-3"><a href="APIs.html#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="APIs.html#cb101-4" aria-hidden="true" tabindex="-1"></a>my_abstracts <span class="ot">&lt;-</span> <span class="fu">fetch_pubmed_data</span>(my_entrez_id)</span>
+<span id="cb101-5"><a href="APIs.html#cb101-5" aria-hidden="true" tabindex="-1"></a>my_abstracts <span class="ot">&lt;-</span> <span class="fu">custom_grep</span>(my_abstracts,<span class="st">&quot;AbstractText&quot;</span>,<span class="st">&quot;char&quot;</span>)</span>
+<span id="cb101-6"><a href="APIs.html#cb101-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-7"><a href="APIs.html#cb101-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="APIs.html#cb101-8" aria-hidden="true" tabindex="-1"></a>my_abstracts[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb101-9"><a href="APIs.html#cb101-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-10"><a href="APIs.html#cb101-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Assisted PD (assPD) is an option of home dialysis treatment for dependent </span></span>
+<span id="cb101-11"><a href="APIs.html#cb101-11" aria-hidden="true" tabindex="-1"></a><span class="st">end-stage renal patients and worldwide applied in different countries since more </span></span>
+<span id="cb101-12"><a href="APIs.html#cb101-12" aria-hidden="true" tabindex="-1"></a><span class="st">than 40 years. China and Germany shares similar trends in demographic development </span></span>
+<span id="cb101-13"><a href="APIs.html#cb101-13" aria-hidden="true" tabindex="-1"></a><span class="st">with a growing proportion of elderly referred to dialysis treatment. So far number </span></span>
+<span id="cb101-14"><a href="APIs.html#cb101-14" aria-hidden="true" tabindex="-1"></a><span class="st">of patients treated by assPD is low in both countries. We analyze experiences in </span></span>
+<span id="cb101-15"><a href="APIs.html#cb101-15" aria-hidden="true" tabindex="-1"></a><span class="st">the implementation process, barriers, and benefits of ass PD in the aging population </span></span>
+<span id="cb101-16"><a href="APIs.html#cb101-16" aria-hidden="true" tabindex="-1"></a><span class="st">to provide a model for sustainable home dialysis treatment with PD in both countries. Differences and similarities of different factors (industrial, patient and facility </span></span>
+<span id="cb101-17"><a href="APIs.html#cb101-17" aria-hidden="true" tabindex="-1"></a><span class="st">based) which affect utilization of assPD are discussed. AssPD should be promoted in </span></span>
+<span id="cb101-18"><a href="APIs.html#cb101-18" aria-hidden="true" tabindex="-1"></a><span class="st">China and Germany to realize the benefits of home dialysis for the aging population </span></span>
+<span id="cb101-19"><a href="APIs.html#cb101-19" aria-hidden="true" tabindex="-1"></a><span class="st">by providing a structured model of implementation and quality assurance.&quot;</span>                                                                                                </span>
+<span id="cb101-20"><a href="APIs.html#cb101-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-21"><a href="APIs.html#cb101-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-22"><a href="APIs.html#cb101-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span>] <span class="st">&quot;End-stage renal disease (ESRD) is the final stage of chronic kidney disease </span></span>
+<span id="cb101-23"><a href="APIs.html#cb101-23" aria-hidden="true" tabindex="-1"></a><span class="st">in which the kidney is not sufficient to meet the needs of daily life. It is necessary </span></span>
+<span id="cb101-24"><a href="APIs.html#cb101-24" aria-hidden="true" tabindex="-1"></a><span class="st">to understand the role of genes expression involved in ESRD patient responses to </span></span>
+<span id="cb101-25"><a href="APIs.html#cb101-25" aria-hidden="true" tabindex="-1"></a><span class="st">nocturnal hemodialysis (NHD) and to improve the immunity responsiveness. The aim of </span></span>
+<span id="cb101-26"><a href="APIs.html#cb101-26" aria-hidden="true" tabindex="-1"></a><span class="st">this study was to investigate novel immune-associated genes that may play important </span></span>
+<span id="cb101-27"><a href="APIs.html#cb101-27" aria-hidden="true" tabindex="-1"></a><span class="st">roles in patients with ESRD.The microarray expression profiles of peripheral blood </span></span>
+<span id="cb101-28"><a href="APIs.html#cb101-28" aria-hidden="true" tabindex="-1"></a><span class="st">in patients with ESRD before and after NHD were analyzed by network-based approaches, </span></span>
+<span id="cb101-29"><a href="APIs.html#cb101-29" aria-hidden="true" tabindex="-1"></a><span class="st">and then using Gene Ontology (GO) and Kyoto Encyclopedia of Genes and Genomes </span></span>
+<span id="cb101-30"><a href="APIs.html#cb101-30" aria-hidden="true" tabindex="-1"></a><span class="st">pathway analysis to explore the biological process and molecular functions of </span></span>
+<span id="cb101-31"><a href="APIs.html#cb101-31" aria-hidden="true" tabindex="-1"></a><span class="st">differentially expressed genes. Subsequently, a transcriptional regulatory network </span></span>
+<span id="cb101-32"><a href="APIs.html#cb101-32" aria-hidden="true" tabindex="-1"></a><span class="st">of the core genes and the connected transcriptional regulators was constructed. </span></span>
+<span id="cb101-33"><a href="APIs.html#cb101-33" aria-hidden="true" tabindex="-1"></a><span class="st">We found that NHD had a significant effect on neutrophil activation and immune </span></span>
+<span id="cb101-34"><a href="APIs.html#cb101-34" aria-hidden="true" tabindex="-1"></a><span class="st">response in patients with ESRD.In addition, Our findings suggest that MAPKAPK3, </span></span>
+<span id="cb101-35"><a href="APIs.html#cb101-35" aria-hidden="true" tabindex="-1"></a><span class="st">RHOA, ARRB2, FLOT1, MYH9, PRKCD, RHOG, PTPN6, MAPK3, CNPY3, PI3KCG, and PYGL </span></span>
+<span id="cb101-36"><a href="APIs.html#cb101-36" aria-hidden="true" tabindex="-1"></a><span class="st">genes maybe potential targets regulated by core transcriptional factors, </span></span>
+<span id="cb101-37"><a href="APIs.html#cb101-37" aria-hidden="true" tabindex="-1"></a><span class="st">including ARNT, C/EBPalpha, CEBPA, CREB1, PSG1, DAND5, SP1, GATA1, MYC, EGR2, </span></span>
+<span id="cb101-38"><a href="APIs.html#cb101-38" aria-hidden="true" tabindex="-1"></a><span class="st">and EGR3.&quot;</span> </span>
+<span id="cb101-39"><a href="APIs.html#cb101-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-40"><a href="APIs.html#cb101-40" aria-hidden="true" tabindex="-1"></a>[<span class="dv">3</span>] <span class="st">&quot;Only a minority of patients with chronic kidney disease treated by </span></span>
+<span id="cb101-41"><a href="APIs.html#cb101-41" aria-hidden="true" tabindex="-1"></a><span class="st">hemodialysis are currently treated at home. Until relatively recently, the </span></span>
+<span id="cb101-42"><a href="APIs.html#cb101-42" aria-hidden="true" tabindex="-1"></a><span class="st">only type of hemodialysis machine available for these patients was a slightly </span></span>
+<span id="cb101-43"><a href="APIs.html#cb101-43" aria-hidden="true" tabindex="-1"></a><span class="st">smaller version of the standard machines used for in-center dialysis treatments. </span></span>
+<span id="cb101-44"><a href="APIs.html#cb101-44" aria-hidden="true" tabindex="-1"></a><span class="st">Areas covered: There are now an alternative generation of dialysis machines </span></span>
+<span id="cb101-45"><a href="APIs.html#cb101-45" aria-hidden="true" tabindex="-1"></a><span class="st">specifically designed for home hemodialysis. The home dialysis patient wants </span></span>
+<span id="cb101-46"><a href="APIs.html#cb101-46" aria-hidden="true" tabindex="-1"></a><span class="st">a smaller machine, which is intuitive to use, easy to trouble shoot, robust </span></span>
+<span id="cb101-47"><a href="APIs.html#cb101-47" aria-hidden="true" tabindex="-1"></a><span class="st">and reliable, quick to setup and put away, requiring minimal waste disposal. </span></span>
+<span id="cb101-48"><a href="APIs.html#cb101-48" aria-hidden="true" tabindex="-1"></a><span class="st">The machines designed for home dialysis have some similarities in terms of </span></span>
+<span id="cb101-49"><a href="APIs.html#cb101-49" aria-hidden="true" tabindex="-1"></a><span class="st">touch-screen patient interfaces, and using pre-prepared cartridges to speed </span></span>
+<span id="cb101-50"><a href="APIs.html#cb101-50" aria-hidden="true" tabindex="-1"></a><span class="st">up setting up the machine. On the other hand, they differ in terms of whether </span></span>
+<span id="cb101-51"><a href="APIs.html#cb101-51" aria-hidden="true" tabindex="-1"></a><span class="st">they use slower or standard dialysate flows, prepare batches of dialysis fluid, </span></span>
+<span id="cb101-52"><a href="APIs.html#cb101-52" aria-hidden="true" tabindex="-1"></a><span class="st">require separate water purification equipment, or whether this is integrated, </span></span>
+<span id="cb101-53"><a href="APIs.html#cb101-53" aria-hidden="true" tabindex="-1"></a><span class="st">or use pre-prepared sterile bags of dialysis fluid. Expert commentary: Dialysis </span></span>
+<span id="cb101-54"><a href="APIs.html#cb101-54" aria-hidden="true" tabindex="-1"></a><span class="st">machine complexity is one of the hurdles reducing the number of patients opting </span></span>
+<span id="cb101-55"><a href="APIs.html#cb101-55" aria-hidden="true" tabindex="-1"></a><span class="st">for home hemodialysis and the introduction of the newer generation of dialysis </span></span>
+<span id="cb101-56"><a href="APIs.html#cb101-56" aria-hidden="true" tabindex="-1"></a><span class="st">machines designed for ease of use will hopefully increase the number of patients </span></span>
+<span id="cb101-57"><a href="APIs.html#cb101-57" aria-hidden="true" tabindex="-1"></a><span class="st">opting for home hemodialysis.&quot;</span></span></code></pre></div>
 
 </div>
 </div>
@@ -519,7 +504,6 @@ my_abstracts[<span class="dv">1</span><span class="op">:</span><span class="dv">
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -534,12 +518,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -554,7 +538,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

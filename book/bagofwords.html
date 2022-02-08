@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R</title>
   <meta name="description" content="This is in support of my talk for the Data Science group" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Bag of Words Sentiment Analysis | Web Scraping with R" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Steve Pittard" />
 
 
-<meta name="date" content="2020-02-12" />
+<meta name="date" content="2022-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,9 @@
   
 <link rel="prev" href="APIs.html"/>
 <link rel="next" href="final-words.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,54 +51,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -114,45 +145,53 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">Web Scraping</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Motivations</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#lots-of-data-for-the-taking"><i class="fa fa-check"></i><b>1.1</b> Lots of Data For The Taking ?</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#web-scraping-can-be-ugly"><i class="fa fa-check"></i><b>1.2</b> Web Scraping Can Be Ugly</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a><ul>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#understanding-the-language-of-the-web"><i class="fa fa-check"></i><b>1.3</b> Understanding The Language of The Web</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#useful-tools"><i class="fa fa-check"></i><b>1.3.1</b> Useful tools</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#useful-packages"><i class="fa fa-check"></i><b>1.4</b> Useful Packages</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#quick-rvest-tutorial"><i class="fa fa-check"></i><b>1.5</b> Quick <strong>rvest</strong> tutorial</a></li>
 <li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#example-parsing-a-table-from-wikipedia"><i class="fa fa-check"></i><b>1.6</b> Example: Parsing A Table From Wikipedia</a></li>
-<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a><ul>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#scraping-patient-dialysis-stories"><i class="fa fa-check"></i><b>1.7</b> Scraping Patient Dialysis Stories</a>
+<ul>
 <li class="chapter" data-level="1.7.1" data-path="index.html"><a href="index.html#getting-more-detail"><i class="fa fa-check"></i><b>1.7.1</b> Getting More Detail</a></li>
 <li class="chapter" data-level="1.7.2" data-path="index.html"><a href="index.html#writing-some-code"><i class="fa fa-check"></i><b>1.7.2</b> Writing Some Code</a></li>
 </ul></li>
 <li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i><b>1.8</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a><ul>
+<li class="chapter" data-level="2" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>2</b> XML and JSON</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="xml.html"><a href="xml.html#finding-xpaths"><i class="fa fa-check"></i><b>2.1</b> Finding XPaths</a></li>
 <li class="chapter" data-level="2.2" data-path="xml.html"><a href="xml.html#example-geocoding-with-google"><i class="fa fa-check"></i><b>2.2</b> Example: GeoCoding With Google</a></li>
 <li class="chapter" data-level="2.3" data-path="xml.html"><a href="xml.html#using-json"><i class="fa fa-check"></i><b>2.3</b> Using JSON</a></li>
 <li class="chapter" data-level="2.4" data-path="xml.html"><a href="xml.html#using-the-rjsonio-package"><i class="fa fa-check"></i><b>2.4</b> Using the RJSONIO Package</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a><ul>
+<li class="chapter" data-level="3" data-path="Moreexamples.html"><a href="Moreexamples.html"><i class="fa fa-check"></i><b>3</b> More Real Life Examples</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="Moreexamples.html"><a href="Moreexamples.html#bitcoin-prices"><i class="fa fa-check"></i><b>3.1</b> BitCoin Prices</a></li>
 <li class="chapter" data-level="3.2" data-path="Moreexamples.html"><a href="Moreexamples.html#imdb"><i class="fa fa-check"></i><b>3.2</b> IMDB</a></li>
 <li class="chapter" data-level="3.3" data-path="Moreexamples.html"><a href="Moreexamples.html#faculty-salaries"><i class="fa fa-check"></i><b>3.3</b> Faculty Salaries</a></li>
 <li class="chapter" data-level="3.4" data-path="Moreexamples.html"><a href="Moreexamples.html#filling-out-forms-from-a-program"><i class="fa fa-check"></i><b>3.4</b> Filling Out Forms From a Program</a></li>
 <li class="chapter" data-level="3.5" data-path="Moreexamples.html"><a href="Moreexamples.html#pubmed"><i class="fa fa-check"></i><b>3.5</b> PubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a><ul>
+<li class="chapter" data-level="4" data-path="APIs.html"><a href="APIs.html"><i class="fa fa-check"></i><b>4</b> APIs</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="APIs.html"><a href="APIs.html#omdb"><i class="fa fa-check"></i><b>4.1</b> OMDB</a></li>
 <li class="chapter" data-level="4.2" data-path="APIs.html"><a href="APIs.html#the-omdbapi-package"><i class="fa fa-check"></i><b>4.2</b> The omdbapi package</a></li>
 <li class="chapter" data-level="4.3" data-path="APIs.html"><a href="APIs.html#rselenium"><i class="fa fa-check"></i><b>4.3</b> RSelenium</a></li>
 <li class="chapter" data-level="4.4" data-path="APIs.html"><a href="APIs.html#easypubmed"><i class="fa fa-check"></i><b>4.4</b> EasyPubMed</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a><ul>
+<li class="chapter" data-level="5" data-path="bagofwords.html"><a href="bagofwords.html"><i class="fa fa-check"></i><b>5</b> Bag of Words Sentiment Analysis</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="bagofwords.html"><a href="bagofwords.html#workflow"><i class="fa fa-check"></i><b>5.1</b> Workflow</a></li>
 <li class="chapter" data-level="5.2" data-path="bagofwords.html"><a href="bagofwords.html#simple-example"><i class="fa fa-check"></i><b>5.2</b> Simple Example</a></li>
 <li class="chapter" data-level="5.3" data-path="bagofwords.html"><a href="bagofwords.html#tidytext"><i class="fa fa-check"></i><b>5.3</b> tidytext</a></li>
-<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a><ul>
+<li class="chapter" data-level="5.4" data-path="bagofwords.html"><a href="bagofwords.html#back-to-the-pubmed-example"><i class="fa fa-check"></i><b>5.4</b> Back To The PubMed Example</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="bagofwords.html"><a href="bagofwords.html#how-do-you-feel"><i class="fa fa-check"></i><b>5.4.1</b> How Do You Feel ?</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="bagofwords.html"><a href="bagofwords.html#bigrams"><i class="fa fa-check"></i><b>5.5</b> BiGrams</a></li>
@@ -179,7 +218,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="bagofwords" class="section level1">
+<div id="bagofwords" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Bag of Words Sentiment Analysis</h1>
 <p>One we have a collection of text it’s interesting to figure out what it might mean or infer - if anything at all. In text analysis and NLP (Natural Language Processing) we talk about “Bag of Words” to describe a collection or “corpus” of unstructured text. What do we do with a “bag of words” ?</p>
 <ul>
@@ -190,7 +229,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Determine if the discovered patterns be used to predict behavior ?</li>
 <li>Identify interesting ideas that might otherwise be ignored</li>
 </ul>
-<div id="workflow" class="section level2">
+<div id="workflow" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Workflow</h2>
 <ul>
 <li>Identify and Obtain text (e.g. websites, Twitter, Databases, PDFs, surveys)</li>
@@ -219,92 +258,88 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>We’ll look at tidytext</li>
 </ul>
 </div>
-<div id="simple-example" class="section level2">
+<div id="simple-example" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Simple Example</h2>
-<div class="figure">
-<img src="PICS/prez.png" width="650" />
-
-</div>
+<p><img src="PICS/prez.png" width="650" /></p>
 <p>Find the URL for Lincoln’s March 4, 1865 Speech:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://millercenter.org/the-presidency/presidential-speeches/march-4-1865-second-inaugural-address&quot;</span>
-<span class="kw">library</span>(rvest)
-lincoln_doc &lt;-<span class="st"> </span><span class="kw">read_html</span>(url) <span class="op">%&gt;%</span>
-<span class="st">                    </span><span class="kw">html_nodes</span>(<span class="st">&quot;.view-transcript&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">                    </span><span class="kw">html_text</span>()
-lincoln_doc</code></pre></div>
-<pre><code>## [1] &quot;TranscriptFellow-Countrymen:  At this second appearing to take the oath of the Presidential office there is less occasion for an extended address than there was at the first. Then a statement somewhat in detail of a course to be pursued seemed fitting and proper. Now, at the expiration of four years, during which public declarations have been constantly called forth on every point and phase of the great contest which still absorbs the attention and engrosses the energies of the nation, little that is new could be presented. The progress of our arms, upon which all else chiefly depends, is as well known to the public as to myself, and it is, I trust, reasonably satisfactory and encouraging to all. With high hope for the future, no prediction in regard to it is ventured.On the occasion corresponding to this four years ago all thoughts were anxiously directed to an impending civil war. All dreaded it, all sought to avert it. While the inaugural address was being delivered from this place, devoted altogether to saving the Union without war, insurgent agents were in the city seeking to destroy it without war-seeking to dissolve the Union and divide effects by negotiation. Both parties deprecated war, but one of them would make war rather than let the nation survive, and the other would accept war rather than let it perish, and the war came.One-eighth of the whole population were colored slaves, not distributed generally over the Union. but localized in the southern part of it. These slaves constituted a peculiar and powerful interest. All knew that this interest was somehow the cause of the war. To strengthen, perpetuate, and extend this interest was the object for which the insurgents would rend the Union even by war, while the Government claimed no right to do more than to restrict the territorial enlargement of it. Neither party expected for the war the magnitude or the duration which it has already attained. Neither anticipated that the cause of the conflict might cease with or even before the conflict itself should cease. Each looked for an easier triumph, and a result less fundamental and astounding. Both read the same Bible and pray to the same God, and each invokes His aid against the other. It may seem strange that any men should dare to ask a just God&#39;s assistance in wringing their bread from the sweat of other men&#39;s faces, but let us judge not, that we be not judged. The prayers of both could not be answered. That of neither has been answered fully. The Almighty has His own purposes. \&quot;Woe unto the world because of offenses; for it must needs be that offenses come, but woe to that man by whom the offense cometh.\&quot; If we shall suppose that American slavery is one of those offenses which, in the providence of God, must needs come, but which, having continued through His appointed time, He now wills to remove, and that He gives to both North and South this terrible war as the woe due to those by whom the offense came, shall we discern therein any departure from those divine attributes which the believers in a living God always ascribe to Him? Fondly do we hope, fervently do we pray, that this mighty scourge of war may speedily pass away. Yet, if God wills that it continue until all the wealth piled by the bondsman&#39;s two hundred and fifty years of unrequited toil shall be sunk, and until every drop of blood drawn with the lash shall be paid by another drawn with the sword, as was said three thousand years ago, so still it must be said \&quot;the judgments of the Lord are true and righteous altogether.\&quot;With malice toward none, with charity for all, with firmness in the fight as God gives us to see the right, let us strive on to finish the work we are in, to bind up the nation&#39;s wounds, to care for him who shall have borne the battle and for his widow and his orphan, to do all which may achieve and cherish a just and lasting peace among ourselves and with all nations.&quot;</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="bagofwords.html#cb102-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://millercenter.org/the-presidency/presidential-speeches/march-4-1865-second-inaugural-address&quot;</span></span>
+<span id="cb102-2"><a href="bagofwords.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb102-3"><a href="bagofwords.html#cb102-3" aria-hidden="true" tabindex="-1"></a>lincoln_doc <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">%&gt;%</span></span>
+<span id="cb102-4"><a href="bagofwords.html#cb102-4" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">html_nodes</span>(<span class="st">&quot;.view-transcript&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb102-5"><a href="bagofwords.html#cb102-5" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">html_text</span>()</span>
+<span id="cb102-6"><a href="bagofwords.html#cb102-6" aria-hidden="true" tabindex="-1"></a>lincoln_doc</span></code></pre></div>
+<pre><code>## [1] &quot;TranscriptTranscriptFellow-Countrymen:  At this second appearing to take the oath of the Presidential office there is less occasion for an extended address than there was at the first. Then a statement somewhat in detail of a course to be pursued seemed fitting and proper. Now, at the expiration of four years, during which public declarations have been constantly called forth on every point and phase of the great contest which still absorbs the attention and engrosses the energies of the nation, little that is new could be presented. The progress of our arms, upon which all else chiefly depends, is as well known to the public as to myself, and it is, I trust, reasonably satisfactory and encouraging to all. With high hope for the future, no prediction in regard to it is ventured.On the occasion corresponding to this four years ago all thoughts were anxiously directed to an impending civil war. All dreaded it, all sought to avert it. While the inaugural address was being delivered from this place, devoted altogether to saving the Union without war, insurgent agents were in the city seeking to destroy it without war-seeking to dissolve the Union and divide effects by negotiation. Both parties deprecated war, but one of them would make war rather than let the nation survive, and the other would accept war rather than let it perish, and the war came.One-eighth of the whole population were colored slaves, not distributed generally over the Union. but localized in the southern part of it. These slaves constituted a peculiar and powerful interest. All knew that this interest was somehow the cause of the war. To strengthen, perpetuate, and extend this interest was the object for which the insurgents would rend the Union even by war, while the Government claimed no right to do more than to restrict the territorial enlargement of it. Neither party expected for the war the magnitude or the duration which it has already attained. Neither anticipated that the cause of the conflict might cease with or even before the conflict itself should cease. Each looked for an easier triumph, and a result less fundamental and astounding. Both read the same Bible and pray to the same God, and each invokes His aid against the other. It may seem strange that any men should dare to ask a just God&#39;s assistance in wringing their bread from the sweat of other men&#39;s faces, but let us judge not, that we be not judged. The prayers of both could not be answered. That of neither has been answered fully. The Almighty has His own purposes. \&quot;Woe unto the world because of offenses; for it must needs be that offenses come, but woe to that man by whom the offense cometh.\&quot; If we shall suppose that American slavery is one of those offenses which, in the providence of God, must needs come, but which, having continued through His appointed time, He now wills to remove, and that He gives to both North and South this terrible war as the woe due to those by whom the offense came, shall we discern therein any departure from those divine attributes which the believers in a living God always ascribe to Him? Fondly do we hope, fervently do we pray, that this mighty scourge of war may speedily pass away. Yet, if God wills that it continue until all the wealth piled by the bondsman&#39;s two hundred and fifty years of unrequited toil shall be sunk, and until every drop of blood drawn with the lash shall be paid by another drawn with the sword, as was said three thousand years ago, so still it must be said \&quot;the judgments of the Lord are true and righteous altogether.\&quot;With malice toward none, with charity for all, with firmness in the fight as God gives us to see the right, let us strive on to finish the work we are in, to bind up the nation&#39;s wounds, to care for him who shall have borne the battle and for his widow and his orphan, to do all which may achieve and cherish a just and lasting peace among ourselves and with all nations.&quot;</code></pre>
 <p>There are probably lots of words that don’t really “matter” or contribute to the “real” meaning of the speech.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word_vec &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(lincoln_doc,<span class="st">&quot; &quot;</span>))
-word_vec[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
-<pre><code>##  [1] &quot;TranscriptFellow-Countrymen:&quot; &quot;&quot;                            
-##  [3] &quot;At&quot;                           &quot;this&quot;                        
-##  [5] &quot;second&quot;                       &quot;appearing&quot;                   
-##  [7] &quot;to&quot;                           &quot;take&quot;                        
-##  [9] &quot;the&quot;                          &quot;oath&quot;                        
-## [11] &quot;of&quot;                           &quot;the&quot;                         
-## [13] &quot;Presidential&quot;                 &quot;office&quot;                      
-## [15] &quot;there&quot;                        &quot;is&quot;                          
-## [17] &quot;less&quot;                         &quot;occasion&quot;                    
-## [19] &quot;for&quot;                          &quot;an&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(<span class="kw">table</span>(word_vec),<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="bagofwords.html#cb104-1" aria-hidden="true" tabindex="-1"></a>word_vec <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(lincoln_doc,<span class="st">&quot; &quot;</span>))</span>
+<span id="cb104-2"><a href="bagofwords.html#cb104-2" aria-hidden="true" tabindex="-1"></a>word_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code></pre></div>
+<pre><code>##  [1] &quot;TranscriptTranscriptFellow-Countrymen:&quot; &quot;&quot;                                      
+##  [3] &quot;At&quot;                                     &quot;this&quot;                                  
+##  [5] &quot;second&quot;                                 &quot;appearing&quot;                             
+##  [7] &quot;to&quot;                                     &quot;take&quot;                                  
+##  [9] &quot;the&quot;                                    &quot;oath&quot;                                  
+## [11] &quot;of&quot;                                     &quot;the&quot;                                   
+## [13] &quot;Presidential&quot;                           &quot;office&quot;                                
+## [15] &quot;there&quot;                                  &quot;is&quot;                                    
+## [17] &quot;less&quot;                                   &quot;occasion&quot;                              
+## [19] &quot;for&quot;                                    &quot;an&quot;</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="bagofwords.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">table</span>(word_vec),<span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
 <pre><code>## word_vec
 ##  the   to  and   of that  for   be   in   it    a 
 ##   54   26   24   22   11    9    8    8    8    7</code></pre>
 <p>How do we remove all the uninteresting words ? We could do it manaully</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove all punctuation marks</span>
-word_vec &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;[[:punct:]]&quot;</span>,<span class="st">&quot;&quot;</span>,word_vec)
-stop_words &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;the&quot;</span>,<span class="st">&quot;to&quot;</span>,<span class="st">&quot;and&quot;</span>,<span class="st">&quot;of&quot;</span>,<span class="st">&quot;the&quot;</span>,<span class="st">&quot;for&quot;</span>,<span class="st">&quot;in&quot;</span>,<span class="st">&quot;it&quot;</span>,
-                <span class="st">&quot;a&quot;</span>,<span class="st">&quot;this&quot;</span>,<span class="st">&quot;which&quot;</span>,<span class="st">&quot;by&quot;</span>,<span class="st">&quot;is&quot;</span>,<span class="st">&quot;an&quot;</span>,<span class="st">&quot;hqs&quot;</span>,<span class="st">&quot;from&quot;</span>,
-                <span class="st">&quot;that&quot;</span>,<span class="st">&quot;with&quot;</span>,<span class="st">&quot;as&quot;</span>)
-<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(stop_words)) {
-    <span class="cf">for</span> (jj <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(word_vec)) {
-      <span class="cf">if</span> (stop_words[ii] <span class="op">==</span><span class="st"> </span>word_vec[jj]) {
-          word_vec[jj] &lt;-<span class="st"> &quot;&quot;</span>
-} }
-}
-word_vec &lt;-<span class="st"> </span>word_vec[word_vec <span class="op">!=</span><span class="st"> &quot;&quot;</span>]
-<span class="kw">sort</span>(<span class="kw">table</span>(word_vec),<span class="dt">decreasing =</span> <span class="ot">TRUE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="bagofwords.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove all punctuation marks</span></span>
+<span id="cb108-2"><a href="bagofwords.html#cb108-2" aria-hidden="true" tabindex="-1"></a>word_vec <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[[:punct:]]&quot;</span>,<span class="st">&quot;&quot;</span>,word_vec)</span>
+<span id="cb108-3"><a href="bagofwords.html#cb108-3" aria-hidden="true" tabindex="-1"></a>stop_words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;the&quot;</span>,<span class="st">&quot;to&quot;</span>,<span class="st">&quot;and&quot;</span>,<span class="st">&quot;of&quot;</span>,<span class="st">&quot;the&quot;</span>,<span class="st">&quot;for&quot;</span>,<span class="st">&quot;in&quot;</span>,<span class="st">&quot;it&quot;</span>,</span>
+<span id="cb108-4"><a href="bagofwords.html#cb108-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;a&quot;</span>,<span class="st">&quot;this&quot;</span>,<span class="st">&quot;which&quot;</span>,<span class="st">&quot;by&quot;</span>,<span class="st">&quot;is&quot;</span>,<span class="st">&quot;an&quot;</span>,<span class="st">&quot;hqs&quot;</span>,<span class="st">&quot;from&quot;</span>,</span>
+<span id="cb108-5"><a href="bagofwords.html#cb108-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;that&quot;</span>,<span class="st">&quot;with&quot;</span>,<span class="st">&quot;as&quot;</span>)</span>
+<span id="cb108-6"><a href="bagofwords.html#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(stop_words)) {</span>
+<span id="cb108-7"><a href="bagofwords.html#cb108-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (jj <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(word_vec)) {</span>
+<span id="cb108-8"><a href="bagofwords.html#cb108-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (stop_words[ii] <span class="sc">==</span> word_vec[jj]) {</span>
+<span id="cb108-9"><a href="bagofwords.html#cb108-9" aria-hidden="true" tabindex="-1"></a>          word_vec[jj] <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb108-10"><a href="bagofwords.html#cb108-10" aria-hidden="true" tabindex="-1"></a>} }</span>
+<span id="cb108-11"><a href="bagofwords.html#cb108-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb108-12"><a href="bagofwords.html#cb108-12" aria-hidden="true" tabindex="-1"></a>word_vec <span class="ot">&lt;-</span> word_vec[word_vec <span class="sc">!=</span> <span class="st">&quot;&quot;</span>]</span>
+<span id="cb108-13"><a href="bagofwords.html#cb108-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">table</span>(word_vec),<span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div>
 <pre><code>## word_vec
 ##   war   all    be    we   but   God shall   was    do   let 
 ##    11     8     8     6     5     5     5     5     4     4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">word_vec[<span class="dv">1</span><span class="op">:</span><span class="dv">30</span>]</code></pre></div>
-<pre><code>##  [1] &quot;TranscriptFellowCountrymen&quot; &quot;At&quot;                        
-##  [3] &quot;second&quot;                     &quot;appearing&quot;                 
-##  [5] &quot;take&quot;                       &quot;oath&quot;                      
-##  [7] &quot;Presidential&quot;               &quot;office&quot;                    
-##  [9] &quot;there&quot;                      &quot;less&quot;                      
-## [11] &quot;occasion&quot;                   &quot;extended&quot;                  
-## [13] &quot;address&quot;                    &quot;than&quot;                      
-## [15] &quot;there&quot;                      &quot;was&quot;                       
-## [17] &quot;at&quot;                         &quot;first&quot;                     
-## [19] &quot;Then&quot;                       &quot;statement&quot;                 
-## [21] &quot;somewhat&quot;                   &quot;detail&quot;                    
-## [23] &quot;course&quot;                     &quot;be&quot;                        
-## [25] &quot;pursued&quot;                    &quot;seemed&quot;                    
-## [27] &quot;fitting&quot;                    &quot;proper&quot;                    
-## [29] &quot;Now&quot;                        &quot;at&quot;</code></pre>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="bagofwords.html#cb110-1" aria-hidden="true" tabindex="-1"></a>word_vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code></pre></div>
+<pre><code>##  [1] &quot;TranscriptTranscriptFellowCountrymen&quot; &quot;At&quot;                                  
+##  [3] &quot;second&quot;                               &quot;appearing&quot;                           
+##  [5] &quot;take&quot;                                 &quot;oath&quot;                                
+##  [7] &quot;Presidential&quot;                         &quot;office&quot;                              
+##  [9] &quot;there&quot;                                &quot;less&quot;                                
+## [11] &quot;occasion&quot;                             &quot;extended&quot;                            
+## [13] &quot;address&quot;                              &quot;than&quot;                                
+## [15] &quot;there&quot;                                &quot;was&quot;                                 
+## [17] &quot;at&quot;                                   &quot;first&quot;                               
+## [19] &quot;Then&quot;                                 &quot;statement&quot;                           
+## [21] &quot;somewhat&quot;                             &quot;detail&quot;                              
+## [23] &quot;course&quot;                               &quot;be&quot;                                  
+## [25] &quot;pursued&quot;                              &quot;seemed&quot;                              
+## [27] &quot;fitting&quot;                              &quot;proper&quot;                              
+## [29] &quot;Now&quot;                                  &quot;at&quot;</code></pre>
 </div>
-<div id="tidytext" class="section level2">
+<div id="tidytext" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> tidytext</h2>
 <p>So the tidytext package provides some accomodations to convert your body of text into individual <strong>tokens</strong> which then simplfies the removal of less meaningful words and the creation of word frequency counts. The first thing you do is to create a data frame where the there is one line for each body of text. In this case we have only one long string of text this will be a one line data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidytext)
-<span class="kw">library</span>(tidyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(lincoln_doc), <span class="dt">text =</span> lincoln_doc)</code></pre></div>
-<pre><code>## Warning: `data_frame()` is deprecated, use `tibble()`.
-## This warning is displayed once per session.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text_df</code></pre></div>
-<pre><code>## # A tibble: 1 x 2
-##    line text                                                               
-##   &lt;int&gt; &lt;chr&gt;                                                              
-## 1     1 &quot;TranscriptFellow-Countrymen:  At this second appearing to take th…</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="bagofwords.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb112-2"><a href="bagofwords.html#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb112-3"><a href="bagofwords.html#cb112-3" aria-hidden="true" tabindex="-1"></a>text_df <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(lincoln_doc), <span class="at">text =</span> lincoln_doc)</span>
+<span id="cb112-4"><a href="bagofwords.html#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-5"><a href="bagofwords.html#cb112-5" aria-hidden="true" tabindex="-1"></a>text_df</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##    line text                                                                                     
+##   &lt;int&gt; &lt;chr&gt;                                                                                    
+## 1     1 &quot;TranscriptTranscriptFellow-Countrymen:  At this second appearing to take the oath of th…</code></pre>
 <p>The next step is to breakup each of text lines (we have only 1) into invdividual rows, each with it’s own line. We also want to count the number of times that each word appears. This is known as <strong>tokenizing</strong> the data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
-
-<span class="co"># Let&#39;s now count them</span>
-
-token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 339 x 2
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="bagofwords.html#cb114-1" aria-hidden="true" tabindex="-1"></a>token_text <span class="ot">&lt;-</span> text_df <span class="sc">%&gt;%</span></span>
+<span id="cb114-2"><a href="bagofwords.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span>
+<span id="cb114-3"><a href="bagofwords.html#cb114-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="bagofwords.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s now count them</span></span>
+<span id="cb114-5"><a href="bagofwords.html#cb114-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-6"><a href="bagofwords.html#cb114-6" aria-hidden="true" tabindex="-1"></a>token_text <span class="sc">%&gt;%</span> <span class="fu">count</span>(word,<span class="at">sort=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 339 × 2
 ##    word      n
 ##    &lt;chr&gt; &lt;int&gt;
 ##  1 the      58
@@ -318,40 +353,40 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ##  9 for       9
 ## 10 in        9
 ## # … with 329 more rows</code></pre>
-<p>But we need to get rid of the “stop words”. It’s a good thing that the <strong>tidytext</strong> package has a way to filter out the common words that do not significantly contribute to the meaning of the overall text. The <strong>stop_words</strong> data frame is built into <strong>tidytext</strong>. Take a look to see some of the words contained therein:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(stop_words)
-
-<span class="co"># Sample 40 random stop words</span>
-
-stop_words <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">40</span>)</code></pre></div>
-<pre><code>## # A tibble: 40 x 2
-##    word     lexicon
-##    &lt;chr&gt;    &lt;chr&gt;  
-##  1 looking  SMART  
-##  2 may      SMART  
-##  3 anyone   SMART  
-##  4 changes  SMART  
-##  5 most     onix   
-##  6 greater  onix   
-##  7 latterly SMART  
-##  8 were     SMART  
-##  9 too      SMART  
-## 10 thinks   onix   
+<p>But we need to get rid of the “stop words.” It’s a good thing that the <strong>tidytext</strong> package has a way to filter out the common words that do not significantly contribute to the meaning of the overall text. The <strong>stop_words</strong> data frame is built into <strong>tidytext</strong>. Take a look to see some of the words contained therein:</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="bagofwords.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(stop_words)</span>
+<span id="cb116-2"><a href="bagofwords.html#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="bagofwords.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample 40 random stop words</span></span>
+<span id="cb116-4"><a href="bagofwords.html#cb116-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-5"><a href="bagofwords.html#cb116-5" aria-hidden="true" tabindex="-1"></a>stop_words <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">40</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 40 × 2
+##    word     lexicon 
+##    &lt;chr&gt;    &lt;chr&gt;   
+##  1 go       SMART   
+##  2 we       SMART   
+##  3 up       snowball
+##  4 great    onix    
+##  5 anyone   onix    
+##  6 we&#39;ll    snowball
+##  7 smallest onix    
+##  8 changes  SMART   
+##  9 various  SMART   
+## 10 possible onix    
 ## # … with 30 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words from the document</span>
-
-tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">anti_join</span>(stop_words)</code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="bagofwords.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now remove stop words from the document</span></span>
+<span id="cb118-2"><a href="bagofwords.html#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="bagofwords.html#cb118-3" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="ot">&lt;-</span> token_text <span class="sc">%&gt;%</span></span>
+<span id="cb118-4"><a href="bagofwords.html#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words)</span></code></pre></div>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This could also be done by the following. I point this out only because some people react</span>
-<span class="co"># negatively to &quot;joins&quot; although fully understanding what joins are can only help you since</span>
-<span class="co"># much of what the dplyr package does is based on SQL type joins. </span>
-
-tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>word <span class="op">%in%</span><span class="st"> </span>stop_words<span class="op">$</span>word)
-
-tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 193 x 2
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="bagofwords.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This could also be done by the following. I point this out only because some people react</span></span>
+<span id="cb120-2"><a href="bagofwords.html#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="co"># negatively to &quot;joins&quot; although fully understanding what joins are can only help you since</span></span>
+<span id="cb120-3"><a href="bagofwords.html#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="co"># much of what the dplyr package does is based on SQL type joins. </span></span>
+<span id="cb120-4"><a href="bagofwords.html#cb120-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-5"><a href="bagofwords.html#cb120-5" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="ot">&lt;-</span> token_text <span class="sc">%&gt;%</span></span>
+<span id="cb120-6"><a href="bagofwords.html#cb120-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_words<span class="sc">$</span>word)</span>
+<span id="cb120-7"><a href="bagofwords.html#cb120-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-8"><a href="bagofwords.html#cb120-8" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span> <span class="fu">count</span>(word,<span class="at">sort=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 193 × 2
 ##    word           n
 ##    &lt;chr&gt;      &lt;int&gt;
 ##  1 war           12
@@ -365,8 +400,8 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 ##  9 answered       2
 ## 10 cease          2
 ## # … with 183 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 193 x 2
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="bagofwords.html#cb122-1" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span> <span class="fu">count</span>(word,<span class="at">sort=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 193 × 2
 ##    word           n
 ##    &lt;chr&gt;      &lt;int&gt;
 ##  1 war           12
@@ -380,29 +415,29 @@ tidy_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 ##  9 answered       2
 ## 10 cease          2
 ## # … with 183 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">reorder</span>(word, n)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, n)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="bagofwords.html#cb124-1" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span></span>
+<span id="cb124-2"><a href="bagofwords.html#cb124-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-3"><a href="bagofwords.html#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-4"><a href="bagofwords.html#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">reorder</span>(word, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb124-5"><a href="bagofwords.html#cb124-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(word, n)) <span class="sc">+</span></span>
+<span id="cb124-6"><a href="bagofwords.html#cb124-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb124-7"><a href="bagofwords.html#cb124-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb124-8"><a href="bagofwords.html#cb124-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow6-1.png" width="672" /></p>
 </div>
-<div id="back-to-the-pubmed-example" class="section level2">
+<div id="back-to-the-pubmed-example" class="section level2" number="5.4">
 <h2><span class="header-section-number">5.4</span> Back To The PubMed Example</h2>
 <p>We have around 935 abstracts that we mess with based on our work using the <strong>easyPubMed</strong> package</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create a data frame out of the cleaned up abstracts</span>
-<span class="kw">library</span>(tidytext)
-<span class="kw">library</span>(dplyr)
-text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(my_abstracts), <span class="dt">text =</span> my_abstracts)
-token_text &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">unnest_tokens</span>(word, text)
-
-<span class="co"># Many of these words aren&#39;t helpful </span>
-token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">count</span>(<span class="dt">total=</span>word,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 6,936 x 2
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="bagofwords.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame out of the cleaned up abstracts</span></span>
+<span id="cb125-2"><a href="bagofwords.html#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb125-3"><a href="bagofwords.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb125-4"><a href="bagofwords.html#cb125-4" aria-hidden="true" tabindex="-1"></a>text_df <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(my_abstracts), <span class="at">text =</span> my_abstracts)</span>
+<span id="cb125-5"><a href="bagofwords.html#cb125-5" aria-hidden="true" tabindex="-1"></a>token_text <span class="ot">&lt;-</span> text_df <span class="sc">%&gt;%</span></span>
+<span id="cb125-6"><a href="bagofwords.html#cb125-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span>
+<span id="cb125-7"><a href="bagofwords.html#cb125-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-8"><a href="bagofwords.html#cb125-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Many of these words aren&#39;t helpful </span></span>
+<span id="cb125-9"><a href="bagofwords.html#cb125-9" aria-hidden="true" tabindex="-1"></a>token_text <span class="sc">%&gt;%</span> <span class="fu">count</span>(<span class="at">total=</span>word,<span class="at">sort=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 6,936 × 2
 ##    total        n
 ##    &lt;chr&gt;    &lt;int&gt;
 ##  1 the       3062
@@ -416,23 +451,23 @@ token_text <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ##  9 home      1281
 ## 10 with      1035
 ## # … with 6,926 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now remove stop words</span>
-<span class="kw">data</span>(stop_words)
-tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">anti_join</span>(stop_words)
-
-<span class="co"># This could also be done by the following. I point this out only because some people react</span>
-<span class="co"># negatively to &quot;joins&quot; although fully understanding what joins are can only help you since</span>
-<span class="co"># much of what the dplyr package does is based on SQL type joins. </span>
-
-tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>word <span class="op">%in%</span><span class="st"> </span>stop_words<span class="op">$</span>word)
-
-<span class="co"># Arrange the text by descending word frequency </span>
-
-tidy_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) </code></pre></div>
-<pre><code>## # A tibble: 6,460 x 2
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="bagofwords.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now remove stop words</span></span>
+<span id="cb127-2"><a href="bagofwords.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(stop_words)</span>
+<span id="cb127-3"><a href="bagofwords.html#cb127-3" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="ot">&lt;-</span> token_text <span class="sc">%&gt;%</span></span>
+<span id="cb127-4"><a href="bagofwords.html#cb127-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words)</span>
+<span id="cb127-5"><a href="bagofwords.html#cb127-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-6"><a href="bagofwords.html#cb127-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This could also be done by the following. I point this out only because some people react</span></span>
+<span id="cb127-7"><a href="bagofwords.html#cb127-7" aria-hidden="true" tabindex="-1"></a><span class="co"># negatively to &quot;joins&quot; although fully understanding what joins are can only help you since</span></span>
+<span id="cb127-8"><a href="bagofwords.html#cb127-8" aria-hidden="true" tabindex="-1"></a><span class="co"># much of what the dplyr package does is based on SQL type joins. </span></span>
+<span id="cb127-9"><a href="bagofwords.html#cb127-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-10"><a href="bagofwords.html#cb127-10" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="ot">&lt;-</span> token_text <span class="sc">%&gt;%</span></span>
+<span id="cb127-11"><a href="bagofwords.html#cb127-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_words<span class="sc">$</span>word)</span>
+<span id="cb127-12"><a href="bagofwords.html#cb127-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-13"><a href="bagofwords.html#cb127-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange the text by descending word frequency </span></span>
+<span id="cb127-14"><a href="bagofwords.html#cb127-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-15"><a href="bagofwords.html#cb127-15" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span></span>
+<span id="cb127-16"><a href="bagofwords.html#cb127-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 6,460 × 2
 ##    word             n
 ##    &lt;chr&gt;        &lt;int&gt;
 ##  1 dialysis      1365
@@ -446,16 +481,16 @@ tidy_text <span class="op">%&gt;%</span>
 ##  9 renal          279
 ## 10 study          268
 ## # … with 6,450 more rows</code></pre>
-<p>Some of the most frequently occurring words are in fact “dialysis”, “patients” so maybe we should consider them to be stop words also since we already know quite well that the overall theme is, well, dialysis and kidneys. There are also synonymns and abbreviations that are somewhat redundant such as “pdd”,“pd”,“hhd” so let’s eliminate them also.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text &lt;-<span class="st"> </span>token_text <span class="op">%&gt;%</span>
-<span class="st">   </span><span class="kw">filter</span>(<span class="op">!</span>word <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
-                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,
-                       <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,
-                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;disease&quot;</span>,<span class="st">&quot;treatment&quot;</span>))
-
-tidy_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) </code></pre></div>
-<pre><code>## # A tibble: 6,441 x 2
+<p>Some of the most frequently occurring words are in fact “dialysis,” “patients” so maybe we should consider them to be stop words also since we already know quite well that the overall theme is, well, dialysis and kidneys. There are also synonymns and abbreviations that are somewhat redundant such as “pdd,”“pd,”“hhd” so let’s eliminate them also.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="bagofwords.html#cb129-1" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="ot">&lt;-</span> token_text <span class="sc">%&gt;%</span></span>
+<span id="cb129-2"><a href="bagofwords.html#cb129-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> <span class="fu">c</span>(stop_words<span class="sc">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,</span>
+<span id="cb129-3"><a href="bagofwords.html#cb129-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,</span>
+<span id="cb129-4"><a href="bagofwords.html#cb129-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,</span>
+<span id="cb129-5"><a href="bagofwords.html#cb129-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;disease&quot;</span>,<span class="st">&quot;treatment&quot;</span>))</span>
+<span id="cb129-6"><a href="bagofwords.html#cb129-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-7"><a href="bagofwords.html#cb129-7" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span></span>
+<span id="cb129-8"><a href="bagofwords.html#cb129-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 6,441 × 2
 ##    word             n
 ##    &lt;chr&gt;        &lt;int&gt;
 ##  1 therapy        193
@@ -470,115 +505,114 @@ tidy_text <span class="op">%&gt;%</span>
 ## 10 data           161
 ## # … with 6,431 more rows</code></pre>
 <p>Let’s do some plotting of these words</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-tidy_text <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">120</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">reorder</span>(word, n)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, n)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="bagofwords.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb131-2"><a href="bagofwords.html#cb131-2" aria-hidden="true" tabindex="-1"></a>tidy_text <span class="sc">%&gt;%</span></span>
+<span id="cb131-3"><a href="bagofwords.html#cb131-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb131-4"><a href="bagofwords.html#cb131-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">120</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb131-5"><a href="bagofwords.html#cb131-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">reorder</span>(word, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb131-6"><a href="bagofwords.html#cb131-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(word, n)) <span class="sc">+</span></span>
+<span id="cb131-7"><a href="bagofwords.html#cb131-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb131-8"><a href="bagofwords.html#cb131-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb131-9"><a href="bagofwords.html#cb131-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow9-1.png" width="672" /></p>
 <p>Okay, it looks like there are numbers in there which might be useful. I suspect that the “95” is probably associated with the idea of a confidence interval. But there are other references to numbers.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word)[<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>]</code></pre></div>
-<pre><code>##  [1]   9 273 275 284 288 293 296 305 308 387 388 554 614 671 679 680 682
-## [18] 744 758 762</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum &lt;-<span class="st"> </span>tidy_text[<span class="kw">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="op">$</span>word,<span class="dt">invert=</span><span class="ot">TRUE</span>),]</code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="bagofwords.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="sc">$</span>word)[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code></pre></div>
+<pre><code>##  [1]   9 273 275 284 288 293 296 305 308 387 388 554 614 671 679 680 682 744 758 762</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="bagofwords.html#cb134-1" aria-hidden="true" tabindex="-1"></a>tidy_text_nonum <span class="ot">&lt;-</span> tidy_text[<span class="fu">grep</span>(<span class="st">&quot;^[0-9]{1,3}$&quot;</span>,tidy_text<span class="sc">$</span>word,<span class="at">invert=</span><span class="cn">TRUE</span>),]</span></code></pre></div>
 <p>Okay well I think maybe we have some reasonable data to examine. As you might have realized by now, manipulating data to get it “clean” can be tedious and frustrating though it is an inevitable part of the process.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_text_nonum <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(word, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">120</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">reorder</span>(word, n)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, n)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="bagofwords.html#cb135-1" aria-hidden="true" tabindex="-1"></a>tidy_text_nonum <span class="sc">%&gt;%</span></span>
+<span id="cb135-2"><a href="bagofwords.html#cb135-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb135-3"><a href="bagofwords.html#cb135-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">120</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb135-4"><a href="bagofwords.html#cb135-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">reorder</span>(word, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb135-5"><a href="bagofwords.html#cb135-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(word, n)) <span class="sc">+</span></span>
+<span id="cb135-6"><a href="bagofwords.html#cb135-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb135-7"><a href="bagofwords.html#cb135-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb135-8"><a href="bagofwords.html#cb135-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow11-1.png" width="672" /></p>
-<div id="how-do-you-feel" class="section level3">
+<div id="how-do-you-feel" class="section level3" number="5.4.1">
 <h3><span class="header-section-number">5.4.1</span> How Do You Feel ?</h3>
 <p>The next step is to explore what some of these words might mean. The <strong>tidytext</strong> package has four dictionaries that help you figure out what sentiment is being expressed by your data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span>
-<span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
-<pre><code>## # A tibble: 20 x 2
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="bagofwords.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NRC Emotion Lexicon from Saif Mohammad and Peter Turney</span></span>
+<span id="cb136-2"><a href="bagofwords.html#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 20 × 2
 ##    word          sentiment   
 ##    &lt;chr&gt;         &lt;chr&gt;       
-##  1 aspire        joy         
-##  2 speck         negative    
-##  3 superfluous   negative    
-##  4 enlightenment positive    
-##  5 lamenting     sadness     
-##  6 ruined        anger       
-##  7 suffocating   negative    
-##  8 instability   fear        
-##  9 enemy         anger       
-## 10 received      positive    
-## 11 relegation    negative    
-## 12 neighbor      trust       
-## 13 demonstrative sadness     
-## 14 hesitation    negative    
-## 15 extricate     positive    
-## 16 surly         disgust     
-## 17 gift          anticipation
-## 18 abominable    disgust     
-## 19 admirable     joy         
-## 20 betterment    positive</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span>
-<span class="kw">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
-<pre><code>## # A tibble: 20 x 2
+##  1 dictionary    positive    
+##  2 defy          negative    
+##  3 banshee       sadness     
+##  4 foreboding    anticipation
+##  5 rollicking    joy         
+##  6 bereavement   sadness     
+##  7 elated        positive    
+##  8 symphony      anticipation
+##  9 scoff         negative    
+## 10 circumvention negative    
+## 11 aggressive    negative    
+## 12 jab           anger       
+## 13 sweet         positive    
+## 14 abuse         fear        
+## 15 pernicious    fear        
+## 16 consecration  positive    
+## 17 ken           positive    
+## 18 excuse        negative    
+## 19 killing       anger       
+## 20 shiver        anticipation</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="bagofwords.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the sentiment lexicon from Bing Liu and collaborators</span></span>
+<span id="cb138-2"><a href="bagofwords.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;bing&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 20 × 2
 ##    word         sentiment
 ##    &lt;chr&gt;        &lt;chr&gt;    
-##  1 deterrent    negative 
-##  2 misfortune   negative 
-##  3 alarm        negative 
-##  4 enflame      negative 
-##  5 unaffordable negative 
-##  6 annoyed      negative 
-##  7 defeat       positive 
-##  8 tetchily     negative 
-##  9 ignominy     negative 
-## 10 fuck         negative 
-## 11 ghastly      negative 
-## 12 anti-semites negative 
-## 13 naughty      negative 
-## 14 stunningly   positive 
-## 15 vibrate      negative 
-## 16 intrusion    negative 
-## 17 subordinate  negative 
-## 18 cheaper      positive 
-## 19 testily      negative 
-## 20 thank        positive</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Tim Loughran and Bill McDonald</span>
-<span class="kw">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">20</span>)</code></pre></div>
-<pre><code>## # A tibble: 20 x 2
+##  1 cruelties    negative 
+##  2 concerns     negative 
+##  3 defiantly    negative 
+##  4 snazzy       positive 
+##  5 nobly        positive 
+##  6 paradise     positive 
+##  7 liberation   positive 
+##  8 sued         negative 
+##  9 tangled      negative 
+## 10 lawless      negative 
+## 11 fastest      positive 
+## 12 unraveled    negative 
+## 13 desperately  negative 
+## 14 crowded      negative 
+## 15 fortuitously positive 
+## 16 get-rich     negative 
+## 17 believable   positive 
+## 18 dripped      negative 
+## 19 smoother     positive 
+## 20 auspicious   positive</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="bagofwords.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tim Loughran and Bill McDonald</span></span>
+<span id="cb140-2"><a href="bagofwords.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">&quot;loughran&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 20 × 2
 ##    word           sentiment   
 ##    &lt;chr&gt;          &lt;chr&gt;       
-##  1 revised        uncertainty 
-##  2 constraint     constraining
-##  3 scrutiny       negative    
-##  4 nonattainment  negative    
-##  5 curtailments   negative    
-##  6 cancel         negative    
-##  7 discredited    negative    
-##  8 irreconcilable negative    
-##  9 restraint      constraining
-## 10 mediators      litigious   
-## 11 mediator       litigious   
-## 12 severely       negative    
-## 13 unfortunately  negative    
-## 14 prohibitive    constraining
-## 15 contravene     litigious   
-## 16 calamitous     negative    
-## 17 unnecessary    negative    
-## 18 breaching      litigious   
-## 19 summoned       litigious   
-## 20 impairment     constraining</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pull out words that correspond to joy</span>
-nrc_joy &lt;-<span class="st"> </span><span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(sentiment <span class="op">==</span><span class="st"> &quot;joy&quot;</span>)
-
-nrc_joy</code></pre></div>
-<pre><code>## # A tibble: 689 x 2
+##  1 probationary   litigious   
+##  2 recuses        litigious   
+##  3 accomplishment positive    
+##  4 boosted        positive    
+##  5 covenanting    constraining
+##  6 delinquencies  negative    
+##  7 arrearage      negative    
+##  8 suspension     negative    
+##  9 adjourns       litigious   
+## 10 renegotiated   negative    
+## 11 recalling      negative    
+## 12 mistakenly     negative    
+## 13 endorsee       litigious   
+## 14 prejudices     litigious   
+## 15 improving      positive    
+## 16 disinterested  negative    
+## 17 problems       negative    
+## 18 wilful         litigious   
+## 19 delists        negative    
+## 20 adversaries    negative</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="bagofwords.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull out words that correspond to joy</span></span>
+<span id="cb142-2"><a href="bagofwords.html#cb142-2" aria-hidden="true" tabindex="-1"></a>nrc_joy <span class="ot">&lt;-</span> <span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb142-3"><a href="bagofwords.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sentiment <span class="sc">==</span> <span class="st">&quot;joy&quot;</span>)</span>
+<span id="cb142-4"><a href="bagofwords.html#cb142-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb142-5"><a href="bagofwords.html#cb142-5" aria-hidden="true" tabindex="-1"></a>nrc_joy</span></code></pre></div>
+<pre><code>## # A tibble: 689 × 2
 ##    word          sentiment
 ##    &lt;chr&gt;         &lt;chr&gt;    
 ##  1 absolution    joy      
@@ -593,44 +627,44 @@ nrc_joy</code></pre></div>
 ## 10 acrobat       joy      
 ## # … with 679 more rows</code></pre>
 <p>So we will use the <strong>nrc</strong> sentiment dictionary to see the “sentiment” expressed in our abstracts.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bing_word_counts &lt;-<span class="st"> </span>tidy_text_nonum <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">inner_join</span>(<span class="kw">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(word,sentiment,<span class="dt">sort=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="bagofwords.html#cb144-1" aria-hidden="true" tabindex="-1"></a>bing_word_counts <span class="ot">&lt;-</span> tidy_text_nonum <span class="sc">%&gt;%</span> </span>
+<span id="cb144-2"><a href="bagofwords.html#cb144-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb144-3"><a href="bagofwords.html#cb144-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word,sentiment,<span class="at">sort=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## Joining, by = &quot;word&quot;</code></pre>
 <p>t the positive vs negative words</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bing_word_counts <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(sentiment) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">top_n</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">word =</span> <span class="kw">reorder</span>(word, n)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(word, n, <span class="dt">fill =</span> sentiment)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>sentiment, <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Contribution to sentiment&quot;</span>,
-       <span class="dt">x =</span> <span class="ot">NULL</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">coord_flip</span>()</code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="bagofwords.html#cb146-1" aria-hidden="true" tabindex="-1"></a>bing_word_counts <span class="sc">%&gt;%</span></span>
+<span id="cb146-2"><a href="bagofwords.html#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sentiment) <span class="sc">%&gt;%</span></span>
+<span id="cb146-3"><a href="bagofwords.html#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb146-4"><a href="bagofwords.html#cb146-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb146-5"><a href="bagofwords.html#cb146-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">reorder</span>(word, n)) <span class="sc">%&gt;%</span></span>
+<span id="cb146-6"><a href="bagofwords.html#cb146-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(word, n, <span class="at">fill =</span> sentiment)) <span class="sc">+</span></span>
+<span id="cb146-7"><a href="bagofwords.html#cb146-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb146-8"><a href="bagofwords.html#cb146-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sentiment, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb146-9"><a href="bagofwords.html#cb146-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Contribution to sentiment&quot;</span>,</span>
+<span id="cb146-10"><a href="bagofwords.html#cb146-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb146-11"><a href="bagofwords.html#cb146-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
 <pre><code>## Selecting by n</code></pre>
 <p><img src="Web_Scraping_files/figure-html/bow13-1.png" width="672" /></p>
 <p>Let’s create a word cloud</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(wordcloud)
-<span class="co">#</span>
-
-tidy_text_nonum <span class="op">%&gt;%</span><span class="st">  </span>
-<span class="st">  </span><span class="kw">count</span>(word) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">with</span>(<span class="kw">wordcloud</span>(word,n,<span class="dt">max.words=</span><span class="dv">90</span>,<span class="dt">scale=</span><span class="kw">c</span>(<span class="dv">4</span>,.<span class="dv">5</span>),<span class="dt">colors=</span><span class="kw">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;Dark2&quot;</span>)))</code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="bagofwords.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wordcloud)</span>
+<span id="cb148-2"><a href="bagofwords.html#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb148-3"><a href="bagofwords.html#cb148-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-4"><a href="bagofwords.html#cb148-4" aria-hidden="true" tabindex="-1"></a>tidy_text_nonum <span class="sc">%&gt;%</span>  </span>
+<span id="cb148-5"><a href="bagofwords.html#cb148-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">%&gt;%</span></span>
+<span id="cb148-6"><a href="bagofwords.html#cb148-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">wordcloud</span>(word,n,<span class="at">max.words=</span><span class="dv">90</span>,<span class="at">scale=</span><span class="fu">c</span>(<span class="dv">4</span>,.<span class="dv">5</span>),<span class="at">colors=</span><span class="fu">brewer.pal</span>(<span class="dv">8</span>,<span class="st">&quot;Dark2&quot;</span>)))</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow14-1.png" width="672" /></p>
 </div>
 </div>
-<div id="bigrams" class="section level2">
+<div id="bigrams" class="section level2" number="5.5">
 <h2><span class="header-section-number">5.5</span> BiGrams</h2>
 <p>Let’s look at bigrams. We need to go back to the cleaned abstracts and pair words to get phrase that might be suggestive of some sentiment</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">text_df &lt;-<span class="st"> </span><span class="kw">data_frame</span>(<span class="dt">line =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(my_abstracts), <span class="dt">text =</span> my_abstracts)
-dialysis_bigrams &lt;-<span class="st"> </span>text_df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">unnest_tokens</span>(bigram, text, <span class="dt">token =</span> <span class="st">&quot;ngrams&quot;</span>, <span class="dt">n =</span> <span class="dv">2</span>)
-
-dialysis_bigrams <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">count</span>(bigram, <span class="dt">sort =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## # A tibble: 41,738 x 2
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="bagofwords.html#cb149-1" aria-hidden="true" tabindex="-1"></a>text_df <span class="ot">&lt;-</span> <span class="fu">data_frame</span>(<span class="at">line =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(my_abstracts), <span class="at">text =</span> my_abstracts)</span>
+<span id="cb149-2"><a href="bagofwords.html#cb149-2" aria-hidden="true" tabindex="-1"></a>dialysis_bigrams <span class="ot">&lt;-</span> text_df <span class="sc">%&gt;%</span></span>
+<span id="cb149-3"><a href="bagofwords.html#cb149-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(bigram, text, <span class="at">token =</span> <span class="st">&quot;ngrams&quot;</span>, <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb149-4"><a href="bagofwords.html#cb149-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-5"><a href="bagofwords.html#cb149-5" aria-hidden="true" tabindex="-1"></a>dialysis_bigrams <span class="sc">%&gt;%</span></span>
+<span id="cb149-6"><a href="bagofwords.html#cb149-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(bigram, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 41,738 × 2
 ##    bigram                  n
 ##    &lt;chr&gt;               &lt;int&gt;
 ##  1 in the                382
@@ -645,27 +679,27 @@ dialysis_bigrams <span class="op">%&gt;%</span>
 ## 10 in center             144
 ## # … with 41,728 more rows</code></pre>
 <p>But we have to filter out stop words</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
-bigrams_sep &lt;-<span class="st"> </span>dialysis_bigrams <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">separate</span>(bigram,<span class="kw">c</span>(<span class="st">&quot;word1&quot;</span>,<span class="st">&quot;word2&quot;</span>),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
-
-stop_list &lt;-<span class="st"> </span><span class="kw">c</span>(stop_words<span class="op">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,
-                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;treatment&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,
-                       <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,
-                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;esrd&quot;</span>,<span class="st">&quot;lt&quot;</span>,<span class="st">&quot;95&quot;</span>,<span class="st">&quot;0.001&quot;</span>)
-
-bigrams_filtered &lt;-<span class="st"> </span>bigrams_sep <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>word1 <span class="op">%in%</span><span class="st"> </span>stop_list) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>word2 <span class="op">%in%</span><span class="st"> </span>stop_list)
-
-bigram_counts &lt;-<span class="st"> </span>bigrams_filtered <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(word1, word2, <span class="dt">sort =</span> <span class="ot">TRUE</span>)
-
-bigrams_united &lt;-<span class="st"> </span>bigrams_filtered <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">unite</span>(bigram, word1, word2, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>)
-
-bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span class="kw">count</span>(bigram, <span class="dt">sort =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>(<span class="dt">n=</span><span class="dv">25</span>)</code></pre></div>
-<pre><code>## # A tibble: 11,842 x 2
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="bagofwords.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb151-2"><a href="bagofwords.html#cb151-2" aria-hidden="true" tabindex="-1"></a>bigrams_sep <span class="ot">&lt;-</span> dialysis_bigrams <span class="sc">%&gt;%</span> </span>
+<span id="cb151-3"><a href="bagofwords.html#cb151-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(bigram,<span class="fu">c</span>(<span class="st">&quot;word1&quot;</span>,<span class="st">&quot;word2&quot;</span>),<span class="at">sep=</span><span class="st">&quot; &quot;</span>)</span>
+<span id="cb151-4"><a href="bagofwords.html#cb151-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-5"><a href="bagofwords.html#cb151-5" aria-hidden="true" tabindex="-1"></a>stop_list <span class="ot">&lt;-</span> <span class="fu">c</span>(stop_words<span class="sc">$</span>word,<span class="st">&quot;dialysis&quot;</span>,<span class="st">&quot;patients&quot;</span>,<span class="st">&quot;home&quot;</span>,<span class="st">&quot;kidney&quot;</span>,</span>
+<span id="cb151-6"><a href="bagofwords.html#cb151-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;hemodialysis&quot;</span>,<span class="st">&quot;haemodialysis&quot;</span>,<span class="st">&quot;treatment&quot;</span>,<span class="st">&quot;patient&quot;</span>,<span class="st">&quot;hhd&quot;</span>,</span>
+<span id="cb151-7"><a href="bagofwords.html#cb151-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;pd&quot;</span>,<span class="st">&quot;peritoneal&quot;</span>,<span class="st">&quot;hd&quot;</span>,<span class="st">&quot;renal&quot;</span>,<span class="st">&quot;study&quot;</span>,<span class="st">&quot;care&quot;</span>,</span>
+<span id="cb151-8"><a href="bagofwords.html#cb151-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;ci&quot;</span>,<span class="st">&quot;chd&quot;</span>,<span class="st">&quot;nhd&quot;</span>,<span class="st">&quot;esrd&quot;</span>,<span class="st">&quot;lt&quot;</span>,<span class="st">&quot;95&quot;</span>,<span class="st">&quot;0.001&quot;</span>)</span>
+<span id="cb151-9"><a href="bagofwords.html#cb151-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-10"><a href="bagofwords.html#cb151-10" aria-hidden="true" tabindex="-1"></a>bigrams_filtered <span class="ot">&lt;-</span> bigrams_sep <span class="sc">%&gt;%</span> </span>
+<span id="cb151-11"><a href="bagofwords.html#cb151-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word1 <span class="sc">%in%</span> stop_list) <span class="sc">%&gt;%</span></span>
+<span id="cb151-12"><a href="bagofwords.html#cb151-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word2 <span class="sc">%in%</span> stop_list)</span>
+<span id="cb151-13"><a href="bagofwords.html#cb151-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-14"><a href="bagofwords.html#cb151-14" aria-hidden="true" tabindex="-1"></a>bigram_counts <span class="ot">&lt;-</span> bigrams_filtered <span class="sc">%&gt;%</span> </span>
+<span id="cb151-15"><a href="bagofwords.html#cb151-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word1, word2, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb151-16"><a href="bagofwords.html#cb151-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-17"><a href="bagofwords.html#cb151-17" aria-hidden="true" tabindex="-1"></a>bigrams_united <span class="ot">&lt;-</span> bigrams_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb151-18"><a href="bagofwords.html#cb151-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(bigram, word1, word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb151-19"><a href="bagofwords.html#cb151-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb151-20"><a href="bagofwords.html#cb151-20" aria-hidden="true" tabindex="-1"></a>bigrams_united <span class="sc">%&gt;%</span>  <span class="fu">count</span>(bigram, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">print</span>(<span class="at">n=</span><span class="dv">25</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 11,842 × 2
 ##    bigram                     n
 ##    &lt;chr&gt;                  &lt;int&gt;
 ##  1 replacement therapy       71
@@ -693,19 +727,19 @@ bigrams_united <span class="op">%&gt;%</span><span class="st">  </span><span cla
 ## 23 retrospective cohort      15
 ## 24 cost effectiveness        14
 ## 25 daily life                14
-## # … with 1.182e+04 more rows</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)
-bigram_counts <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(word1, <span class="op">-</span>n), <span class="dt">y =</span> <span class="kw">reorder</span>(word2, <span class="op">-</span>n), <span class="dt">fill =</span> n)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_tile</span>(<span class="dt">alpha =</span> <span class="fl">0.8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="kw">palette_light</span>()[[<span class="dv">1</span>]], <span class="kw">palette_light</span>()[[<span class="dv">2</span>]])) <span class="op">+</span>
-<span class="st">    </span><span class="kw">coord_flip</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme_tq</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;right&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">45</span>, <span class="dt">vjust =</span> <span class="dv">1</span>, <span class="dt">hjust =</span> <span class="dv">1</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;first word in pair&quot;</span>,
-         <span class="dt">y =</span> <span class="st">&quot;second word in pair&quot;</span>)</code></pre></div>
+## # … with 11,817 more rows</code></pre>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="bagofwords.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyquant)</span>
+<span id="cb153-2"><a href="bagofwords.html#cb153-2" aria-hidden="true" tabindex="-1"></a>bigram_counts <span class="sc">%&gt;%</span></span>
+<span id="cb153-3"><a href="bagofwords.html#cb153-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb153-4"><a href="bagofwords.html#cb153-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(word1, <span class="sc">-</span>n), <span class="at">y =</span> <span class="fu">reorder</span>(word2, <span class="sc">-</span>n), <span class="at">fill =</span> n)) <span class="sc">+</span></span>
+<span id="cb153-5"><a href="bagofwords.html#cb153-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
+<span id="cb153-6"><a href="bagofwords.html#cb153-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_gradientn</span>(<span class="at">colours =</span> <span class="fu">c</span>(<span class="fu">palette_light</span>()[[<span class="dv">1</span>]], <span class="fu">palette_light</span>()[[<span class="dv">2</span>]])) <span class="sc">+</span></span>
+<span id="cb153-7"><a href="bagofwords.html#cb153-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb153-8"><a href="bagofwords.html#cb153-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_tq</span>() <span class="sc">+</span></span>
+<span id="cb153-9"><a href="bagofwords.html#cb153-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>) <span class="sc">+</span></span>
+<span id="cb153-10"><a href="bagofwords.html#cb153-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb153-11"><a href="bagofwords.html#cb153-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;first word in pair&quot;</span>,</span>
+<span id="cb153-12"><a href="bagofwords.html#cb153-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">&quot;second word in pair&quot;</span>)</span></code></pre></div>
 <p><img src="Web_Scraping_files/figure-html/bow17-1.png" width="672" /></p>
 
 </div>
@@ -720,7 +754,6 @@ bigram_counts <span class="op">%&gt;%</span>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -735,12 +768,12 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -755,7 +788,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
+"view": {
+"link": null,
+"text": null
+},
 "download": ["Web_Scraping.pdf", "Web_Scraping.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
